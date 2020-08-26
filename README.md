@@ -19,8 +19,9 @@ Brick and mortar shopping scan-and-go checkout app
   
 ## Technologies
 ### Backend
-- Sprint Boot
+- Spring Boot
 - Tomcat
+- Jersey
 - Maven
 - MySQL
 - 
