@@ -18,10 +18,10 @@ Open cart view when pressing cart button in top right
   --> Checkout via Google Pay
 
 ## Contributers
-Blake Edwards
-Brendan Reidy
-Cody Shearer
-Will Almond
-Brendan Curran
+- Blake Edwards
+- Brendan Reidy
+- Cody Shearer
+- Will Almond
+- Brendan Curran
 
 
