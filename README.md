@@ -17,20 +17,45 @@ Brick and mortar shopping scan-and-go checkout app
   - --> Checkout via Apple Pay
   - --> Checkout via Google Pay
   
-## Week 1-2 Sprint OKRs
-### Objectives
-- Backend API with lookup of products, sending standardized JSON objects back to requestee
-- Frontend Js async API method calls
+## Technologies
+### Backend
+- Sprint Boot
+- Tomcat
+- Maven
+- MySQL
 - 
 
-### Key Results
-- 
+### Frontend
+- HTML/CSS
+- Vanilla Javascript
+-
 
 ## Contributers
 - Blake Edwards
+  - Hookup older work, setup new MySQL database, add initial 50 products
 - Brendan Reidy
+  - Get working backend "Hello World"
 - Cody Shearer
+  - Calls to the API
 - Will Almond
+  - Product card view
 - Brendan Curran
+  - Cart view & apple pay
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
