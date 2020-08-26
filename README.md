@@ -1,6 +1,6 @@
 # EZBag
 ### MVP 
-Scan-and-go web application
+Brick and mortar shopping scan-and-go checkout app
 
 ### User Experience Flow
 Scan a QR code at the store entrance to open the ezbag web app
