@@ -28,7 +28,7 @@ Brick and mortar shopping scan-and-go checkout app
 ### Frontend
 - HTML/CSS
 - Vanilla Javascript
--
+- JQuery for async web requests
 
 ## Dependencies
 - Apache Tomcat [here](https://tomcat.apache.org/download-70.cgi) (Used for deploying server)
