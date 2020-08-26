@@ -16,6 +16,15 @@ Brick and mortar shopping scan-and-go checkout app
 - Open cart view when pressing cart button in top right
   - --> Checkout via Apple Pay
   - --> Checkout via Google Pay
+  
+## Week 1-2 Sprint OKRs
+### Objectives
+- Backend API with lookup of products, sending standardized JSON objects back to requestee
+- Frontend Js async API method calls
+- 
+
+### Key Results
+- 
 
 ## Contributers
 - Blake Edwards
