@@ -30,6 +30,11 @@ Brick and mortar shopping scan-and-go checkout app
 - Vanilla Javascript
 -
 
+## Dependencies
+- Apache Tomcat [here](https://tomcat.apache.org/download-70.cgi) (Used for deploying server)
+- I recommend you use IntelliJ and VSCode at least at first so we can get everything working easily on everyones computer
+- Jersey maven should install automatically if you have IntelliJ
+
 ## Contributers
 - Blake Edwards
   - Hookup older work, setup new MySQL database, add initial 50 products
