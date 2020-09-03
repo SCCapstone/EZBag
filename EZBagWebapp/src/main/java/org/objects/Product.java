@@ -4,6 +4,7 @@ public class Product {
     private String name;
     private String productCode;
     private float price;
+
     public Product(String aName, String aProductCode, float aPrice)
     {
         init(aName, aProductCode, aPrice);
@@ -14,7 +15,7 @@ public class Product {
         init("", "", -1);
     }
 
-    public void init(String aName, String aProductCode, float aPrice)
+    private void init(String aName, String aProductCode, float aPrice)
     {
         setName(aName);
         setProductCode(aProductCode);

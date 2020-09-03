@@ -10,7 +10,6 @@ import jakarta.ws.rs.core.MediaType;
  */
 @Path("myresource")
 public class MyResource {
-
     /**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.
