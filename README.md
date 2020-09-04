@@ -24,7 +24,6 @@ Brick and mortar shopping scan-and-go checkout app
 - Jersey
 - Maven
 - MySQL
-- 
 
 ### Frontend
 - HTML/CSS
