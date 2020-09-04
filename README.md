@@ -50,19 +50,3 @@ Brick and mortar shopping scan-and-go checkout app
   - Cart view & apple pay
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
