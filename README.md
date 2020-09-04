@@ -16,6 +16,8 @@ Brick and mortar shopping scan-and-go checkout app
 - Open cart view when pressing cart button in top right
   - --> Checkout via Apple Pay
   - --> Checkout via Google Pay
+- Display QR code digital receipt
+- Display input form for email and/or phone number to send the digital receipt to the customer.
   
 ## Technologies
 ### Backend
