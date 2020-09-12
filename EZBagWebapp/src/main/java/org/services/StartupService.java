@@ -21,6 +21,7 @@ public class StartupService implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        // shutdown code can go here
         System.out.println("Shutting down!");
     }
 

@@ -15,11 +15,11 @@ public class DatabaseService {
             return null;
         }
     }
-    public static String getByEAN(String barcode)
+    private static String getByEAN(String barcode)
     {
         return database.getByEAN(barcode);
     }
-    public static String getByUPC(String barcode)
+    private static String getByUPC(String barcode)
     {
         return database.getByUPC(barcode);
     }
