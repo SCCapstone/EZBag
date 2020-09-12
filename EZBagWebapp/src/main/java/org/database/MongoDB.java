@@ -46,10 +46,14 @@ public class MongoDB {
         System.out.print(" done\n");
         this.collection = aCollection;
     }
-    public String getByBarcode(String aBarCode)
-    {
-        Document myDoc = collection.find(eq("barcode", 71)).first();
-        System.out.println(myDoc.toJson());
+
+    public String getByEAN(String barcode) {
+        Document myDoc = collection.find(eq("ean", barcode)).first();
+        return myDoc.toJson();
+    }
+
+    public String getByUPC(String barcode) {
+        Document myDoc = collection.find(eq("upc", barcode)).first();
         return myDoc.toJson();
     }
 }

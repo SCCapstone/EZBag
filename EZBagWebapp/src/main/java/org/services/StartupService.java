@@ -2,36 +2,36 @@ package org.services;
 
 import org.database.MongoDB;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.concurrent.CountDownLatch;
 
-public class StartupService {
+@WebListener
+public class StartupService implements ServletContextListener {
     public static String propertiesFile = "/usr/local/opt/EZBag/EZBag.properties";
+
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        startup();
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        System.out.println("Shutting down!");
+    }
+
     public static void startup()
     {
+        long clock = System.currentTimeMillis();
         System.out.println("[Startup] Loading properties file");
-        FileInputStream fis = null;
-        Properties prop = null;
-        try {
-            fis = new FileInputStream(propertiesFile);
-            prop = new Properties();
-            prop.load(fis);
-        } catch(FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } finally {
-            try {
-                fis.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        Properties prop = Utils.getPropertiesFile(propertiesFile);
         System.out.println("[Startup] Connecting to database");
         MongoDB mongo = new MongoDB(prop);
         DatabaseService.database = mongo;
+        System.out.println("[Startup] Server started successfully in " + (System.currentTimeMillis() - clock) + "ms");
     }
 }
