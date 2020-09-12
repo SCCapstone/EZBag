@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: jakarta.ws.rs:jakarta.ws.rs-api:3.0.0-M1">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/ws/rs/jakarta.ws.rs-api/3.0.0-M1/jakarta.ws.rs-api-3.0.0-M1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/ws/rs/jakarta.ws.rs-api/3.0.0-M1/jakarta.ws.rs-api-3.0.0-M1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/jakarta/ws/rs/jakarta.ws.rs-api/3.0.0-M1/jakarta.ws.rs-api-3.0.0-M1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
