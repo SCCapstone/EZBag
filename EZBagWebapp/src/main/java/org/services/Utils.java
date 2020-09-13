@@ -8,7 +8,7 @@ import java.util.Properties;
 public class Utils {
     public static boolean isEAN(String barcode)
     {
-        return barcode.length()==13;
+        return (barcode.length()==13 || barcode.length()==8);
     }
     public static boolean isUPC(String barcode)
     {

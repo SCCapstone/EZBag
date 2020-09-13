@@ -27,6 +27,17 @@ public class main {
         products.add(Document.parse("{\"upc\" : \"226270000001\", \"ean\" : \"0226270000001\", \"name\" : \"Whole Muscle Beef\", \"price\" : 10.99, \"description\" : \"Beef Hind Shank.\" }"));
         products.add(Document.parse("{\"upc\" : \"810180026178\", \"ean\" : \"0810180026178\", \"name\" : \"Melatonin\", \"price\" : 10.99, \"description\" : \"Makes you fall asleep fast.\" }"));
         products.add(Document.parse("{\"upc\" : \"696554738959\", \"ean\" : \"0696554738959\", \"name\" : \"Sword Floss\", \"price\" : 5.99, \"description\" : \"Disposable Floss Picks Mint 50 Ct.\" }"));
+        products.add(Document.parse("{\"upc\" : \"06827465\", \"ean\" : \"0696554738959\", \"name\" : \"Sword Floss\", \"price\" : 5.99, \"description\" : \"Disposable Floss Picks Mint 50 Ct.\" }"));
+
+        Document waterBottle = new Document("ean", "06827465")
+                .append("name", "Nestle Pure Life Water")
+                .append("description", "Nestle Pure Life Purified Water comes in convenient plastic, resealable bottles, for easy, on-the-go hydration.");
+        products.add(waterBottle);
+        Document salt = new Document("ean", "0050428427439")
+                .append("name", "Iodized Salt")
+                .append("description", "Iodized salt is table salt mixed with a minute amount of various salts of the element iodine. The ingestion of iodine prevents iodine deficiency.");
+        products.add(salt);
+
         collection.insertMany(products);
         System.out.println("Inserted starter documents");
 
