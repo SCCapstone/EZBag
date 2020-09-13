@@ -1,3 +1,5 @@
 .DS_Store
 EZBagWebapp/target/*
+EZBagWebapp/.idea
+.idea
 
