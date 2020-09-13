@@ -1,6 +1,9 @@
 package org.services;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.database.MongoDB;
+import org.bson.Document;
 
 public class DatabaseService {
     public static MongoDB database = null;
@@ -23,4 +26,20 @@ public class DatabaseService {
     {
         return database.getByUPC(barcode);
     }
+    public static String insertInfo(Document customerInfo) {
+        String resp = database.insertInfo(customerInfo);
+        System.out.println("Inserted info document");
+        return resp;
+    }
+    public static String insertCustomerEvent(Document customerScanEvent) {
+        String resp = database.insertCustomerScannedItemEvent(customerScanEvent);
+        System.out.println("Inserted customer event");
+        return resp;
+    }
+    public static String insertCustomerCheckoutCart(Document customerCheckoutCart) {
+        String resp = database.insertCustomerCheckoutCart(customerCheckoutCart);
+        System.out.println("Inserted customer checkout cart");
+        return resp;
+    }
+
 }
