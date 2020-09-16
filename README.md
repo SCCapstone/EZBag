@@ -7,17 +7,14 @@ Brick and mortar shopping scan-and-go checkout app
 - Enable camera permissions
 - Scan any product's barcode (EAN, UPC) with my mobile phone camera
 - Automatically present scanned product card on screen
-  - --> Buzz when product scanned 
-  - --> Lazily slide to increase the item quanity on the item popup
-  - --> Cancel addition of product to cart via X button
-  - --> 3 seconds of no product card interaction automatically adds item to user's cart
-  - --> Allow scanning of products in background (behind card)
-  - --> Upon scan of another product, remove old product card and present newly scanned product's card
-- Open cart view when pressing cart button in top right
-  - --> Checkout via Apple Pay
-  - --> Checkout via Google Pay
-- Display QR code digital receipt
-- Display input form for email and/or phone number to send the digital receipt to the customer.
+  - Use plus/minus buttons to increase/decrease the item quanity on the item
+  - Press down arrow button to go back to scanner view
+  - Press the "Confirm" button to add the button to cart
+- Press "Checkout" button Open cart view when pressing cart button in top right
+  - Checkout via Apple Pay OR checkout via Google Pay
+- Upon payment show the checked out view, displaying the customers unique cart number
+  - Display input form for customer email and/or phone number to send digital receipt
+    - Press the "Send" button to send the receipt to email/phone
   
 ## Technologies
 ### Backend
