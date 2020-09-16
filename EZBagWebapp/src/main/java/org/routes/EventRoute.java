@@ -8,7 +8,7 @@ import org.bson.Document;
 import org.services.DatabaseService;
 
 @Path("/event")
-public class CustomerEventRoute {
+public class EventRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)

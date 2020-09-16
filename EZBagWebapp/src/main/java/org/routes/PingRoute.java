@@ -14,14 +14,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-@Path("/test")
-public class ServletRequest {
+@Path("/PingRoute")
+public class PingRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload) {
-        //we can make use of UserProfile now
-        System.out.println(payload + "??????");
-        return "hello from server?!?!??!?!?!";
+        return "pong";
     }
 }

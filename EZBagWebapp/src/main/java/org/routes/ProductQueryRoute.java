@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 
-@Path("/products")
+@Path("/lookup")
 public class ProductQueryRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
@@ -32,3 +32,14 @@ public class ProductQueryRoute {
         return object;
     }
 }
+
+
+
+
+
+
+
+
+
+
+

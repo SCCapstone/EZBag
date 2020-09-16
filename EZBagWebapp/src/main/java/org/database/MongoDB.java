@@ -68,7 +68,7 @@ public class MongoDB {
             return myDoc.toJson();
         }
         JsonObject resp = new JsonObject();
-        resp.addProperty("message", "Product not found");
+        resp.addProperty("message", "ProductInsertRoute not found");
         return resp.toString();
     }
 
@@ -78,28 +78,36 @@ public class MongoDB {
             return myDoc.toJson();
         }
         JsonObject resp = new JsonObject();
-        resp.addProperty("message", "Product not found");
         return resp.toString();
     }
     public String insertInfo(Document customerInfo) {
         infoCollection.insertOne(customerInfo);
         JsonObject resp = new JsonObject();
         resp.addProperty("message", "Success");
-        System.out.println(customerInfo.toString());
+        resp.addProperty("inserted", customerInfo.toString());
         return resp.toString();
     }
     public String insertCustomerScannedItemEvent(Document customerScannedItemEvent) {
         eventCollection.insertOne(customerScannedItemEvent);
         JsonObject resp = new JsonObject();
         resp.addProperty("message", "Success");
-        System.out.println(customerScannedItemEvent.toString());
+        resp.addProperty("inserted", customerScannedItemEvent.toString());
         return resp.toString();
     }
     public String insertCustomerCheckoutCart(Document customerCheckoutCart) {
         cartCollection.insertOne(customerCheckoutCart);
         JsonObject resp = new JsonObject();
         resp.addProperty("message", "Success");
-        System.out.println(customerCheckoutCart.toString());
+        resp.addProperty("inserted", customerCheckoutCart.toString());
+        return resp.toString();
+    }
+    // TODO make db interaction methods return boolean
+    // TODO make DatabaseService construct json responses for API
+    public String insertProduct(Document newProduct) {
+        productCollection.insertOne(newProduct);
+        JsonObject resp = new JsonObject();
+        resp.addProperty("message", "Success");
+        resp.addProperty("inserted", newProduct.toString());
         return resp.toString();
     }
 }

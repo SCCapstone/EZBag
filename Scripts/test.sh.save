@@ -1,0 +1,5 @@
+curl http://localhost:8080/EZBagWebapp/webapi/products
+
+http://localhost:8080/EZBagWebapp/webapi/products
+
+curl 

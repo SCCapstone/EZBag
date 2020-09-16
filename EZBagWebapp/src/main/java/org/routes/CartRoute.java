@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Path("/cart")
-public class CheckoutCartRoute {
+public class CartRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)

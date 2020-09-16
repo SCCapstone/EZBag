@@ -41,5 +41,10 @@ public class DatabaseService {
         System.out.println("Inserted customer checkout cart");
         return resp;
     }
+    public static String insertProduct(Document newProduct) {
+        String resp = database.insertProduct(newProduct);
+        System.out.println("Inserted new product");
+        return resp;
+    }
 
 }
