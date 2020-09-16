@@ -3,14 +3,14 @@
 Brick and mortar shopping scan-and-go checkout app
 
 ### User Experience Flow
-- Scan a QR code at the store entrance to open the ezbag web app
+- Scan a QR code at the store entrance to open the EZBag web app
 - Enable camera permissions
 - Scan any product's barcode (EAN, UPC) with my mobile phone camera
 - Automatically present scanned product card on screen
-  - Use plus/minus buttons to increase/decrease the item quanity on the item
+  - Use plus/minus buttons to increase/decrease the item quantity on the item
   - Press down arrow button to go back to scanner view
   - Press the "Confirm" button to add the button to cart
-- Press "Checkout" button Open cart view when pressing cart button in top right
+- Press "Checkout" button open cart view when pressing cart button in top right
   - Checkout via Apple Pay OR checkout via Google Pay
 - Upon payment show the checked out view, displaying the customers unique cart number
   - Display input form for customer email and/or phone number to send digital receipt
