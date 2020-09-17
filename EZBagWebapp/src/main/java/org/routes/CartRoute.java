@@ -21,7 +21,8 @@ public class CartRoute {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
         if (payloadObject.has("cart")
-                && payloadObject.has("total") && payloadObject.has("session"))
+                && payloadObject.has("total")
+                && payloadObject.has("session"))
         {
 
             JsonArray cartItems = payloadObject.get("cart").getAsJsonArray();
@@ -29,6 +30,7 @@ public class CartRoute {
             for (int i=0; i<cartItems.size(); i++) {
                 cart.add(cartItems.get(i).getAsString());
             }
+            // TODO: add cartHash key-value pair to this document
             insertDoc.append("total", payloadObject.get("total").getAsString());
             insertDoc.append("cart", cart);
             insertDoc.append("time", System.currentTimeMillis());

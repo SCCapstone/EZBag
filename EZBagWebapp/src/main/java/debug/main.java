@@ -81,7 +81,7 @@ public class main {
 //        String resp6 = DatabaseService.insertCustomerEvent(customerRemovedItemFromCartEventObject);
 //        System.out.println(resp6);
 
-//
+
 //        // TODO insert customer check out cart (cart they paid for)
 //        List<Document> customerShoppingCartObject = new ArrayList<Document>();
 //        customerShoppingCartObject.add(new Document("barcode", "670433093100"));
@@ -89,6 +89,7 @@ public class main {
 //        customerShoppingCartObject.add(new Document("barcode", "226270000001"));
 //        Document customerCheckoutCartObject = new Document("time", System.currentTimeMillis())
 //                .append("cart", customerShoppingCartObject)
+//                .append("cartHash", "aaj129fm3fk8fjaj8") // TODO: standard method of hashing list of barcodes in cart
 //                .append("total", "23.97");
 //        String resp7 = DatabaseService.insertCustomerCheckoutCart(customerCheckoutCartObject);
 //        System.out.println(resp7.toString());

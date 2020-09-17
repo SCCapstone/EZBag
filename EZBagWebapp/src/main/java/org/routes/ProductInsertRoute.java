@@ -15,22 +15,21 @@ public class ProductInsertRoute {
     public String doPost(String payload) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
-        if (payloadObject.has("upc") && payloadObject.has("ean")
-                && payloadObject.has("barcode")
+        if (payloadObject.has("barcode")
+                && payloadObject.has("barcodeType")
+                && payloadObject.has("businessID")
                 && payloadObject.has("name")
                 && payloadObject.has("price")
-                && payloadObject.has("description")
-                && payloadObject.has("business-id"))
+                && payloadObject.has("description"))
         {
-            insertDoc.append("upc", payloadObject.get("upc").getAsString());
-            insertDoc.append("ean", payloadObject.get("ean").getAsString());
-            insertDoc.append("name", payloadObject.get("name").getAsString());
-            insertDoc.append("price", payloadObject.get("price").getAsString());
-            insertDoc.append("description", payloadObject.get("description").getAsString());
-            insertDoc.append("business-id", payloadObject.get("business-id").getAsString());
-            insertDoc.append("time", System.currentTimeMillis());
-            String resp = DatabaseService.insertProduct(insertDoc);
-            return resp;
+            insertDoc.append("barcode", payloadObject.get("barcode").getAsString())
+                    .append("barcodeType", payloadObject.get("barcodeType").getAsString())
+                    .append("name", payloadObject.get("name").getAsString())
+                    .append("price", payloadObject.get("price").getAsDouble())
+                    .append("description", payloadObject.get("description").getAsString())
+                    .append("businessID", payloadObject.get("businessID").getAsString())
+                    .append("time", System.currentTimeMillis());
+            return DatabaseService.insertProduct(insertDoc);
         } else
         {
             String message = "Submitted customer event json object is not valid";

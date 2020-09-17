@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.bson.Document;
 import org.services.DatabaseService;
 
 import javax.servlet.ServletException;
@@ -24,12 +25,23 @@ public class ProductQueryRoute {
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload) {
-        //we can make use of UserProfile now
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
-        String productCode = payloadObject.get("productCode").toString();
-        System.out.println(productCode);
-        String object = DatabaseService.getByProductCode(productCode.substring(1, productCode.length()-1));
-        return object;
+        Document insertDoc = new Document();
+        if (payloadObject.has("barcode")
+                && payloadObject.has("barcodeType")
+                && payloadObject.has("businessID"))
+        {
+            String resp = DatabaseService.getProductByBarcodeBarcodeTypeBusinessID(payloadObject.get("barcode").getAsString(),
+                    payloadObject.get("barcodeType").getAsString(),
+                    payloadObject.get("businessID").getAsString());
+            return resp;
+        } else
+        {
+            String message = "Barcode product lookup requires: barcode, barcodeType, businessID";
+            JsonObject response = new JsonObject();
+            response.addProperty("message", message);
+            return response.toString();
+        }
     }
 }
 

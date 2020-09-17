@@ -7,6 +7,26 @@ import org.bson.Document;
 
 public class DatabaseService {
     public static MongoDB database = null;
+    private static String generateResponse(Boolean success, String message) {
+        JsonObject resp = new JsonObject();
+        resp.addProperty("message", message);
+        if (success)
+        {
+            resp.addProperty("status", "success");
+            return resp.toString();
+        }
+        resp.addProperty("status", "failure");
+        return resp.toString();
+    }
+    // TODO change to support "ean8", "ean13", "upca", "upce"
+    public static String getProductByBarcodeBarcodeTypeBusinessID(String barcode, String barcodeType, String businessID) {
+        String returnedProduct = database.getProductByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID);
+        if (returnedProduct != null) {
+            return returnedProduct;
+        }
+        String message = "Product was not found in the database";
+        return generateResponse(false, message);
+    }
     public static String getByProductCode(String productCode)
     {
         if(Utils.isEAN(productCode))
@@ -27,24 +47,19 @@ public class DatabaseService {
         return database.getByUPC(barcode);
     }
     public static String insertInfo(Document customerInfo) {
-        String resp = database.insertInfo(customerInfo);
         System.out.println("Inserted info document");
-        return resp;
+        return generateResponse(database.insertInfo(customerInfo), customerInfo.toJson());
     }
     public static String insertCustomerEvent(Document customerScanEvent) {
-        String resp = database.insertCustomerScannedItemEvent(customerScanEvent);
         System.out.println("Inserted customer event");
-        return resp;
+        return generateResponse(database.insertCustomerScannedItemEvent(customerScanEvent), customerScanEvent.toJson());
     }
     public static String insertCustomerCheckoutCart(Document customerCheckoutCart) {
-        String resp = database.insertCustomerCheckoutCart(customerCheckoutCart);
         System.out.println("Inserted customer checkout cart");
-        return resp;
+        return generateResponse(database.insertCustomerCheckoutCart(customerCheckoutCart), customerCheckoutCart.toJson());
     }
     public static String insertProduct(Document newProduct) {
-        String resp = database.insertProduct(newProduct);
         System.out.println("Inserted new product");
-        return resp;
+        return generateResponse(database.insertProduct(newProduct), newProduct.toJson());
     }
-
 }
