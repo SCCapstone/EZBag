@@ -85,6 +85,11 @@
             <artifactId>jersey-media-json-binding</artifactId>
         </dependency>
         -->
+        <dependency>
+            <groupId>de.vandermeer</groupId>
+            <artifactId>asciitable</artifactId>
+            <version>0.3.2</version>
+        </dependency>
     </dependencies>
     <properties>
         <jersey.version>3.0.0-M1</jersey.version>

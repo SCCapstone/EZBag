@@ -33,6 +33,7 @@ public class StartupService implements ServletContextListener {
         System.out.println("[Startup] Connecting to database");
         MongoDB mongo = new MongoDB(prop);
         DatabaseService.database = mongo;
+        ReceiptService.database = mongo;
         System.out.println("[Startup] Server started successfully in " + (System.currentTimeMillis() - clock) + "ms");
     }
 }
