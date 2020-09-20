@@ -4,13 +4,27 @@
     font-weight: 600;
 }
 
-#scannedProductDiv{
-    position: absolute;
-    background-color: #e0e0e0;
-    height: 60%;
-    width: 100%;
-    bottom: -70%;
+@media (max-height: 1745px) {
+
+    #scannedProductDiv{
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 60%;
+        width: 100%;
+        bottom: -70%;
+    }
 }
+@media (min-height: 1745px) {
+
+    #scannedProductDiv{
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 1050px;
+        width: 100%;
+        bottom: -70%;
+    }
+}
+
 .buttonIcon{
     font-size: calc(100vw * 0.1);
     position: relative;
