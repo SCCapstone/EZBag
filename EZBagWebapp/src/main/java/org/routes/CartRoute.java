@@ -45,17 +45,19 @@ public class CartRoute {
             for (int i=0; i<productQuantities.size(); i++) {
                 quantities.add(productQuantities.get(i).getAsInt());
             }
+            // TODO: calculate subtotal based on product prices
+            Double subtotal = 10.99;
             if (codes.size() == types.size() && types.size() == quantities.size()) {
-                insertDoc.append("barcodes", barcodes);
-                insertDoc.append("barcodeTypes", barcodeTypes);
+                insertDoc.append("barcodes", codes);
+                insertDoc.append("barcodeTypes", types);
                 insertDoc.append("quantities", quantities);
                 insertDoc.append("businessID", payloadObject.get("businessID").getAsString());
-                insertDoc.append("subtotal", payloadObject.get("subtotal").getAsDouble());
+                insertDoc.append("subtotal", subtotal);
                 insertDoc.append("session", payloadObject.get("session").getAsString());
                 // TODO calculate real tax on cart
-                insertDoc.append("tax", 0.06*insertDoc.getDouble("subtotal"));
+                insertDoc.append("tax", 0.06*subtotal);
                 // TODO calculate cart total using ReceiptService getCartProducts
-                insertDoc.append("total", insertDoc.getDouble("subtotal")+insertDoc.getDouble("tax"));
+                insertDoc.append("total", subtotal+insertDoc.getDouble("tax"));
                 insertDoc.append("time", System.currentTimeMillis());
                 // TODO kick of event to send customer digital receipt (async call ReceiptService)
                 String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);

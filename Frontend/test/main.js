@@ -12,23 +12,30 @@ const key = "AQZOrRteBEkNL00Y2BzlDawGLF+INUj7V0OVEW4Lmj5oYTPF+kjyUjA3teTSf6JkdBp
     }).then((barcodePicker) => {
         // barcodePicker is ready here, show a message every time a barcode is scanned
         barcodePicker.on("scan", (scanResult) => {
+	    // TODO get scandit barcode type and pass to productLookup function
             var barcode = scanResult.barcodes[0].data
-            callPost(barcode.toString(10))
+            console.log(barcode.toString(10))
+            productLookup(barcode.toString(10), "ean13", "1");
         });
 
 });
 
-console.log("Script running!")
-object = document.getElementById("myButton")
-object.onclick = function(){
-    console.log("Hello world!");
-    callPost();
-};
+//console.log("Script running!")
+//object = document.getElementById("myButton")
+//object.onclick = function(){
+//    console.log("Hello world!");
+//    callPost();
+//};
+// TODO create js files for each view for button and input field functions
 
-var callPost = function(barcode) {
-    queryObj = {"productCode":barcode}
+var productLookup = function(code, codeType, bizID) {   
+    queryObj = {
+                barcode: code,
+                barcodeType : codeType,
+                businessID: bizID
+               }
     console.log(queryObj)
-    var aUrl = "http://localhost:8080/EZBagWebapp/webapi/products";
+    var aUrl = "http://localhost:8080/EZBagWebapp/webapi/lookup";
     var xhr = $.ajax({
         type: "POST",
         data: JSON.stringify(queryObj),
@@ -36,29 +43,46 @@ var callPost = function(barcode) {
         url: aUrl, 
         success: function(output, status) {
             alert(output);
+	    // TODO call displayProductCard function and pass utilized fields
             console.log(output);
             $('.sysMsg').html(output);
         },
         error: function(output) {
-          $('.sysMsg').html(output);
+            $('.sysMsg').html(output);
+	    console.log("[ERROR] product lookup")
         }
     });
   };
 
-var callPostExample = function() {
-    searchString = "hello from client"
-    var aUrl = "http://localhost:8080/EZBagWebapp/webapi/test";
+var displayProductCard = new function() {
+    // TODO implement this method
+    console.log("Displaying product card view")
+}
+
+// TODO need helper function to call cust. event post
+var customerEventPost = function(eventType, sessionID, productBarcode) {
+    eventObj = {
+    	type: eventType,
+	session: sessionID,
+	barcode: productBarcode
+    }
+    var eventRoute = "http://localhost:8080/EZBagWebapp/webapi/event";
+    postRequest(JSON.stringify(eventObj), eventRoute);
+  };
+
+var postRequest = function(payload, route) {
     var xhr = $.ajax({
         type: "POST",
-        data: searchString,
+        data: payload,
         location: "",
-        url: aUrl, 
+        url: route, 
         success: function(output, status) { 
-            console.log(output)
+            console.log("[SUCCESS] HTTP post request")
             $('.sysMsg').html(output);
         },
         error: function(output) {
-          $('.sysMsg').html(output);
+	    console.log("[ERROR] HTTP post request failed")
+            $('.sysMsg').html(output);
         }
     });
   };
