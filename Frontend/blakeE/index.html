@@ -9,19 +9,19 @@
         <!--PRODUCT SCANNER ELEMENT-->
         <div class="scanner" id="scandit-barcode-picker"></div>
         <div id="checkoutBtn" class='btn-bot-left'>
-            <div class="inner">
-                <p>Checkout</p>
+            <div class="inner text scannerButtonText">
+                Checkout
             </div>
         </div>
         <div class='btn-bot-right'>
-            <div class="inner">
-                <p>$10.99</p>
+            <div class="inner text scannerButtonText" id="subtotalButton">
+                $10.99
             </div>
         </div>
         <!--END - PRODUCT SCANNER ELEMENT-->
 
         <!--PRODUCT CARD ELEMENT-->
-        <div id="scannedProductDiv">
+        <div id="scannedProductDiv" style="display: none;">
             <button class="roundButton button" id="downButton">
                 <i id="downIcon" class="fas fa-chevron-down buttonIcon"></i>
             </button>
@@ -46,6 +46,7 @@
         </div>
         <!--END - PRODUCT CARD ELEMENT-->
     </body>
-    <script src="main.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="cart.js"></script>
+    <script src="main.js"></script>
 </html>
