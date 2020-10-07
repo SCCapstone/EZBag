@@ -49,10 +49,28 @@
         bottom: 0%;
         z-index: 10;
     }
+
+    #paymentCard{
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 20%;
+        width: 98%;
+        bottom: 0%;
+        z-index: 10;
+    }
 }
 @media (min-height: 1745px) {
 
     #scannedProductDiv{
+        position: absolute;
+        background-color: #e0e0e0;
+        height: 1050px;
+        width: 98%;
+        bottom: 0%;
+        z-index: 10;
+    }
+
+    #paymentCard{
         position: absolute;
         background-color: #e0e0e0;
         height: 1050px;
@@ -185,5 +203,38 @@
     font-size: calc(100vw * 0.05);
     line-height: calc(100vw * 0.15);
     height: calc(100vw * 0.15);
+}
+
+#applePayButton
+{
+    position: absolute;
+    bottom: 52%;
+    left: calc(50% - 20%);
+    width: 40%;
+    font-size: calc(100vw * 0.05);
+    line-height: calc(100vw * 0.15);
+    height: calc(100vw * 0.15);
+}
+
+#googlePayButton
+{
+    position: absolute;
+    bottom: 5%;
+    left: calc(50% - 20%);
+    width: 40%;
+    font-size: calc(100vw * 0.05);
+    line-height: calc(100vw * 0.15);
+    height: calc(100vw * 0.15);
+}
+
+.apple-pay-button {
+    display: inline-block;
+    height: 50px;
+    -webkit-appearance: -apple-pay-button;
+    -apple-pay-button-type: plain; /* Use any supported button type. */
+}
+
+.apple-pay-button-black {
+    -apple-pay-button-style: black;
 }
 /*END - PRODUCT CARD STYLING*/

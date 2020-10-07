@@ -132,7 +132,7 @@ function getCartSubtotal() {
         for (var i=0; i<prices.length; i++) {
             subtotal += quantities[i]*prices[i];
         }
-        return subtotal
+        return subtotal.toFixed(2);
     } else {
         console.log("[ERROR] Cannot calculate subtotal because no cart object ")
     }

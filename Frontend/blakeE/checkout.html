@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <title>Woven Marketplace</title>
+        <meta name="description" content="Woven Marketplace">
+        <meta name="author" content="Blake Edwards">
+        <style>
+
+            .totalPayCard {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 18%;
+                background-color: #e0e0e0;
+                color: white;
+                text-align: center;
+                border-radius: 10;
+            }
+
+            .priceText {
+                font-size: calc(100vw * 0.08);
+            }
+
+            .listItemText {
+                font-size: calc(100vw * 0.06);
+            }
+            
+            .totalPriceText {
+                margin-top: 2%;
+                font-size: calc(100vw * 0.08);
+                color: black;
+            }
+
+            .stripePayButtonContainer {
+                margin: 2%;
+            }
+
+            .quantityInputField {
+                
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <div style="overflow:auto; position:absolute; top: 0; left:0; right:0; bottom:0; height: 82%;">
+            <ul id="list" data-role="listview" style="list-style-type:none;">
+                <li>
+                    <div class="listItemContainer">
+                        <input class="quantityInputField" style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+                <li>
+                    <div class="listItemContainer">
+                        <input style="float: right; margin-right: 15px;" type="number" id="quantity" name="quantity" min="1" max="100" value="1">
+                        <div class="priceText">$3.88</div>
+                        <div class="listItemText">List Item</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="totalPayCard">
+            <div class="totalPriceText">
+                <b>$10.99</b>
+            </div>
+            <script src="https://js.stripe.com/v3/"></script>
+            <div class="stripePayButtonContainer">
+                <div id="payment-request-button">
+                    <!-- A Stripe Element will be inserted here. -->
+                </div>
+            </div>
+        </div>
+
+
+        <script>
+            var clientSecret = "pi_1HXt5EEodw3j5gAJot2TSWRa_secret_WCBwbA7EFZyKpYgvPKkoACh1s";
+            // create stripe object
+            var stripe = Stripe('pk_test_51HWQbDEodw3j5gAJBjvOQ4GxneRlIocvxEdN97ThEyFs9fqRpkf6SXik8fZZOcMKLvXYoa4HQccNxmnVvqxKc4dL00gDcPUMiA', {
+              apiVersion: "2020-08-27",
+            });
+            
+            // create payment request instance
+            var paymentRequest = stripe.paymentRequest({
+              country: 'US',
+              currency: 'usd',
+              total: {
+                label: 'Demo total',
+                amount: 099,
+              },
+              requestPayerName: true,
+              requestPayerEmail: true,
+            });
+            
+            // create and mount paymentRequestButton
+            var elements = stripe.elements();
+            var prButton = elements.create('paymentRequestButton', {
+              paymentRequest: paymentRequest,
+            });
+            
+            // Check the availability of the Payment Request API first.
+            paymentRequest.canMakePayment().then(function(result) {
+              if (result) {
+                prButton.mount('#payment-request-button');
+              } else {
+                document.getElementById('payment-request-button').style.display = 'none';
+                alert("Payment Request API unavailable!");
+              }
+            });
+            
+            paymentRequest.on('paymentmethod', function(ev) {
+              // Confirm the PaymentIntent without handling potential next actions (yet).
+              stripe.confirmCardPayment(
+                clientSecret,
+                {payment_method: ev.paymentMethod.id},
+                {handleActions: false}
+              ).then(function(confirmResult) {
+                if (confirmResult.error) {
+                  // Report to the browser that the payment failed, prompting it to
+                  // re-show the payment interface, or show an error message and close
+                  // the payment interface.
+                  ev.complete('fail');
+                } else {
+                  // Report to the browser that the confirmation was successful, prompting
+                  // it to close the browser payment method collection interface.
+                  ev.complete('success');
+                  // Check if the PaymentIntent requires any actions and if so let Stripe.js
+                  // handle the flow. If using an API version older than "2019-02-11" instead
+                  // instead check for: `paymentIntent.status === "requires_source_action"`.
+                  if (confirmResult.paymentIntent.status === "requires_action") {
+                    // Let Stripe.js handle the rest of the payment flow.
+                    stripe.confirmCardPayment(clientSecret).then(function(result) {
+                      if (result.error) {
+                        // The payment failed -- ask your customer for a new payment method.
+                      } else {
+                        // The payment has succeeded.
+                        window.location.pathname = '/success.html'
+                      }
+                    });
+                  } else {
+                    // The payment has succeeded.
+                window.location.pathname = '/success.html'
+                  }
+                }
+              });
+            });
+            
+            </script>
+            
+    </body>
+</html>
