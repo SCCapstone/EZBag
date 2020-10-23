@@ -70,9 +70,14 @@ var downButton = document.getElementById("downButton")
 var plusButton = document.getElementById("plusButton")
 var minusButton = document.getElementById("minusButton")
 var confirmButton = document.getElementById("confirmButton")
+var checkoutButton = document.getElementById("checkoutButton")
 var maxNameLength = 15
 
 let start;
+
+checkoutButton.onclick = function() {
+    console.log("Moving to checkout view");
+};
 
 downButton.onclick = function(){
     currScannedBarcode = null;
@@ -106,18 +111,31 @@ minusButton.onclick = function(){
 
 
 function mockFunc(barcode, barcodeType) {
-    var milliseconds = 500;
-    console.log("[INFO] Waiting "+milliseconds+" milliseconds")
-    setTimeout(function(){ mockProductLookup(barcode, barcodeType); }, milliseconds);
+    // TODO: replace data with this for live lookups
+    // data = {
+    //     "barcode": barcode,
+    //     "barcodeType": barcodeType, 
+    //     "businessID": getBusinessID()
+    // };
+    data = {
+            "barcode": "9781401953119",
+            "barcodeType": "ean13", 
+            "businessID": getBusinessID()
+        };
+    console.log("scanned: " + data);
+    data = JSON.stringify(data);
+    $.post(
+        "http://localhost:8080/EZBagWebapp/webapi/lookup",
+        data,
+        function(data, status){
+            console.log(data)
+            currScannedItem = data;
+            displayItem(data);
+        }
+    );
+
 }
-function mockProductLookup(barcode, barcodeType) {
-    // todo: api lookup of product here
-    console.log("[INFO] /lookup of "+barcode+", "+barcodeType)
-    var testProduct = '{ "_id" : { "$oid" : "5f69529fda276d39ff5371d5" }, "barcode" : "9780061241895", "barcodeType" : "ean13", "name" : "Water", "price" : 0.99, "description" : "Yes, you have to pay for this basic necessity.", "businessID" : "1", "time" : { "$numberLong" : "1600737951212" } }';
-    var respProduct = JSON.parse(testProduct);
-    currScannedItem = respProduct
-    displayItem(currScannedItem);
-}
+
 // expects valid javascript product object
 function displayItem(item)
 {

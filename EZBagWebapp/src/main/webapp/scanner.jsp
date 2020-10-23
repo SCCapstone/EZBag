@@ -2,10 +2,10 @@
     <head>
         <script src="https://cdn.jsdelivr.net/npm/scandit-sdk@5.x"></script>
         <script src="https://kit.fontawesome.com/8b57238d0d.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="main.css">
+        <link rel="stylesheet" href="css/scanner.css">
     </head>
     <body>
-        
+
         <!--PRODUCT SCANNER ELEMENT-->
         <div class="scanner" id="scandit-barcode-picker"></div>
         <div id="checkoutBtn" class='btn-bot-left'>
@@ -46,7 +46,6 @@
         </div>
         <!--END - PRODUCT CARD ELEMENT-->
     </body>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="cart.js"></script>
-    <script src="main.js"></script>
+    <script src="scripts/cart.js"></script>
+    <script src="scripts/scanner.js"></script>
 </html>
