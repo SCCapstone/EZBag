@@ -49,7 +49,7 @@ git clone https://github.com/SCCapstone/m3-blakete.git
 - Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
 - Start Tomcat
 ```
-/path-to-tomcat-install/tomcat/bin/startup.sh
+/path-to-tomcat-install/tomcat/bin/./startup.sh
 ```
 - Tomcat will now auto-deploy the application which can be view at http://localhost:8080/EZBagWebapp 
 
@@ -62,7 +62,7 @@ git clone https://github.com/SCCapstone/m3-blakete.git
 - Copy the "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
 - Start tomcat on remote server
 ```
-/path-to-tomcat-install/tomcat/bin/startup.sh
+/path-to-tomcat-install/tomcat/bin/./startup.sh
 ```
 - Tomcat will now auto-deploy the application which can be view at http://yourdomain.com:8080/EZBagWebapp 
 
