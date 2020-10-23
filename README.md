@@ -50,3 +50,4 @@ Brick and mortar shopping scan-and-go checkout app
   - Cart view & apple pay
 
 
+Added for merge conflict
