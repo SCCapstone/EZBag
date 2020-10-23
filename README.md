@@ -17,8 +17,8 @@ A patron at a participating store can use the EZBag web app on their phone to sc
 * [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
 * [IntelliJ](https://www.jetbrains.com/idea/download/#section=windows)
 * [Tomcat 8](https://tomcat.apache.org/)
-* Download [windows service installer](https://tomcat.apache.org/download-80.cgi)
-* Run it and follow the prompts for installation
+    * Download [windows service installer](https://tomcat.apache.org/download-80.cgi)
+    * Run it and follow the prompts for installation
 * [MongoDB](https://www.mongodb.com/)
     * [Official Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
