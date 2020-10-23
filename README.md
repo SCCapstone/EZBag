@@ -1,6 +1,4 @@
 
-Blake
-Cody
 # EZBag Project
 
 
