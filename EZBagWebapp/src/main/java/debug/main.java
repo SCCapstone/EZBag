@@ -80,7 +80,6 @@ public class main {
 //        String resp4 = DatabaseService.insertCustomerEvent(customerScannedItemEventObject);
 //        System.out.println(resp4);
 
-
 //        // TODO insert customer added item to cart
 //        Document customerAddedItemToCartEventObject = new Document("time", System.currentTimeMillis())
 //                .append("session", "192948261782944030289273483")
