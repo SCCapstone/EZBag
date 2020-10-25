@@ -1,0 +1,19 @@
+{
+    "barcode": "9780061241895",
+    "barcodeType": "ean13",
+    "name": "Influence, The Psychology of Persuasion",
+    "price": 10.99,
+    "description": "National Best Seller. By Robert B. Cialdini, PH.D.",
+    "businessID": "1"
+}
+
+{
+    "barcode": "9781401953119",
+    "barcodeType": "ean13",
+    "name": "Becoming Supernatural, How Common People Are Doing The Uncommon",
+    "price": 8.99,
+    "description": "By Dr. Joe Dispenza",
+    "businessID": "1"
+}
+
+
