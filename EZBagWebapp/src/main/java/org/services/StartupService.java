@@ -13,6 +13,7 @@ import java.util.Properties;
 @WebListener
 public class StartupService implements ServletContextListener {
     public static String propertiesFile = "/usr/local/opt/EZBag/EZBag.properties";
+    public static String mediaProperties = "/usr/local/opt/EZBag/emailAndSMS.properties";
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -28,12 +29,16 @@ public class StartupService implements ServletContextListener {
     public static void startup()
     {
         long clock = System.currentTimeMillis();
-        System.out.println("[Startup] Loading properties file");
+        System.out.println("[Startup] Loading properties files");
         Properties prop = Utils.getPropertiesFile(propertiesFile);
+        Properties mediaProp = Utils.getPropertiesFile(mediaProperties);
         System.out.println("[Startup] Connecting to database");
         MongoDB mongo = new MongoDB(prop);
         DatabaseService.database = mongo;
         ReceiptService.database = mongo;
+        System.out.println("[Startup] Initializing media services");
+        EmailService.init(mediaProp);
+        SMSService.init(mediaProp);
         System.out.println("[Startup] Server started successfully in " + (System.currentTimeMillis() - clock) + "ms");
     }
 }

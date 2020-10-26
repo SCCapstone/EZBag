@@ -6,7 +6,6 @@ import de.vandermeer.asciithemes.a7.A7_Grids;
 import de.vandermeer.asciithemes.a8.A8_Grids;
 import de.vandermeer.asciithemes.u8.U8_Grids;
 import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
-import javafx.beans.binding.IntegerBinding;
 import org.services.DatabaseService;
 
 import com.google.gson.JsonObject;

@@ -52,10 +52,13 @@ public class MongoDB {
         MongoDatabase aDatabase = mongo.getDatabase(databaseName);
         this.database = aDatabase;
         System.out.print(" done\n");
-        System.out.print("[MongoDB] Fetching collections...");
+        System.out.print("[MongoDB] Fetching product collection...");
         collectionsMap.put(productCollectionName, database.getCollection(productCollectionName));
+        System.out.print("[MongoDB] Fetching info collection...");
         collectionsMap.put(infoCollectionName, database.getCollection(infoCollectionName));
+        System.out.print("[MongoDB] Fetching event collection...");
         collectionsMap.put(eventsCollectionName, database.getCollection(eventsCollectionName));
+        System.out.print("[MongoDB] Fetching checkout collection...");
         collectionsMap.put(checkoutCartCollectionName, database.getCollection(checkoutCartCollectionName));
         System.out.print("[MongoDB] initialization done\n");
     }
