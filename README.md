@@ -30,7 +30,7 @@ A patron at a participating store can use the EZBag web app on their phone to sc
 
 - Download this repository
 ```
-git clone https://github.com/SCCapstone/m3-blakete.git
+git clone https://github.com/SCCapstone/EZBag.git
 ```
 - Open the EZBagWebapp project in IntelliJ
     - The Maven plugin built into IntelliJ will setup the project and all of it dependencies for you
