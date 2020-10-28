@@ -33,7 +33,7 @@ A patron at a participating store can use the EZBag web app on their phone to sc
 git clone https://github.com/SCCapstone/EZBag.git
 ```
 - Open the EZBagWebapp project in IntelliJ
-    - The Maven plugin built into IntelliJ will setup the project and all of it dependencies for you
+    - The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies for you
 
 
 ## Running
