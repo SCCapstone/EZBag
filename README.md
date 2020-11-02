@@ -86,7 +86,7 @@ TODO: Jersey Test Framework
 ## Running Tests
 
 
-ExplainWhen done, an explanation of  how to run the automated tests will be here.
+TODO: Explain how to run the automated tests will be here.
 
 
 
