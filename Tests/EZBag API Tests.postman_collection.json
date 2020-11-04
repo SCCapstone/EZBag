@@ -1,0 +1,242 @@
+{
+	"info": {
+		"_postman_id": "97da5da8-df7a-4547-9010-3e3f19f7c204",
+		"name": "EZBag API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Product Insert",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"barcode\": \"9780061241895\",\n    \"barcodeType\": \"ean13\",\n    \"name\": \"Influence, The Psychology of Persuasion\",\n    \"price\": 10.99,\n    \"description\": \"National Best Seller. By Robert B. Cialdini, PH.D.\",\n    \"businessID\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/EZBagWebapp/webapi/product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"EZBagWebapp",
+						"webapi",
+						"product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Product Lookup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"barcode\": \"9781401953119\",\n    \"barcodeType\": \"ean13\", \n    \"businessID\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/EZBagWebapp/webapi/lookup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"EZBagWebapp",
+						"webapi",
+						"lookup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Checkout Cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"barcodes\": [\"12345678\", \"1111111111111\"], \n    \"barcodeTypes\": [\"ean8\", \"ean13\"],\n    \"quantities\": [1, 1],\n    \"session\": \"123234667779493202736282\",\n    \"businessID\": \"1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/EZBagWebapp/webapi/cart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"EZBagWebapp",
+						"webapi",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Event",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\": \"customerScannedItem\", \n    \"barcode\": \"670433093101\", \n    \"session\": \"123234667779493202736283\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/EZBagWebapp/webapi/event",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"EZBagWebapp",
+						"webapi",
+						"event"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Customer Info",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"email\": \"blakeedwards823@gmail.com\", \"phone\": \"8603337654\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/EZBagWebapp/webapi/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"EZBagWebapp",
+						"webapi",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stripe Secret",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "sk_test_4eC39HqLyjWDarjtT1zdp7dc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "amount",
+							"value": "1099",
+							"type": "text"
+						},
+						{
+							"key": "currency",
+							"value": "usd",
+							"type": "text"
+						},
+						{
+							"key": "metadata[integration_check]",
+							"value": "accept_a_payment",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://api.stripe.com/v1/payment_intents",
+					"protocol": "https",
+					"host": [
+						"api",
+						"stripe",
+						"com"
+					],
+					"path": [
+						"v1",
+						"payment_intents"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Checkout Pay",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "Hello world"
+				},
+				"url": {
+					"raw": "http://localhost:8080/CheckoutApp/webapi/pay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"CheckoutApp",
+						"webapi",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
