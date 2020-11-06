@@ -8,18 +8,19 @@
       </div>
     </v-app-bar>
     <v-main>
-
+      <Products />
     </v-main>
   </v-app>
 </template>
 
 <script>
-
+import Products from './components/checkout/Products'
 
 export default {
   name: 'App',
 
   components: {
+    Products
   },
 
   data: () => ({
