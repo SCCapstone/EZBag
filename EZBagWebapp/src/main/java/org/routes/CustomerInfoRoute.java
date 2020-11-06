@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
 import org.services.DatabaseService;
+import org.services.SMSService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +37,9 @@ public class CustomerInfoRoute {
             }
             if (payloadObject.has("phone"))
             {
-                insertDoc.append("phone", payloadObject.get("phone").getAsString());
+                String number = payloadObject.get("phone").getAsString();
+                insertDoc.append("phone", number);
+                SMSService.sendSMS(number, "Your transaction is complete!");
             }
             insertDoc.append("time", System.currentTimeMillis());
             System.out.println(insertDoc.toString());

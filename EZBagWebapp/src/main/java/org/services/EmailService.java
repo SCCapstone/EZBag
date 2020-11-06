@@ -9,6 +9,7 @@ public class EmailService {
 
     public static String from = "";
     public static String password = "";
+    public static boolean didInit = false;
 
     public static void init(Properties properties)
     {
@@ -16,12 +17,17 @@ public class EmailService {
         from = properties.getProperty("email");
         password = properties.getProperty("emailPassword");
         System.out.println("[EmailService] Done");
+        didInit = true;
     }
 
     public static void sendEmail(String to, String subject, String messageText) {
         System.out.println("Sending an email to: " + to);
         System.out.println("\tSubject: " + subject);
         System.out.println("\tText: " + messageText);
+        if(!didInit){
+            System.out.println("[EmailService] Warning, email service has not been initialized. Email not sent");
+            return;
+        }
         String host = "smtp.gmail.com";
         //*
         // Get system properties

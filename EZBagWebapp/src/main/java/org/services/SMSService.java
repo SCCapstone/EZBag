@@ -9,6 +9,7 @@ public class SMSService {
     public static String OUT_PHONE_NUMBER = "";
     public static String ACCOUNT_SID = "";
     public static String AUTH_TOKEN = "";
+    public static boolean didInit = false;
 
     public static void init(Properties properties)
     {
@@ -19,12 +20,17 @@ public class SMSService {
         System.out.println("[SMSService] Initializing Twilio");
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         System.out.println("[SMSService] Done");
+        didInit = true;
     }
 
     public static void sendSMS(String phoneNumber, String message)
     {
         System.out.println("Sending a message to: " + phoneNumber);
         System.out.println("\t" + message);
+        if(!didInit) {
+            System.out.println("[SMSService] Warning, Twilio has not been initialized. Message not sent");
+            return;
+        }
         //*
         Message.creator(
                 new com.twilio.type.PhoneNumber("+1" + phoneNumber),
