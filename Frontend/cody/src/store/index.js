@@ -2,7 +2,7 @@
 
 import Vuex from 'vuex';
 import Vue from 'vue';
-import products from './modules/products';
+import products from './modules/cart';
 
 
 // Load Vuex

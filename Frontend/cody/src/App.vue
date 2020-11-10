@@ -8,19 +8,19 @@
       </div>
     </v-app-bar>
     <v-main>
-      <Products />
+      <Cart />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Products from './components/checkout/Products'
+import Cart from './components/checkout/Cart'
 
 export default {
   name: 'App',
 
   components: {
-    Products
+    Cart
   },
 
   data: () => ({
