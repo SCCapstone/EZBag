@@ -2,7 +2,7 @@
 
 import Vuex from 'vuex';
 import Vue from 'vue';
-import products from './modules/cart';
+import cart from './modules/cart';
 
 
 // Load Vuex
@@ -11,6 +11,6 @@ Vue.use(Vuex);
 // Create store 
 export default new Vuex.Store({
   modules: {
-    products
+    cart
   }  
 });
