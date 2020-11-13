@@ -1,30 +1,13 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <p>EZBag</p>
-
-        <v-spacer></v-spacer>
-      </div>
+      <v-tabs fixed-tabs>
+        <v-tab to="/">Home</v-tab>
+        <v-tab to="/checkout">Checkout</v-tab>
+      </v-tabs>
     </v-app-bar>
-    <v-main>
-      <Cart />
-    </v-main>
+    <v-content>
+      <router-view/>
+    </v-content>
   </v-app>
 </template>
-
-<script>
-import Cart from './components/checkout/Cart'
-
-export default {
-  name: 'App',
-
-  components: {
-    Cart
-  },
-
-  data: () => ({
-    //
-  }),
-};
-</script>
