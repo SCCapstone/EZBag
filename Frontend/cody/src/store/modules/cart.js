@@ -87,10 +87,11 @@ const mutations = {
 
 // returns getters and setters for the given object
 function getProductFromCart(state, barcode){
-  const ret = state.cart.find(product => product.barcode == barcode);
-  console.log('>>> Searching for product in cart by barcode:')
-  console.log(ret);
-  return ret;
+  // const ret = state.cart.find(product => product.barcode == barcode);
+  // console.log('>>> Searching for product in cart by barcode:')
+  // console.log(ret);
+  // return ret
+  return state.cart.find(product => product.barcode == barcode);
 }
 
 export default {
