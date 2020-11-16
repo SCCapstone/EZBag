@@ -1,4 +1,5 @@
 //import axios from 'axios';
+// this is a vuex state module, it is called by store/index.js 
 
 //TODO: remove default products when no longer needed for debug
 const state = {
@@ -26,49 +27,71 @@ const getters = {
   getCart: (state) => state.cart
 };
 
-// actions send events to backend, then call their respective mutations for managing client's state 
+
+// https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
-  //TODO: write function to add product and send event to backend
+  //TODO: send event to backend
+  async addProduct({ commit }, {barcode, name, price, description, businessID}) {
+    commit('addProduct', {barcode:barcode, name:name, price:price,
+      description:description, businessID:businessID, quantity:1})
+  },
 
   // send product-remove-event to backend and call corresponding mutation
-  async deleteProduct({ commit }, barcode) {
+  async removeProduct({ commit }, barcode) {
     //TODO: send product removal event to backend
     commit('removeProduct', barcode)
   },
 
-  // send product-change-event to backend and call corresponding mutation
-  // change the quantity of a product by its barcode
-  // if (changeType ==="set") then "amount" will become the new product.quantity
-  // if (changeType ==="difference") then "amount" will be added to product.quantity 
-  async changeProductQuantity({ commit }, {barcode, changeType, amount}) {
+  // send product-quantity-change-event to backend and call corresponding mutation
+  // to set the product quantity to the given amount
+  async setProductQuantity({ commit }, {barcode, amount}) {
     //TODO: send product-quantity-change event to backend
-    if(changeType === 'set'){
-      commit('setProductQuantity', {barcode:barcode, amount:amount})
-    }
-    else if (changeType === 'difference'){
-      const newQuantity = state.cart.find(product => product.barcode == barcode).quantity + amount
-      commit('setProductQuantity', {barcode:barcode, amount:newQuantity})
-    }
-    else{
-      console.log('changeProductQuantity Error: "changeType" takes on only values of "set" and "difference"')
-    }
+    commit('setProductQuantity', {barcode:barcode, amount:amount})
+  },
+
+  // send product-qunatity-adjust-event to backend and call corresponding mutation
+  // to add the given amount to the product quantity
+  async adjustProductQuantity({ commit }, {barcode, amount}) {
+    //TODO: send product-qunatity-adjust-event to backend
+    commit('changeProductQuantity', {barcode:barcode, amount:amount})
+
   }
 };
 
-// mutations modify client state and should only be called by actions 
+
+// https://vuex.vuejs.org/guide/mutations.html#mutations-must-be-synchronous
+// mutations are synchronous functions that modify client state and should only
+// be called by the above actions 
 const mutations = {
-  //addProduct: (state, product) => (state.products += product)
-  //newProduct:
+  // add product to cart
+  //TODO: check if item exists before attempting to add product -
+  //      increment quantity if already in cart
+  addProduct:(state, product) => state.cart.push(product),
 
   // remove product from cart
   removeProduct:(state, barcode) => 
     state.cart = state.cart.filter(product => product.barcode !== barcode),
 
-  // change quantity of product in cart
-  setProductQuantity(state, {barcode, amount}) {
-    state.cart.find(product => product.barcode == barcode).quantity = amount
-    }
+  // set quantity of product in cart to the provided amount
+  //TODO: check if item exists before attempting to change quantity
+  setProductQuantity:(state, {barcode, amount}) =>
+    getProductFromCart(state, barcode).quantity = amount,
+  
+  // add the provided amount to the product in the cart
+  //TODO: check if item exists before attempting to change quantity
+  adjustProductQuantity:(state, {barcode, amount}) =>
+    getProductFromCart(state, barcode).quantity += amount,
   };
+
+// helper functions only to be called from within this module
+
+// returns getters and setters for the given object
+function getProductFromCart(state, barcode){
+  const ret = state.cart.find(product => product.barcode == barcode);
+  console.log('>>> Searching for product in cart by barcode:')
+  console.log(ret);
+  return ret;
+}
 
 export default {
   state,
