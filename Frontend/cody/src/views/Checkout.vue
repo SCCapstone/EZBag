@@ -3,6 +3,7 @@
 </template>
 
 <script>
+// @ is an alias to /src
 import Cart from '@/components/checkout/Cart'
 
 export default {
