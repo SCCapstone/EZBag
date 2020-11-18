@@ -53,7 +53,7 @@ const actions = {
   // to add the given amount to the product quantity
   async adjustProductQuantity({ commit }, {barcode, amount}) {
     //TODO: send product-qunatity-adjust-event to backend
-    commit('changeProductQuantity', {barcode:barcode, amount:amount})
+    commit('adjustProductQuantity', {barcode:barcode, amount:amount})
 
   }
 };
