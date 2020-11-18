@@ -66,22 +66,27 @@ const mutations = {
   // add product to cart
   //TODO: check if item exists before attempting to add product -
   //      increment quantity if already in cart
-  addProduct:(state, product) => state.cart.push(product),
+  addProduct (state, product) {
+    state.cart.push(product)
+  },
 
   // remove product from cart
-  removeProduct:(state, barcode) => 
-    state.cart = state.cart.filter(product => product.barcode !== barcode),
+  removeProduct (state, barcode) {
+    state.cart = state.cart.filter(product => product.barcode !== barcode)
+  },
 
   // set quantity of product in cart to the provided amount
   //TODO: check if item exists before attempting to change quantity
-  setProductQuantity:(state, {barcode, amount}) =>
-    getProductFromCart(state, barcode).quantity = amount,
+  setProductQuantity (state, {barcode, amount}) {
+    getProductFromCart(state, barcode).quantity = amount
+  },
   
   // add the provided amount to the product in the cart
   //TODO: check if item exists before attempting to change quantity
-  adjustProductQuantity:(state, {barcode, amount}) =>
-    getProductFromCart(state, barcode).quantity += amount,
-  };
+  adjustProductQuantity (state, {barcode, amount}) {
+    getProductFromCart(state, barcode).quantity += amount
+  }
+};
 
 // helper functions only to be called from within this module
 
