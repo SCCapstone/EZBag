@@ -37,7 +37,7 @@ const actions = {
   },
 
   // send product-remove-event to backend and call corresponding mutation
-  async removeProduct({ commit }, barcode) {
+  async removeProduct({ commit }, {barcode}) {
     //TODO: send product removal event to backend
     commit('removeProduct', barcode)
   },
