@@ -25,7 +25,7 @@ const state = {
 
 const getters = {
   getCart: (state) => state.cart,
-  getCartTotal: (state) => state.cart.reduce((acc, val) => acc + val.price, 0)
+  getCartTotal: (state) => state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)
 };
 
 
