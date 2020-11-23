@@ -1,5 +1,6 @@
 // setup local storage object
 localStorage = window.localStorage
+var businessID = "1"
 
 
 console.log("[INFO] Loading Barcode Scanner...")
@@ -25,7 +26,7 @@ ScanditSDK.configure(key, {
             } else {
                 currScannedBarcode = barcode;
                 console.log("[INFO] Scanned barcode and performing lookup")
-                mockFunc(barcode, barcodeType);
+                productLookup(barcode, barcodeType, getBusinessID());
             }
         });
 });
@@ -104,20 +105,37 @@ minusButton.onclick = function(){
     }
 }
 
+var productLookup = function(barcode, barcodeType, businessID) {
+    queryObj = {
+                "barcode":barcode,
+                "barcodeType":barcodeType,
+                "businessID":businessID
+                }
+    var resp = null;
+    console.log(queryObj)
+    var aUrl = "/EZBagWebapp/webapi/lookup";
+    var xhr = $.ajax({
+        type: "POST",
+        data: JSON.stringify(queryObj),
+        location: "",
+        url: aUrl,
+        success: function(output, status) {
+            resp = JSON.parse(output)
+            console.log(output)
+            if (resp.status == "failure") {
+                alert("product lookup failed")
+                currScannedBarcode = null
+            } else {
+                currScannedItem = resp
+                displayItem(currScannedItem);
+            }
+        },
+        error: function(output) {
+            alert("Error upon lookup")
+        }
+    });
+  };
 
-function mockFunc(barcode, barcodeType) {
-    var milliseconds = 500;
-    console.log("[INFO] Waiting "+milliseconds+" milliseconds")
-    setTimeout(function(){ mockProductLookup(barcode, barcodeType); }, milliseconds);
-}
-function mockProductLookup(barcode, barcodeType) {
-    // todo: api lookup of product here
-    console.log("[INFO] /lookup of "+barcode+", "+barcodeType)
-    var testProduct = '{ "_id" : { "$oid" : "5f69529fda276d39ff5371d5" }, "barcode" : "9780061241895", "barcodeType" : "ean13", "name" : "Water", "price" : 0.99, "description" : "Yes, you have to pay for this basic necessity.", "businessID" : "1", "time" : { "$numberLong" : "1600737951212" } }';
-    var respProduct = JSON.parse(testProduct);
-    currScannedItem = respProduct
-    displayItem(currScannedItem);
-}
 // expects valid javascript product object
 function displayItem(item)
 {

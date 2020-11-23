@@ -2,6 +2,7 @@
     <head>
         <script src="https://cdn.jsdelivr.net/npm/scandit-sdk@5.x"></script>
         <script src="https://kit.fontawesome.com/8b57238d0d.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="css/scanner.css">
     </head>
     <body>

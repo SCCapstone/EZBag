@@ -29,7 +29,6 @@ public class CartRoute {
                 && payloadObject.has("businessID")
                 && payloadObject.has("session"))
         {
-
             JsonArray barcodes = payloadObject.get("barcodes").getAsJsonArray();
             List<String> codes = new ArrayList<String>();
             for (int i=0; i<barcodes.size(); i++) {
@@ -45,6 +44,7 @@ public class CartRoute {
             for (int i=0; i<productQuantities.size(); i++) {
                 quantities.add(productQuantities.get(i).getAsInt());
             }
+            // TODO: check the product exists in database before checking the price of it
             // TODO: calculate subtotal based on product prices
             Double subtotal = 10.99;
             if (codes.size() == types.size() && types.size() == quantities.size()) {
