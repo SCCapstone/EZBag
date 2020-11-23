@@ -30,6 +30,6 @@ export default {
   components: {
     Product
   },
-  computed: mapGetters(['getCart'])
+  computed: mapGetters(['getCart', 'getCartTotal'])
 }
 </script>

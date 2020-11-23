@@ -7,7 +7,7 @@ const state = {
     {
       barcode: "9780061241895",
       name: "Influence, The Psychology of Persuasion",
-      price: "10.99",
+      price: 10.00,
       description: "National Best Seller. By Robert B. Cialdini, PH.D.",
       businessID: "1",
       quantity: 1,
@@ -15,7 +15,7 @@ const state = {
     {
       barcode:"abc",
       name:"chip",
-      price:"5.99",
+      price: 5.99,
       description:"good ole chips",
       businessID:"1",
       quantity: 2,
@@ -24,7 +24,8 @@ const state = {
 };
 
 const getters = {
-  getCart: (state) => state.cart
+  getCart: (state) => state.cart,
+  getCartTotal: (state) => state.cart.reduce((acc, val) => acc + val.price, 0)
 };
 
 
