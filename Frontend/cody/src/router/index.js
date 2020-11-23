@@ -1,15 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 // import Home from '../views/Home.vue'
-import Scanner from '../views/Scanner.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Scanner',
-    component: Scanner
+    name: 'Scan',
+    component: () => import('../views/Scan.vue')
   },
   {
     path: '/checkout',
