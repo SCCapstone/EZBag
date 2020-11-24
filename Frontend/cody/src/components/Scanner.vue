@@ -2,7 +2,7 @@
   <div>
     <div class="scanner" id="scandit-barcode-picker"></div>
     <ScanButtons 
-    v-bind:total=getCartTotal />
+      v-bind:total=getCartTotal />
   </div>
 </template>
 
