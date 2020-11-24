@@ -1,20 +1,14 @@
 <template>
-  <ItemCard />
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png">
+  </div>
 </template>
 
 <script>
 
-import ItemCard from '@/components/home/ItemCard'
-
-
 export default {
   name: 'Home',
   components: {
-    ItemCard
-  },
-
-  data: () => ({
-    //
-  }),
+  }
 }
 </script>
