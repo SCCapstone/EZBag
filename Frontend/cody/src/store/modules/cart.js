@@ -19,6 +19,38 @@ const state = {
       description:"good ole chips",
       businessID:"1",
       quantity: 2,
+    },
+    {
+      barcode:"abd",
+      name:"better chip",
+      price: 5.99,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abe",
+      name:"bestest chip",
+      price: 5.99,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abf",
+      name:"Better than bestest chip",
+      price: 5.99,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abg",
+      name:"Xtreme chip",
+      price: 5.99,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
     }
   ]
 };
