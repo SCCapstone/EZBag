@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container class="products">
+    <v-container class="CartList">
       <v-row
         v-for="product in getCart"
         v-bind:key="product.barcode"
@@ -30,6 +30,6 @@ export default {
   components: {
     Product
   },
-  computed: mapGetters(['getCart', 'getSubtotal'])
+  computed: mapGetters(['getCart'])
 }
 </script>
