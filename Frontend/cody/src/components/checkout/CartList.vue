@@ -26,7 +26,7 @@ import { mapGetters } from 'vuex';
 import Product from '@/components/checkout/Product'
 
 export default {
-  name:"Cart",
+  name:"CartList",
   components: {
     Product
   },

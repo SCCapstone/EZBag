@@ -1,16 +1,16 @@
 <template>
-  <Cart />
+  <CartList />
 </template>
 
 <script>
 // @ is an alias to /src
-import Cart from '@/components/checkout/Cart'
+import CartList from '@/components/checkout/CartList'
 
 export default {
-  name: 'Checkout',
+  name: 'Cart',
 
   components: {
-    Cart
+    CartList
   },
 
   data: () => ({

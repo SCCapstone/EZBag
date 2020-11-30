@@ -3,7 +3,7 @@
     <v-app-bar app color="primary" dark>
       <v-tabs fixed-tabs>
         <v-tab to="/">Home</v-tab>
-        <v-tab to="/checkout">Checkout</v-tab>
+        <v-tab to="/cart">Cart</v-tab>
       </v-tabs>
     </v-app-bar>
     <v-main>
