@@ -15,10 +15,10 @@
     <input class="inputForm" v-model="message" placeholder="email">
     <input class="inputForm" v-model="message" placeholder="phone number">
     <button
-      @touchstart="down"
-      @mousedown="down"
-      @touchend="up"
-      @mouseup="up"
+      @touchstart="mobiledown"
+      @mousedown="mousedown"
+      @touchend="mobileup"
+      @mouseup="mouseup"
       class="ovalButton button text"
       id="confirmButton">
           Confirm
@@ -27,18 +27,38 @@
 </template>
 
 <script>
+
+function clicked()
+{
+  console.log("Clicked")
+}
+
 // https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name:"Receipt",
   methods: {
-    down: function(e) {
-      console.log("Down")
+    mobiledown: function(e) {
       e.target.classList.add("buttonActive")
     },
-    up: function(e) {
-      console.log("up")
+    mobileup: function(e) {
+      clicked()
+      e.target.classList.remove("buttonActive")
+    },
+    mousedown: function(e) {
+      // Need to check if event was from mobile or desktop (event fires for mobile, but not correctly)
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        return // we are on mobile. return to avoid calling method twice
+      }
+      e.target.classList.add("buttonActive")
+    },
+    mouseup: function(e) {
+      // Need to check if event was from mobile or desktop (event fires for mobile, but not correctly)
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        return // we are on mobile. return to avoid calling method twice
+      }
+      clicked()
       e.target.classList.remove("buttonActive")
     },
     ...mapActions([])
