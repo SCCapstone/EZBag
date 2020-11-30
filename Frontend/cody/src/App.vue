@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app elevate-on-scroll color="primary" dark>
       <v-tabs fixed-tabs>
         <v-tab to="/">Home</v-tab>
         <v-tab to="/cart">Cart</v-tab>
