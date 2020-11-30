@@ -2,7 +2,7 @@
   <div>
     <div class="scanner" id="scandit-barcode-picker"></div>
     <ScanButtons 
-      v-bind:total=getCartTotal />
+      v-bind:total=getCartSubtotal />
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   components: {
     ScanButtons,
   },
-  computed: mapGetters(['getCartTotal'])
+  computed: mapGetters(['getCartSubtotal'])
 }
 </script>
 
