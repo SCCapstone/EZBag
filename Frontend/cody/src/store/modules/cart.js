@@ -8,6 +8,7 @@ const state = {
       barcode: "9780061241895",
       name: "Influence, The Psychology of Persuasion",
       price: 10.00,
+      tax: 0.60,
       description: "National Best Seller. By Robert B. Cialdini, PH.D.",
       businessID: "1",
       quantity: 1,
@@ -16,6 +17,43 @@ const state = {
       barcode:"abc",
       name:"chip",
       price: 5.99,
+      tax: 0.36,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abd",
+      name:"better chip",
+      price: 5.99,
+      tax: 0.36,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abe",
+      name:"bestest chip",
+      price: 5.99,
+      tax: 0.36,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abf",
+      name:"Better than bestest chip",
+      price: 5.99,
+      tax: 0.36,
+      description:"good ole chips",
+      businessID:"1",
+      quantity: 2,
+    },
+    {
+      barcode:"abg",
+      name:"Xtreme chip",
+      price: 5.99,
+      tax: 0.36,
       description:"good ole chips",
       businessID:"1",
       quantity: 2,
@@ -27,6 +65,8 @@ const state = {
 const getters = {
   getCart: (state) => state.cart,
   getCartTotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
+  getCartSubtotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
+  getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
 };
 
 
@@ -58,10 +98,6 @@ const actions = {
     commit('adjustProductQuantity', {barcode:barcode, amount:amount})
   }
 
-  async addOrUpdate({ commit }, {barcode, name, price, description, businessID}) {
-    commit('addOrUpdate', {barcode:barcode, name:name, price:price,
-      description:description, businessID:businessID, quantity:1})
-  },
 };
 
 
@@ -92,18 +128,6 @@ const mutations = {
   adjustProductQuantity (state, {barcode, amount}) {
     getProductFromCart(state, barcode).quantity += amount
   },
-
-  addOrUpdate (state, product) {
-    var prod = getProductFromCart(state, product.barcode);
-    if (prod == null) {
-      // add to cart
-      this.addProduct(state, product);
-      
-    } else {
-      // update 
-     console.log("update cart item");
-    }
-  }
 
 };
 

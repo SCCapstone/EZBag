@@ -5,6 +5,7 @@
       v-bind:total=getCartTotal />
     <div id="scannedProductDiv">
       <ScannedProduct 
+        v-show=False
         v-bind:barcode=product.barcode
         v-bind:name=product.name
         v-bind:price=product.price

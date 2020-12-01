@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container class="products">
+    <v-container class="CartList">
       <v-row
         v-for="product in getCart"
         v-bind:key="product.barcode"
@@ -26,10 +26,10 @@ import { mapGetters } from 'vuex';
 import Product from '@/components/checkout/Product'
 
 export default {
-  name:"Cart",
+  name:"CartList",
   components: {
     Product
   },
-  computed: mapGetters(['getCart', 'getCartTotal'])
+  computed: mapGetters(['getCart'])
 }
 </script>
