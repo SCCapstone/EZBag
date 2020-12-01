@@ -5,7 +5,7 @@
       Your cart number is:
     </div>
     <div class="centerText" id="cartNumber">
-      {{cartNum="#45"}}
+      <!-- {{cartNum="#45"}} --> 
     </div>
     <div class="horizontalBar"></div>
     <div class="centerText" id="headerText">

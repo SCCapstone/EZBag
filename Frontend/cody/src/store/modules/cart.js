@@ -20,12 +20,13 @@ const state = {
       businessID:"1",
       quantity: 2,
     }
-  ]
+  ],
+  
 };
 
 const getters = {
   getCart: (state) => state.cart,
-  getCartTotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100
+  getCartTotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
 };
 
 
@@ -55,8 +56,12 @@ const actions = {
   async adjustProductQuantity({ commit }, {barcode, amount}) {
     //TODO: send product-qunatity-adjust-event to backend
     commit('adjustProductQuantity', {barcode:barcode, amount:amount})
-
   }
+
+  async addOrUpdate({ commit }, {barcode, name, price, description, businessID}) {
+    commit('addOrUpdate', {barcode:barcode, name:name, price:price,
+      description:description, businessID:businessID, quantity:1})
+  },
 };
 
 
@@ -86,7 +91,20 @@ const mutations = {
   //TODO: check if item exists before attempting to change quantity
   adjustProductQuantity (state, {barcode, amount}) {
     getProductFromCart(state, barcode).quantity += amount
+  },
+
+  addOrUpdate (state, product) {
+    var prod = getProductFromCart(state, product.barcode);
+    if (prod == null) {
+      // add to cart
+      this.addProduct(state, product);
+      
+    } else {
+      // update 
+     console.log("update cart item");
+    }
   }
+
 };
 
 // helper functions only to be called from within this module
@@ -106,3 +124,4 @@ export default {
   actions,
   mutations
 }
+
