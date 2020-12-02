@@ -64,7 +64,6 @@ const state = {
 
 const getters = {
   getCart: (state) => state.cart,
-  getCartTotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
   getCartSubtotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
   getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
 };
@@ -74,6 +73,7 @@ const getters = {
 const actions = {
   //TODO: send event to backend
   async addProduct({ commit }, {barcode, name, price, description, businessID}) {
+    //TODO: issue #69 - handle adding duplicate products 
     commit('addProduct', {barcode:barcode, name:name, price:price,
       description:description, businessID:businessID, quantity:1})
   },
@@ -120,27 +120,16 @@ const mutations = {
   // set quantity of product in cart to the provided amount
   //TODO: check if item exists before attempting to change quantity
   setProductQuantity (state, {barcode, amount}) {
-    getProductFromCart(state, barcode).quantity = amount
+    state.cart.find(product => product.barcode == barcode).quantity = amount
   },
   
   // add the provided amount to the product in the cart
   //TODO: check if item exists before attempting to change quantity
   adjustProductQuantity (state, {barcode, amount}) {
-    getProductFromCart(state, barcode).quantity += amount
+    state.cart.find(product => product.barcode == barcode).quantity += amount
   },
 
 };
-
-// helper functions only to be called from within this module
-
-// returns getters and setters for the given object
-function getProductFromCart(state, barcode){
-  // const ret = state.cart.find(product => product.barcode == barcode);
-  // console.log('>>> Searching for product in cart by barcode:')
-  // console.log(ret);
-  // return ret
-  return state.cart.find(product => product.barcode == barcode);
-}
 
 export default {
   state,
