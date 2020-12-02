@@ -16,13 +16,14 @@ public class DatabaseService {
         String message = "Product was not found in the database";
         return Utils.generateResponse(false, message);
     }
-    public static String getProductPriceByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID) {
-        Double returnedPrice = 0.0;
-        returnedPrice = database.getProductPriceByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID);
-        if (returnedPrice == -1.0) {
-            return
-        }
-    }
+
+//    public static String getProductPriceByBarcodeBarcodeTypeBusinessID(String barcode, String barcodeType, businessID) {
+//        Double returnedPrice = 0.0;
+//        returnedPrice = database.getProductPriceByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID);
+//        if (returnedPrice == -1.0) {
+//            return
+//        }
+//    }
 
     public static String getByProductCode(String productCode)
     {
