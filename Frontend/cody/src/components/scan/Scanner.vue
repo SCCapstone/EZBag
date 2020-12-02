@@ -12,13 +12,8 @@
         @click=cancelScannedProduct
       >cancel</v-btn>
         <Product 
-        v-bind:barcode=scanned_product.barcode
-        v-bind:name=scanned_product.name
-        v-bind:price=scanned_product.price
-        v-bind:description=scanned_product.description
-        v-bind:businessID=scanned_product.businessID
-        v-bind:quantity=scanned_product.quantity
-        v-on:removed-product="hideAndResetScannedProductCard"
+        v-bind:barcode=scanned_product_barcode
+        v-on:removed-product="hideScannedProductCard"
         />
       </v-sheet>
     </v-bottom-sheet>
@@ -40,14 +35,7 @@ export default {
   data() {
     return {
       show_scanned_product: false, // for displaying scanned product card
-      scanned_product: {
-        barcode:null,
-        name:null,
-        price:null,
-        description:null,
-        businessID:null,
-        quantity:null
-      },
+      scanned_product_barcode: null,
       initial_product_quantity: null,
       scanned_product_loaded_from_cart: false,
     };
@@ -58,17 +46,16 @@ export default {
                     "addProduct"
                   ]),
     onScan(barcode) {
-      // get product from cart, if it is in cart
+      this.scanned_product_barcode = barcode
       var product = this.getCart.find(product => product.barcode == barcode)
       // if product is in cart
-      if(product!==undefined) {
+      if(product!==undefined)
         this.product_loaded_from_cart = true
-      }
-      else{
+      else {
         // TODO: product = result of query to backend for product (need to handle if no item found)
         // TODO: remove fake scanned product when above TODOs are completed
         product = {
-          barcode:"scanned",
+          barcode:barcode,
           name:"Totally loaded from the backend",
           price: 5.99,
           tax: 0.36,
@@ -83,8 +70,6 @@ export default {
                          businessID:product.businessID})
         this.product_loaded_from_cart = false
       }
-      // assert: product is in cart (either was already in cart, or was loaded from backend)
-      this.scanned_product = product
       // save the state of the scanned product before allowing user to make changes
       this.initial_product_quantity = product.quantity
       this.show_scanned_product = true
@@ -93,26 +78,18 @@ export default {
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
     // if the product was not originally from the cart, we should remove it from the cart
+    hideScannedProductCard() {
+      this.show_scanned_product = false
+    },
     cancelScannedProduct() {
+      this.hideScannedProductCard()
       if(this.product_loaded_from_cart === true) {
-        this.setProductQuantity({barcode:this.scanned_product.barcode,
-                                 quantity:this.initial_product_quantity})
+        this.setProductQuantity({barcode:this.scanned_product_barcode,
+                                 amount:this.initial_product_quantity})
       }
       else
-        this.removeProduct(this.scanned_product.barcode)
-      this.hideAndResetScannedProductCard()
-    },
-    hideAndResetScannedProductCard() {
-      this.show_scanned_product = false
-      this.initial_product_quantity = null
-      this.scanned_product_loaded_from_cart = false
-      this.scanned_product= {
-        barcode:null,
-        name:null,
-        price:null,
-        description:null,
-        businessID:null,
-        quantity:null
+      {
+        this.removeProduct({barcode:this.scanned_product_barcode}) 
       }
     }
   }

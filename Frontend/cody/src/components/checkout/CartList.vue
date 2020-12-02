@@ -6,14 +6,7 @@
         v-bind:key="product.barcode"
       >
         <v-col>
-          <Product 
-          v-bind:barcode=product.barcode
-          v-bind:name=product.name
-          v-bind:price=product.price
-          v-bind:description=product.description
-          v-bind:businessID=product.businessID
-          v-bind:quantity=product.quantity
-          />
+          <Product v-bind:barcode=product.barcode />
         </v-col>
       </v-row>
     </v-container>
