@@ -7,15 +7,29 @@
       v-model="show_scanned_product"
       inset
     >
-    <v-sheet class="text-center">
-      <v-btn
-        @click=cancelScannedProduct
-      >cancel</v-btn>
+    <v-sheet>
+      <v-card>
         <Product 
-        v-bind:barcode=scanned_product_barcode
+        v-bind:barcode="scanned_product_barcode"
+        v-bind:elevation="0"
         v-on:removed-product="hideScannedProductCard"
         />
-      </v-sheet>
+        <v-card-actions>
+          <v-row align="center" justify="center">
+            <v-col>
+              <v-btn @click="cancelScannedProduct" icon>
+                <v-icon>mdi-close-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn @click="hideScannedProductCard" icon>
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
+    </v-sheet>
     </v-bottom-sheet>
   </div>
 </template>
