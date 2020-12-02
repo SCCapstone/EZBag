@@ -8,6 +8,7 @@
       <v-btn 
         @click="removeProduct({barcode})"
         v-show="quantity === 1"
+        v-on:click="$emit('removed-product')"
         icon
       >
       <!-- Decrement product quantity - conditionally rendered on product.quantity-->
