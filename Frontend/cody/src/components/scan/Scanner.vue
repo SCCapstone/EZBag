@@ -38,6 +38,9 @@ import { mapGetters, mapActions} from 'vuex';
 import ScanButtons from '@/components/scan/ScanButtons'
 import Product from '@/components/checkout/Product'
 
+import jQuery from 'jquery'
+global.jQuery = jQuery
+
 export default {
   name: 'Scanner',
   components: {
@@ -56,7 +59,7 @@ export default {
   methods:{
     ...mapActions([ "removeProduct",
                     "setProductQuantity",
-                    "addProduct"
+                    "addProduct",
                   ]),
     onScan(barcode) {
       this.scanned_product_barcode = barcode
@@ -96,7 +99,7 @@ export default {
     },
     cancelScannedProduct() {
       this.hideScannedProductCard()
-      if(this.product_loaded_from_cart === true) {
+      if (this.product_loaded_from_cart === true) {
         this.setProductQuantity({barcode:this.scanned_product_barcode,
                                  amount:this.initial_product_quantity})
       }
@@ -104,6 +107,22 @@ export default {
       {
         this.removeProduct({barcode:this.scanned_product_barcode}) 
       }
+    },
+    getProduct(barcode, barcodeType, businessID) {
+      var data = {
+        "barcode": barcode,
+        "barcodeType": barcodeType, 
+        "businessID": businessID
+      };
+      data = JSON.stringify(data);
+      jQuery.post(
+        "http://localhost:8080/EZBagWebapp/webapi/lookup",
+        data,
+        function(data, status) {
+            console.log(data)
+            console.log(status)
+        }
+      );
     }
   }
 }

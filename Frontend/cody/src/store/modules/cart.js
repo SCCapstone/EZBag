@@ -1,6 +1,5 @@
 //import axios from 'axios';
 // this is a vuex state module, it is called by store/index.js 
-import $ from 'jquery'
 
 //TODO: remove default products when no longer needed for debug
 const state = {
@@ -97,11 +96,7 @@ const actions = {
   async adjustProductQuantity({ commit }, {barcode, amount}) {
     //TODO: send product-qunatity-adjust-event to backend
     commit('adjustProductQuantity', {barcode:barcode, amount:amount})
-  }
-
-  async getProduct({ commit }, {barcode, barcodeType, businessID}) {
-    commit('getProduct', {barcode:barcode, barcodeType:barcodeType, businessID:businessID})
-  }
+  },
 
 };
 
