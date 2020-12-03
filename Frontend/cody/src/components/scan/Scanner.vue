@@ -78,7 +78,6 @@ export default {
                   ]),
     onScan(scanData) {
       const barcode = scanData.codeResult.code;
-      const barcodeType = scanData.codeResult.format;
       if (this.show_scanned_product) {
         console.log("Product scanned but product card already showing!")
       } else {
