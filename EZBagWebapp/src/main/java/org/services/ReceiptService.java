@@ -1,15 +1,8 @@
 package org.services;
-import de.vandermeer.asciitable.AT_Row;
 import de.vandermeer.asciitable.AsciiTable;
 import de.vandermeer.asciithemes.TA_GridThemes;
-import de.vandermeer.asciithemes.a7.A7_Grids;
-import de.vandermeer.asciithemes.a8.A8_Grids;
-import de.vandermeer.asciithemes.u8.U8_Grids;
 import de.vandermeer.skb.interfaces.transformers.textformat.TextAlignment;
-import org.services.DatabaseService;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.database.MongoDB;
 import org.bson.Document;
 
@@ -25,10 +18,10 @@ public class ReceiptService {
     public static void addReceiptToQueue(Document cart) {
 
     }
-    public static List<Document> getCartProducts(List<String> barcodes, List<String> barcodeTypes, String businessID) {
+    public static List<Document> getCartProducts(List<String> barcodes, String businessID) {
         List<Document> cartProducts = new ArrayList<Document>();
         for (int i=0; i<barcodes.size(); i++) {
-            Document product = database.getProductByBarcodeBarcodeTypeBusinessID(barcodes.get(i), barcodeTypes.get(i), businessID);
+            Document product = database.getProductByBarcodeBusinessID(barcodes.get(i), businessID);
             if (product != null) {
                 cartProducts.add(new Document("name", product.getString("name"))
                         .append("price", product.getDouble("price")));
@@ -45,11 +38,10 @@ public class ReceiptService {
         String receipt = dateFormat.format(dateFromMillis)+"\n";
 
         List<String> barcodes = (List<String>) cartObject.get("barcodes");
-        List<String> barcodeTypes = (List<String>) cartObject.get("barcodeTypes");
         List<Integer> quantities = (List<Integer>) cartObject.get("quantities");
         String businessID = cartObject.getString("businessID");
         // get all names and prices of products from database
-        List<Document> cartProducts = getCartProducts(barcodes, barcodeTypes, businessID);
+        List<Document> cartProducts = getCartProducts(barcodes, businessID);
         // generate table
         AsciiTable at = new AsciiTable();
         at.addRule();

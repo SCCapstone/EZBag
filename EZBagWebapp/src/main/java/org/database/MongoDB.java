@@ -62,11 +62,10 @@ public class MongoDB {
         collectionsMap.put(checkoutCartCollectionName, database.getCollection(checkoutCartCollectionName));
         System.out.print("[MongoDB] initialization done\n");
     }
-    public Document getProductByBarcodeBarcodeTypeBusinessID(String barcode, String barcodeType, String businessID) {
+    public Document getProductByBarcodeBusinessID(String barcode, String businessID) {
         BasicDBObject query = new BasicDBObject();
         List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
         matchDoc.add(new BasicDBObject("barcode", barcode));
-        matchDoc.add(new BasicDBObject("barcodeType", barcodeType));
         matchDoc.add(new BasicDBObject("businessID", businessID));
         query.put("$and", matchDoc);
         Document respDoc = collectionsMap.get(productCollectionName).find(query).first();
@@ -124,8 +123,7 @@ public class MongoDB {
     }
     public Boolean insertProduct(Document newProduct) {
         // check if product already exists
-        Document resp = getProductByBarcodeBarcodeTypeBusinessID(newProduct.getString("barcode"),
-                newProduct.getString("barcodeType"),
+        Document resp = getProductByBarcodeBusinessID(newProduct.getString("barcode"),
                 newProduct.getString("businessID"));
         if (resp == null) {
             collectionsMap.get(productCollectionName).insertOne(newProduct);

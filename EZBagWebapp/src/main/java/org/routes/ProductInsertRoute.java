@@ -20,14 +20,16 @@ public class ProductInsertRoute {
                 && payloadObject.has("businessID")
                 && payloadObject.has("name")
                 && payloadObject.has("price")
+                && payloadObject.has("tax")
                 && payloadObject.has("description"))
         {
             insertDoc.append("barcode", payloadObject.get("barcode").getAsString())
                     .append("barcodeType", payloadObject.get("barcodeType").getAsString())
+                    .append("businessID", payloadObject.get("businessID").getAsString())
                     .append("name", payloadObject.get("name").getAsString())
                     .append("price", payloadObject.get("price").getAsDouble())
+                    .append("tax", payloadObject.get("tax").getAsDouble())
                     .append("description", payloadObject.get("description").getAsString())
-                    .append("businessID", payloadObject.get("businessID").getAsString())
                     .append("time", System.currentTimeMillis());
             return DatabaseService.insertProduct(insertDoc);
         } else
