@@ -61,35 +61,27 @@ export default {
                     "setProductQuantity",
                     "addProduct",
                   ]),
-    onScan(barcode) {
-      this.scanned_product_barcode = barcode
-      var product = this.getCart.find(product => product.barcode == barcode)
-      // if product is in cart
-      if(product!==undefined)
-        this.product_loaded_from_cart = true
-      else {
-        // TODO: product = result of query to backend for product (need to handle if no item found)
-        // TODO: remove fake scanned product when above TODOs are completed
-        product = {
-          barcode:barcode,
-          name:"Totally loaded from the backend",
-          price: 5.99,
-          tax: 0.36,
-          description:"We definitely didn't cheat",
-          businessID:"1",
-          quantity: 1,
+    onScan(barcode, barcodeType) {
+      if (this.show_scanned_product) {
+        console.log("Product scanned but product card already showing!")
+      } else {
+        this.scanned_product_barcode = barcode
+        var product = this.getCart.find(product => product.barcode == barcode)
+        // if product is in cart
+        if(product!==undefined) {
+          // product already in cart
+          this.product_loaded_from_cart = true
+          // save the state of the scanned product before allowing user to make changes
+          this.initial_product_quantity = product.quantity
+          this.show_scanned_product = true
+        } else {
+          // product not in cart
+          // TODO: get businessID from store
+          var businessID = "1";
+          this.getProduct(barcode, barcodeType, businessID);
         }
-        this.addProduct({barcode:product.barcode,
-                         name:product.name,
-                         price:product.price,
-                         description:product.description,
-                         businessID:product.businessID})
-        this.product_loaded_from_cart = false
+        // TODO: implement function to pause scanner while show_scanned_product = true
       }
-      // save the state of the scanned product before allowing user to make changes
-      this.initial_product_quantity = product.quantity
-      this.show_scanned_product = true
-      // TODO: implement function to pause scanner while show_scanned_product = true
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
@@ -114,16 +106,36 @@ export default {
         "barcodeType": barcodeType, 
         "businessID": businessID
       };
+      var ref = this
       data = JSON.stringify(data);
       jQuery.post(
-        "http://localhost:8080/EZBagWebapp/webapi/lookup",
-        data,
-        function(data, status) {
-            console.log(data)
-            console.log(status)
-        }
-      );
+          "http://localhost:8080/EZBagWebapp/webapi/lookup",
+          data,
+          function(data, status) {
+              console.log(data)
+              console.log("HTTP STATUS /webapi/lookup: "+status)
+              if (data.status !== "failure") {
+                ref.addProduct({barcode:data.barcode,
+                  name:data.name,
+                  price:data.price,
+                  description:data.description,
+                  businessID:data.businessID})
+                ref.product_loaded_from_cart = false
+              
+                // save the state of the scanned product before allowing user to make changes
+                ref.initial_product_quantity = data.quantity
+                ref.show_scanned_product = true
+              } else {
+                // TODO: elegantly display temporary poppup indicating product not found
+                alert("Scanned product not found, please try again!");
+                console.log("Scanned product not found, please try again!")
+              }
+              // TODO: handle case that data is not found response
+              
+          }
+        );
     }
+
   }
 }
 </script>

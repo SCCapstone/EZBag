@@ -1,16 +1,11 @@
 <template>
-    <div id="Scan-Buttons">
-        <div id="checkoutBtn" class='btn-bot-left'>
-            <div class="inner text scannerButtonText">
-                Checkout
-            </div>
-        </div>
-        <div class='btn-bot-right'>
-            <div class="inner text scannerButtonText" id="subtotalButton">
-                {{ total }}
-            </div>
-        </div>
-    </div>
+    <v-btn
+    x-large
+    fixed bottom
+    rounded
+    id="TotalButton"
+    :style="{left : '50%', transform:'translateX(-50%)'}"
+    >${{total}}</v-btn>   
 </template>
 
 <script>

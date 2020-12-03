@@ -1,5 +1,7 @@
 <template>
-  <Scanner />
+  <div>
+    <Scanner />
+  </div>
 </template>
 
 <script>

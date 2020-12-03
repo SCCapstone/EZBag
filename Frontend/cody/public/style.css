@@ -1,6 +1,6 @@
 
 .scanner {
-    height: 95vh; /* For 100% screen height */
+    height: 100vh; /* For 100% screen height */
     width:  100vw; /* For 100% screen width */
     margin: 0;
     display: none;
