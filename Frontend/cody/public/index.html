@@ -8,48 +8,12 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/scandit-sdk@5.x"></script>
-    
   </head>
   <body>
-    <div class="scanner" id="scandit-barcode-picker"></div>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
-
-  <script>
-    var currentlyScannedProduct = null;
-    const key = 'AeqPK1zfQ416FGqLkC6b80omKuPUM/SsDU/1Wu1agI3pNzFaUgWfkvwwZ3kQfYiVtktYMAF9o1/NfalNn1OEWg14uc/+eBkbcVfZ3HFsOxeUQIyoBno5WxFYb6w+IN48iCTo3bcQNtnyPCIrofCbbBNrqbh4Q/N1f8GkFfVYJaGxVc5ZpIVQ+GmeuG17svEMCEcQzWcJM1cZB4T4DWKrYOi+QI86VyUEOiFeyu0xsKqxNansj3lg2CTcn4v7bsRPBI/mYr1JSG3lBm5ZZCDfpJXEfPOgVOCLkILDIyCSfX3iARnCmMY3S/iS1DhT6/GGDdqovkEKzsHQXrGXffO9UTytU5DHHnmXvuYUzcD3PdPLwvVILH06M0jmlsIxPWnwq7AZEjSA2iq9q7SbwuGSzJ3iqoSoIWxZ4iGBsfso5Pm0K1jhENDRlB1IUP9OQmYPW0WgNp67DQC+xIzizJJJ+QaQHPi8TSIg4hWvRIeN4FNpjxmrGFmp79hllsrCuat2PaI6LZfAyApc/+S3aJIe+wB7TDzgY+S2Tyk65bOzOkHo4sCTIfa3XilFaCj3XSoMvwNb9An3G2/guYHv1h0ClN+4KWL+yNaoNpEMih8d/oiKgy2r6iS6R5yX9/s1YkJksDY+aQTazx17idipfH3LDFANaExsx+pqaw/T/o0ndMAt+4E2xEVuVM52WWZd9iEl50WWhDte2U2G4W4KPRpKmlYtcot793PkDTLnCNtwOzBjCdh5UJHf+XuVT9Eh2TIES2p1WXWt0Fj5jlC8FLhA1iOpecV0L7o2SQqWjmhlS5V3L1CDZZ3HfKIxUA==';
-    ScanditSDK.configure(key, {
-        engineLocation: "https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/",
-        })
-        .then(() => {
-            return ScanditSDK.BarcodePicker.create(document.getElementById("scandit-barcode-picker"), {
-                playSoundOnScan: false,
-                vibrateOnScan: false,
-                videoFit: ScanditSDK.BarcodePicker.ObjectFit.COVER,
-                scanSettings: new ScanditSDK.ScanSettings({ enabledSymbologies: ["ean8", "ean13", "upca", "upce"] }),
-            });
-        }).then((barcodePicker) => {
-            // barcodePicker is ready here, show a message every time a barcode is scanned
-            barcodePicker.on("scan", (scanResult) => {
-                var barcode = scanResult.barcodes[0].data.toString(10)
-                var barcodeType = scanResult.barcodes[0].symbology
-                if (barcode != currentlyScannedProduct) {
-                  currentlyScannedProduct = barcode
-                  console.log("[INFO] Scanned: "+barcode+", "+barcodeType)
-                  // TODO: lookup product info
-                  // TODO: display product card
-                  
-                } else {
-                  console.log("Already scanned, waiting for new product")
-                }
-            });
-    });
-  </script>
-
 </html>
