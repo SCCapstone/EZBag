@@ -61,7 +61,7 @@ export default {
                     "setProductQuantity",
                     "addProduct",
                   ]),
-    onScan(barcode, barcodeType) {
+    onScan(barcode) {
       if (this.show_scanned_product) {
         console.log("Product scanned but product card already showing!")
       } else {
@@ -78,7 +78,7 @@ export default {
           // product not in cart
           // TODO: get businessID from store
           var businessID = "1";
-          this.getProduct(barcode, barcodeType, businessID);
+          this.getProduct(barcode, businessID);
         }
         // TODO: implement function to pause scanner while show_scanned_product = true
       }
@@ -100,10 +100,9 @@ export default {
         this.removeProduct({barcode:this.scanned_product_barcode}) 
       }
     },
-    getProduct(barcode, barcodeType, businessID) {
+    getProduct(barcode, businessID) {
       var data = {
         "barcode": barcode,
-        "barcodeType": barcodeType, 
         "businessID": businessID
       };
       var ref = this
