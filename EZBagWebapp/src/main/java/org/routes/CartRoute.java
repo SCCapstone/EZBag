@@ -24,7 +24,6 @@ public class CartRoute {
         Document insertDoc = new Document();
         // TODO check if payloadObject's key-values are the right type
         if (payloadObject.has("barcodes")
-                && payloadObject.has("barcodeTypes")
                 && payloadObject.has("quantities")
                 && payloadObject.has("businessID")
                 && payloadObject.has("session"))
@@ -34,11 +33,6 @@ public class CartRoute {
             for (int i=0; i<barcodes.size(); i++) {
                 codes.add(barcodes.get(i).getAsString());
             }
-            JsonArray barcodeTypes = payloadObject.get("barcodeTypes").getAsJsonArray();
-            List<String> types = new ArrayList<String>();
-            for (int i=0; i<barcodeTypes.size(); i++) {
-                types.add(barcodeTypes.get(i).getAsString());
-            }
             JsonArray productQuantities = payloadObject.get("quantities").getAsJsonArray();
             List<Integer> quantities = new ArrayList<Integer>();
             for (int i=0; i<productQuantities.size(); i++) {
@@ -47,9 +41,8 @@ public class CartRoute {
             // TODO: check the product exists in database before checking the price of it
             // TODO: calculate subtotal based on product prices
             Double subtotal = 10.99;
-            if (codes.size() == types.size() && types.size() == quantities.size()) {
+            if (codes.size() == quantities.size()) {
                 insertDoc.append("barcodes", codes);
-                insertDoc.append("barcodeTypes", types);
                 insertDoc.append("quantities", quantities);
                 insertDoc.append("businessID", payloadObject.get("businessID").getAsString());
                 insertDoc.append("subtotal", subtotal);

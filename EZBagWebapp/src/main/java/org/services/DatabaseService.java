@@ -1,15 +1,13 @@
 package org.services;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import org.database.MongoDB;
 import org.bson.Document;
 
 public class DatabaseService {
     public static MongoDB database = null;
     // TODO change to support "ean8", "ean13", "upca", "upce"
-    public static String getProductByBarcodeBarcodeTypeBusinessID(String barcode, String barcodeType, String businessID) {
-        Document returnedProduct = database.getProductByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID);
+    public static String getProductByBarcodeBusinessID(String barcode, String businessID) {
+        Document returnedProduct = database.getProductByBarcodeBusinessID(barcode, businessID);
         if (returnedProduct != null) {
             return returnedProduct.toJson();
         }
@@ -17,6 +15,7 @@ public class DatabaseService {
         return Utils.generateResponse(false, message);
     }
 
+    // TODO: method for getting product price by barcode type and business ID
 //    public static String getProductPriceByBarcodeBarcodeTypeBusinessID(String barcode, String barcodeType, businessID) {
 //        Double returnedPrice = 0.0;
 //        returnedPrice = database.getProductPriceByBarcodeBarcodeTypeBusinessID(barcode, barcodeType, businessID);
