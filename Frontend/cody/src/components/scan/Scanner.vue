@@ -4,7 +4,7 @@
       :onDetected="onScan"
       :readerSize="reader_size" 
       :aspectRatio="aspect_ratio"
-      :readerTypes="['upc_e_reader']"
+      :readerTypes="['ean_reader','ean_8_reader', 'upc_reader', 'upc_e_reader']"
     ></v-quagga>
     <ScanButtons 
       v-bind:total=getCartSubtotal />
