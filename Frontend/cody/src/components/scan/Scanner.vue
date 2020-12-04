@@ -1,11 +1,5 @@
 <template>
   <div>
-    <v-quagga
-      :onDetected="onScan"
-      :readerSize="reader_size" 
-      :aspectRatio="aspect_ratio"
-      :readerTypes="['ean_reader','ean_8_reader', 'upc_reader', 'upc_e_reader']"
-    ></v-quagga>
     <ScanButtons 
       v-bind:total=getCartSubtotal />
     <v-bottom-sheet
@@ -60,15 +54,6 @@ export default {
       scanned_product_barcode: null,
       initial_product_quantity: null,
       scanned_product_loaded_from_cart: false,
-      reader_size: {
-        width: 640,
-        height: 200,
-      },
-      aspect_ratio: {
-        min: 1,
-        max: 2,
-      },
-      detecteds: [],
     };
   },
   methods:{
@@ -76,8 +61,7 @@ export default {
                     "setProductQuantity",
                     "addProduct",
                   ]),
-    onScan(scanData) {
-      const barcode = scanData.codeResult.code;
+    onScan(barcode) {
       if (this.show_scanned_product) {
         console.log("Product scanned but product card already showing!")
       } else {
