@@ -59,22 +59,23 @@ const state = {
       quantity: 2,
     }
   ],
-  
+  businessID: 1
 };
 
 const getters = {
   getCart: (state) => state.cart,
   getCartSubtotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
   getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
+  getCartBusinessID: (state) => state.businessID,
 };
 
 
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
   //TODO: send event to backend
-  async addProduct({ commit }, {barcode, name, price, description, businessID}) {
+  async addProduct({ commit }, {barcode, name, tax, price, description, businessID}) {
     //TODO: issue #69 - handle adding duplicate products 
-    commit('addProduct', {barcode:barcode, name:name, price:price,
+    commit('addProduct', {barcode:barcode, name:name, price:price, tax:tax,
       description:description, businessID:businessID, quantity:1})
   },
 

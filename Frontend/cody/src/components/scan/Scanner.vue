@@ -56,7 +56,7 @@ export default {
     ScanButtons,
     Product
   },
-  computed: mapGetters(['getCartSubtotal', 'getCart']),
+  computed: mapGetters(['getCartSubtotal', 'getCart', 'getCartBusinessID']),
   data() {
     return {
       show_scanned_product: false, // for displaying scanned product card
@@ -101,8 +101,11 @@ export default {
         } else {
           // product not in cart
           // TODO: get businessID from store
-          var businessID = "1";
-          this.getProduct(barcode, businessID);
+
+          // var businessID = "1";
+          // this.getProduct(barcode, businessID);
+
+          this.getProduct(barcode, this.getCartBusinessID);
         }
         // TODO: implement function to pause scanner while show_scanned_product = true
       }
