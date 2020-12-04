@@ -83,10 +83,12 @@ export default {
         // barcodePicker is ready here, show a message every time a barcode is scanned
         barcodePicker.on("scan", (scanResult) => {
           var barcode = scanResult.barcodes[0].data
-          if (barcode !== ref.scanned_product_barcode) {
+          if (this.show_scanned_product==false && this.scanned_product_barcode !== barcode) {
+            console.log("Scanning")
+            this.scanned_product_barcode = barcode
             ref.onScan(barcode);
           } else {
-            console.log("Already scanned this barcode")
+            console.log("Product scanned but product card already showing!")
           }
         });
       });
@@ -97,29 +99,22 @@ export default {
                     "addProduct",
                   ]),
     onScan(barcode) {
-      if (this.show_scanned_product) {
-        console.log("Product scanned but product card already showing!")
+
+      this.show_scanned_product = true
+      var product = this.getCart.find(product => product.barcode == barcode)
+      // if product is in cart
+      if(product!==undefined) {
+        // product already in cart
+        this.product_loaded_from_cart = true
+        // save the state of the scanned product before allowing user to make changes
+        this.initial_product_quantity = product.quantity
       } else {
-        this.scanned_product_barcode = barcode
-        var product = this.getCart.find(product => product.barcode == barcode)
-        // if product is in cart
-        if(product!==undefined) {
-          // product already in cart
-          this.product_loaded_from_cart = true
-          // save the state of the scanned product before allowing user to make changes
-          this.initial_product_quantity = product.quantity
-          this.show_scanned_product = true
-        } else {
-          // product not in cart
-          // TODO: get businessID from store
-
-          // var businessID = "1";
-          // this.getProduct(barcode, businessID);
-
-          this.getProduct(barcode, this.getCartBusinessID);
-        }
-        // TODO: implement function to pause scanner while show_scanned_product = true
+        // product not in cart
+        this.product_loaded_from_cart = false
+        this.getProduct(barcode, this.getCartBusinessID);
       }
+      // TODO: implement function to pause scanner while show_scanned_product = true
+      
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
@@ -129,18 +124,20 @@ export default {
       this.scanned_product_barcode = null;
     },
     cancelScannedProduct() {
-      this.scanned_product_barcode = null;
-      this.hideScannedProductCard()
-      if (this.product_loaded_from_cart === true) {
+      if (this.product_loaded_from_cart == true) {
+        console.log('line129:',this.initial_product_quantity)
         this.setProductQuantity({barcode:this.scanned_product_barcode,
                                  amount:this.initial_product_quantity})
       }
       else
       {
+        console.log('Attempting to remove:',this.scanned_product_barcode)
         this.removeProduct({barcode:this.scanned_product_barcode}) 
       }
+      this.hideScannedProductCard()
     },
     getProduct(barcode, businessID) {
+      console.log('line139:',typeof(barcode))
       var data = {
         "barcode": barcode,
         "businessID": businessID
@@ -152,29 +149,26 @@ export default {
           "http://localhost:8080/EZBagWebapp/webapi/lookup",
           data,
           function(data, status) {
-              if (typeof(data) == "string")
-                data = JSON.parse(data)
-              console.log(data)
-              if (status == "success" && data.status !== "failure") {
-                ref.addProduct({barcode:data.barcode,
-                  name:data.name,
-                  price: data.price,
-                  tax: data.tax,
-                  description:data.description,
-                  businessID:data.businessID})
-                ref.product_loaded_from_cart = false
-
-                // save the state of the scanned product before allowing user to make changes
-                ref.initial_product_quantity = data.quantity
-                ref.show_scanned_product = true
-              } else {
-                // TODO: elegantly display temporary poppup indicating product not found
-                this.scanned_product_barcode = null
-                alert("Scanned product not found, please try again!");
-                console.log("Scanned product not found, please try again!")
-              }
-              // TODO: handle case that data is not found response
-              
+            // handle json object return as string
+            if (typeof(data) == "string")
+              data = JSON.parse(data)
+            console.log(data)
+            if (status == "success" && data.status !== "failure") {
+              ref.addProduct({barcode:data.barcode,
+                              name:data.name,
+                              price: data.price,
+                              tax: data.tax,
+                              description:data.description,
+                              businessID:businessID})
+            } else {
+              // TODO: elegantly display temporary poppup indicating product not found
+              ref.addProduct({barcode:barcode,
+              name:"Example (unfound) product",
+              price: 10,
+              tax: 0.30,
+              description:"Not in our database",
+              businessID:businessID})
+            }
           }
         );
     }

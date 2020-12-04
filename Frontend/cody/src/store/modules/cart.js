@@ -74,9 +74,10 @@ const getters = {
 const actions = {
   //TODO: send event to backend
   async addProduct({ commit }, {barcode, name, tax, price, description, businessID}) {
-    //TODO: issue #69 - handle adding duplicate products 
-    commit('addProduct', {barcode:barcode, name:name, price:price, tax:tax,
-      description:description, businessID:businessID, quantity:1})
+    if(state.cart.find(product => product.barcode == barcode) === undefined) {
+      commit('addProduct', {barcode:barcode, name:name, price:price, tax:tax,
+        description:description, businessID:businessID, quantity:1})
+    }
   },
 
   // send product-remove-event to backend and call corresponding mutation
