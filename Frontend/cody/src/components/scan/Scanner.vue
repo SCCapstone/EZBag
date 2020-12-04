@@ -152,16 +152,18 @@ export default {
           "http://localhost:8080/EZBagWebapp/webapi/lookup",
           data,
           function(data, status) {
+              if (typeof(data) == "string")
+                data = JSON.parse(data)
               console.log(data)
-              console.log("HTTP STATUS /webapi/lookup: "+status)
               if (status == "success" && data.status !== "failure") {
                 ref.addProduct({barcode:data.barcode,
                   name:data.name,
-                  price:data.price,
+                  price: data.price,
+                  tax: data.tax,
                   description:data.description,
                   businessID:data.businessID})
                 ref.product_loaded_from_cart = false
-              
+
                 // save the state of the scanned product before allowing user to make changes
                 ref.initial_product_quantity = data.quantity
                 ref.show_scanned_product = true
