@@ -1,13 +1,14 @@
 <template>
-  <div>
+  <div id='barcodePickerOrigin'>
+    <div id="scandit-barcode-picker"></div>
+    <!--
     <scandit-barcode-picker
       id="barcodePicker"
       configure.licenseKey="AUZPWwnfFoljEUPsdi9NGuRA5C5zF7MWiH2ATlBzzRoUMTzzCyz2eIsc4K/IXEg79zR0P/MyBvLGWYeasF4Mb8dy0uW0N2YJP129zwZy2Lp0UWEdXmEzKCRdM8SaeS63XlnLFaZKvjQUeTBPYgcylbkVWWH6KcrqvBrisCWjchbaBjIkY1Jg04dgfp+bv0AEn1+Zx2hUKE94qzXxHXGos8w4n7JOgigJVYbC4xgWS6g/3WmXebi22sBQh3gxkQqGEsfKC5XLPPPXS4ZM3GQR8Yih2iTOe0F88gkbwcQj86EMURTe6/3o7iobP13CS7DkIBJX2kq/i/fXbPrr0Hey46yRJM7z5TaZeMbQV9j+fe9TNBPlsNdZ1HOVwjKgYqxBSqNBuBJ8K7gGz+yaV8vkV+xVGroIWNfolxt5BQeRrX+aqFc65NnfSuYyMds01a5M0Mj8cXwWwBJCifFpLPE02KrZkOmJ/gYC+un1qGbjkn1y0sbXdrhun5utExw6atXKvfQ04WOI/jwTSmdzo6RtMqdFUit5vhls8x1aPkPUWSVmpOQC2ot+CifFfW19ltPhklmNryRAot8Nso3AMkzbMW9h1sMb/gFyf8eIP4Zcs5BsnWNDVKGJrSyznv5JlJpQQiGdyb6QVa5F0sqt4KUT9uiquaMDVjxeDusuWPgv3pooHDre/Rf34ffbtEd7uWcuF7wLqZ6BbnNSA6BMv45Sh3tZ4v1arG7NGNSZUZKg23qUiPoP+XvcmbAtHcN4vfZCaywUj60pv916l4/0DXrlqRFnA5aSx/yKh4Evu4PgROYieHH2Vd67HnePg1Dq5FMZkySgfkagORlufg=="
       configure.engineLocation="https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/"
-      playSoundOnScan="false"
+      videoFit="ScanditSDK.BarcodePicker.ObjectFit.COVER"
       scanSettings.enabledSymbologies='["ean8", "ean13", "upca", "upce"]'
-    ></scandit-barcode-picker>
-    <!-- <div class="scanner" id="scandit-barcode-picker"></div> -->
+    ></scandit-barcode-picker>-->
     <ScanButtons 
       v-bind:total=getCartSubtotal />
     <v-bottom-sheet
@@ -45,7 +46,7 @@
 import { mapGetters, mapActions} from 'vuex';
 import ScanButtons from '@/components/scan/ScanButtons'
 import Product from '@/components/checkout/Product'
-// import * as ScanditSDK from "scandit-sdk";
+import * as ScanditSDK from "scandit-sdk";
 
 import jQuery from 'jquery'
 global.jQuery = jQuery
@@ -66,19 +67,29 @@ export default {
       scanned_barcode: null,
     };
   },
-  mounted: function() {
-    const barcodePickerElement = document.getElementById("barcodePicker");
+  mounted () {
     var ref = this
-    barcodePickerElement.addEventListener("scan", function (scanResult) {
-      // console.log(scanResult.detail.barcodes[0].data)
-      var barcode = scanResult.detail.barcodes[0].data
-      if (barcode !== ref.scanned_product_barcode) {
-        ref.onScan(barcode);
-      } else {
-        console.log("Already scanned this barcode")
-      }
-
-    });
+    ScanditSDK.configure("AUZPWwnfFoljEUPsdi9NGuRA5C5zF7MWiH2ATlBzzRoUMTzzCyz2eIsc4K/IXEg79zR0P/MyBvLGWYeasF4Mb8dy0uW0N2YJP129zwZy2Lp0UWEdXmEzKCRdM8SaeS63XlnLFaZKvjQUeTBPYgcylbkVWWH6KcrqvBrisCWjchbaBjIkY1Jg04dgfp+bv0AEn1+Zx2hUKE94qzXxHXGos8w4n7JOgigJVYbC4xgWS6g/3WmXebi22sBQh3gxkQqGEsfKC5XLPPPXS4ZM3GQR8Yih2iTOe0F88gkbwcQj86EMURTe6/3o7iobP13CS7DkIBJX2kq/i/fXbPrr0Hey46yRJM7z5TaZeMbQV9j+fe9TNBPlsNdZ1HOVwjKgYqxBSqNBuBJ8K7gGz+yaV8vkV+xVGroIWNfolxt5BQeRrX+aqFc65NnfSuYyMds01a5M0Mj8cXwWwBJCifFpLPE02KrZkOmJ/gYC+un1qGbjkn1y0sbXdrhun5utExw6atXKvfQ04WOI/jwTSmdzo6RtMqdFUit5vhls8x1aPkPUWSVmpOQC2ot+CifFfW19ltPhklmNryRAot8Nso3AMkzbMW9h1sMb/gFyf8eIP4Zcs5BsnWNDVKGJrSyznv5JlJpQQiGdyb6QVa5F0sqt4KUT9uiquaMDVjxeDusuWPgv3pooHDre/Rf34ffbtEd7uWcuF7wLqZ6BbnNSA6BMv45Sh3tZ4v1arG7NGNSZUZKg23qUiPoP+XvcmbAtHcN4vfZCaywUj60pv916l4/0DXrlqRFnA5aSx/yKh4Evu4PgROYieHH2Vd67HnePg1Dq5FMZkySgfkagORlufg==", {
+      engineLocation: "https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/",
+    })
+      .then(() => {
+        return ScanditSDK.BarcodePicker.create(document.getElementById("scandit-barcode-picker"), {
+          // enable some common symbologies
+          videoFit: ScanditSDK.BarcodePicker.ObjectFit.COVER,
+          scanSettings: new ScanditSDK.ScanSettings({ enabledSymbologies: ["ean8", "ean13", "upca", "upce"] }),
+        });
+      })
+      .then((barcodePicker) => {
+        // barcodePicker is ready here, show a message every time a barcode is scanned
+        barcodePicker.on("scan", (scanResult) => {
+          var barcode = scanResult.barcodes[0].data
+          if (barcode !== ref.scanned_product_barcode) {
+            ref.onScan(barcode);
+          } else {
+            console.log("Already scanned this barcode")
+          }
+        });
+      });
   },
   methods:{
     ...mapActions([ "removeProduct",
@@ -143,7 +154,7 @@ export default {
           function(data, status) {
               console.log(data)
               console.log("HTTP STATUS /webapi/lookup: "+status)
-              if (data.status !== "failure") {
+              if (status == "success" && data.status !== "failure") {
                 ref.addProduct({barcode:data.barcode,
                   name:data.name,
                   price:data.price,
@@ -156,6 +167,7 @@ export default {
                 ref.show_scanned_product = true
               } else {
                 // TODO: elegantly display temporary poppup indicating product not found
+                this.scanned_product_barcode = null
                 alert("Scanned product not found, please try again!");
                 console.log("Scanned product not found, please try again!")
               }
@@ -168,3 +180,16 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+  #barcodePickerOrigin {
+    height: 100%;
+    width: 100%;
+  }
+  #scandit-barcode-picker {
+    position: absolute;
+    top: 0%;
+    height: 100%;
+    width: 100%;
+  }
+</style>
