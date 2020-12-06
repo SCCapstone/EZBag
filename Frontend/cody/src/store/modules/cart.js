@@ -113,9 +113,34 @@ const actions = {
   },
 
   // collect user 
-  async sendCartToBackend({commit}) {
-
-
+  async sendCartToBackend() {
+    var data = {
+      barcodes: state.cart.map(product => product.barcode),
+      quantities: state.cart.map(product => product.quantity),
+      session: state.sessionID,
+      businessID: state.businessID
+    }
+    console.log('cart before stringify', data)
+    data = JSON.stringify(data)
+    console.log('cart before sending:', data)
+    var p = jQuery.post(
+      "http://localhost:8080/EZBagWebapp/webapi/cart",
+      data,
+      function(data, status) {
+        // handle json object return as string
+        if (typeof(data) == "string")
+          data = JSON.parse(data)
+        console.log(data)
+        if (status == "success" && data.status !== "failure") {
+          console.log("Successfully submitted cart")
+          this.$router.push('receipt');
+        } else {
+          console.log("Failed to submit cart to backend")
+        }
+      }
+    );
+    console.log(p)
+    console.log(typeof(p))
   }
 };
 
