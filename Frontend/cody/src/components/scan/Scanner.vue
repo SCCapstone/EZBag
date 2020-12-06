@@ -22,19 +22,13 @@
         v-bind:elevation="0"
         v-on:removed-product="hideScannedProductCard"
         />
-        <v-card-actions>
-          <v-row align="center" justify="center">
-            <v-col>
-              <v-btn @click="cancelScannedProduct" icon>
-                <v-icon>mdi-close-circle</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn @click="hideScannedProductCard" icon>
-                <v-icon>mdi-check</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
+        <v-card-actions class="justify-center">
+          <v-btn @click="cancelScannedProduct">Remove
+            <v-icon right>mdi-close</v-icon>
+          </v-btn>
+          <v-btn @click="hideScannedProductCard">Add to
+            <v-icon right>mdi-cart</v-icon>
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-sheet>
