@@ -1,4 +1,3 @@
-import jQuery from 'jquery'
 // this is a vuex state module, it is called by store/index.js 
 
 //TODO: remove default products when no longer needed for debug
@@ -112,11 +111,6 @@ const actions = {
     commit('setSessionID', id)
   },
 
-  // collect user 
-  async sendCartToBackend({commit}) {
-    
-
-  }
 };
 
 
