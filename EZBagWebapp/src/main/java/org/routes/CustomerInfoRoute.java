@@ -7,8 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.bson.Document;
-import org.services.DatabaseService;
-import org.services.SMSService;
+import org.services.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,17 +28,33 @@ public class CustomerInfoRoute {
     public String doPost(String payload) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
-        if (payloadObject.has("phone") || payloadObject.has("phone")) {
+        if ((payloadObject.has("phone") || payloadObject.has("phone"))
+                && payloadObject.has("hash")) {
+            // TODO: generate customer receipt string here
+            String cartHash = payloadObject.get("hash").getAsString();
+            Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
+            // TODO: handle case when customer cart returns as null
+            String receipt = "";
+            if (customerCart != null) {
+                // generate receipt
+                receipt = ReceiptService.generateEReceipt(customerCart);
+            } else {
+                // submitted invalid customer cart hash
+                String message = "Customer cart was not found in the database";
+                return Utils.generateResponse(false, message);
+            }
+
             if (payloadObject.has("email"))
             {
-                insertDoc.append("email", payloadObject.get("email").getAsString());
-
+                String email = payloadObject.get("email").getAsString();
+                insertDoc.append("email", email);
+                EmailService.sendEmail(email, "EZBag eReceipt", receipt);
             }
             if (payloadObject.has("phone"))
             {
                 String number = payloadObject.get("phone").getAsString();
                 insertDoc.append("phone", number);
-                SMSService.sendSMS(number, "Your transaction is complete!");
+                SMSService.sendSMS(number, receipt);
             }
             insertDoc.append("time", System.currentTimeMillis());
             System.out.println(insertDoc.toString());

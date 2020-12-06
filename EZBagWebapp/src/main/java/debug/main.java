@@ -129,7 +129,8 @@ public class main {
                 .append("total", 12.15);
         String receipt = ReceiptService.generateEReceipt(mockCartObject);
         System.out.println(receipt);
-        SMSService.sendSMS("8436108275", receipt);
+//        SMSService.sendSMS("8436108275", receipt);
+        EmailService.sendEmail("blakete@email.sc.edu", "EZBag eReceipt", receipt);
     }
     // TODO: json to document converter to easily communicate between frontend and backend
 

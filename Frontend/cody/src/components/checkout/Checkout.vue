@@ -37,9 +37,10 @@ export default {
             console.log("Successfully submitted cart")
             ref.$router.push('receipt');
             // TODO: store cart hash
+            
           } else {
             console.log("Failed to submit cart to backend")
-            // TODO: hanlde failed cart submission
+            alert("Checkout failed, please try again")
           }
         }
       );

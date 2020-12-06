@@ -44,6 +44,15 @@ public class DatabaseService {
     {
         return database.getByUPC(barcode);
     }
+
+    public static Document getCustomerCartByHash(String cartHash) {
+        Document returnedProduct = database.getCustomerCartByHash(cartHash);
+        if (returnedProduct != null) {
+            return returnedProduct;
+        }
+        return null;
+    }
+
     public static String insertInfo(Document customerInfo) {
         System.out.println("Inserted info document");
         return Utils.generateResponse(database.insertInfo(customerInfo), customerInfo.toJson());

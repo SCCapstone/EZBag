@@ -75,6 +75,18 @@ public class MongoDB {
         return null;
     }
 
+    public Document getCustomerCartByHash(String cartHash) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("cartHash", cartHash));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(checkoutCartCollectionName).find(query).first();
+        if (respDoc != null) {
+            return respDoc;
+        }
+        return null;
+    }
+
     // method to check whether the given document already exists within a collection collection
     private Boolean documentExistsInCollection(MongoCollection<Document> collection, Document insertDoc, String idField) {
         Document respDoc = collection.find(eq(idField, insertDoc.getString(idField))).first();
