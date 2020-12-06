@@ -60,4 +60,5 @@ public class DatabaseService {
         System.out.println("Inserted new product");
         return Utils.generateResponse(database.insertProduct(newProduct), newProduct.toJson());
     }
+
 }

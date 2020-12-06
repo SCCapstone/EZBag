@@ -28,8 +28,13 @@ public class CartRoute {
                 && payloadObject.has("businessID")
                 && payloadObject.has("session"))
         {
+            String cartHash = Utils.generateCartHash();
+            String businessID = payloadObject.get("businessID").getAsString();
+            String session = payloadObject.get("session").getAsString();
             JsonArray barcodes = payloadObject.get("barcodes").getAsJsonArray();
             List<String> codes = new ArrayList<String>();
+            // TODO make sure given product in database
+            // TODO if product in database get its price, mult by quantity, add to total
             for (int i=0; i<barcodes.size(); i++) {
                 codes.add(barcodes.get(i).getAsString());
             }
@@ -44,17 +49,20 @@ public class CartRoute {
             if (codes.size() == quantities.size()) {
                 insertDoc.append("barcodes", codes);
                 insertDoc.append("quantities", quantities);
-                insertDoc.append("businessID", payloadObject.get("businessID").getAsString());
+                insertDoc.append("businessID", businessID);
                 insertDoc.append("subtotal", subtotal);
-                insertDoc.append("session", payloadObject.get("session").getAsString());
+                insertDoc.append("session", session);
                 // TODO calculate real tax on cart
                 insertDoc.append("tax", 0.06*subtotal);
                 // TODO calculate cart total using ReceiptService getCartProducts
                 insertDoc.append("total", subtotal+insertDoc.getDouble("tax"));
                 insertDoc.append("time", System.currentTimeMillis());
+                insertDoc.append("cartHash", cartHash);
                 // TODO kick of event to send customer digital receipt (async call ReceiptService)
                 String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
-                return resp;
+                JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();
+                respObject.addProperty("hash", cartHash);
+                return respObject.toString();
             }
             return Utils.generateResponse(false, "Number of barcodes and barcode types did not match");
         } else

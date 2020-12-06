@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Random;
 
 public class Utils {
     public static String generateResponse(Boolean success, String message) {
@@ -48,6 +49,16 @@ public class Utils {
             }
         }
         return prop;
+    }
+
+    public static String generateCartHash() {
+        Random rand = new Random();
+        String alphaNumericString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 20; i+=1) {
+            builder.append(alphaNumericString.charAt(rand.nextInt(alphaNumericString.length())));
+        }
+        return builder.toString();
     }
 
 }
