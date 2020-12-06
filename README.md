@@ -1,6 +1,13 @@
 
 # EZBag Project
 
+## [Proof of Concept Demo Video](https://youtube.com)
+Click this link to view our proof of concept presentation video on YouTube
+
+## [Proof of Concept Web App](https://blakeedwards.me:8443/EZBagWebapp/#/)
+Click this link to view our proof of concept application. NOTE: Our website uses a self-signed SSL certificate and the best platform to use the EZBag app on is iPhone with the Safari browser. When opening the web application link if you you are presented with a "Your connection is not private" message (or something similar), override and continue to the site anyways. To do this, we recommend using Safari (as Google Chrome does not allow you to override and continue to the page). Also note that this application is built for a mobile web browser and therefore will not display correctly on a desktop view. If you would like to view the app on your desktop computer, we recommend opening this link in Safari and changing to Responsive Design Mode ("Develop" menu item > "Enter Responsive Design Mode").
+
+## What is EZBag?
 
 Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
 However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
