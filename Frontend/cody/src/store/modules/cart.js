@@ -59,7 +59,8 @@ const state = {
       quantity: 2,
     }
   ],
-  businessID: 1
+  businessID: 1,
+  sessionID: null,
 };
 
 const getters = {
@@ -67,6 +68,7 @@ const getters = {
   getCartSubtotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
   getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
   getCartBusinessID: (state) => state.businessID,
+  getSessionID: (state) => state.sessionID,
 };
 
 
@@ -100,6 +102,15 @@ const actions = {
     commit('adjustProductQuantity', {barcode:barcode, amount:amount})
   },
 
+  // generate a new session ID 
+  // TODO: reconsider security implications of generating sessionID 
+  async generateSessionID({ commit }) {
+    // courtesy of https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
+    const id = ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+      (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+    // TODO: send generated session id to backend
+    commit('setSessionID', id)
+  }
 };
 
 
@@ -131,6 +142,10 @@ const mutations = {
     state.cart.find(product => product.barcode == barcode).quantity += amount
   },
 
+
+  setSessionID (state, id) {
+    state.sessionID = id
+  }
 };
 
 export default {

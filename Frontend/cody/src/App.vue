@@ -11,3 +11,16 @@
     </v-main>
   </v-app>
 </template>
+
+<script>
+import { mapGetters, mapActions} from 'vuex';
+
+export default {
+  computed: mapGetters(['getSessionID']),
+  methods: mapActions(['generateSessionID']),
+  created () {
+    if (this.getSessionID === null)
+      this.generateSessionID()
+  },
+}
+</script>
