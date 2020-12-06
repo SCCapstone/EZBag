@@ -1,14 +1,6 @@
 <template>
   <div id='barcodePickerOrigin'>
     <div id="scandit-barcode-picker"></div>
-    <!--
-    <scandit-barcode-picker
-      id="barcodePicker"
-      configure.licenseKey="AUZPWwnfFoljEUPsdi9NGuRA5C5zF7MWiH2ATlBzzRoUMTzzCyz2eIsc4K/IXEg79zR0P/MyBvLGWYeasF4Mb8dy0uW0N2YJP129zwZy2Lp0UWEdXmEzKCRdM8SaeS63XlnLFaZKvjQUeTBPYgcylbkVWWH6KcrqvBrisCWjchbaBjIkY1Jg04dgfp+bv0AEn1+Zx2hUKE94qzXxHXGos8w4n7JOgigJVYbC4xgWS6g/3WmXebi22sBQh3gxkQqGEsfKC5XLPPPXS4ZM3GQR8Yih2iTOe0F88gkbwcQj86EMURTe6/3o7iobP13CS7DkIBJX2kq/i/fXbPrr0Hey46yRJM7z5TaZeMbQV9j+fe9TNBPlsNdZ1HOVwjKgYqxBSqNBuBJ8K7gGz+yaV8vkV+xVGroIWNfolxt5BQeRrX+aqFc65NnfSuYyMds01a5M0Mj8cXwWwBJCifFpLPE02KrZkOmJ/gYC+un1qGbjkn1y0sbXdrhun5utExw6atXKvfQ04WOI/jwTSmdzo6RtMqdFUit5vhls8x1aPkPUWSVmpOQC2ot+CifFfW19ltPhklmNryRAot8Nso3AMkzbMW9h1sMb/gFyf8eIP4Zcs5BsnWNDVKGJrSyznv5JlJpQQiGdyb6QVa5F0sqt4KUT9uiquaMDVjxeDusuWPgv3pooHDre/Rf34ffbtEd7uWcuF7wLqZ6BbnNSA6BMv45Sh3tZ4v1arG7NGNSZUZKg23qUiPoP+XvcmbAtHcN4vfZCaywUj60pv916l4/0DXrlqRFnA5aSx/yKh4Evu4PgROYieHH2Vd67HnePg1Dq5FMZkySgfkagORlufg=="
-      configure.engineLocation="https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/"
-      videoFit="ScanditSDK.BarcodePicker.ObjectFit.COVER"
-      scanSettings.enabledSymbologies='["ean8", "ean13", "upca", "upce"]'
-    ></scandit-barcode-picker>-->
     <ScanButtons 
       v-bind:total=getCartSubtotal />
     <v-bottom-sheet
@@ -185,6 +177,7 @@ export default {
   #scandit-barcode-picker {
     position: absolute;
     top: 0%;
+    margin: auto;
     height: 100%;
     width: 100%;
   }
