@@ -1,7 +1,7 @@
 
 # EZBag Project
 
-## [Proof of Concept Demo Video](https://youtube.com)
+## [EZBag Proof of Concept Presentation & Demo](https://youtube.com)
 Click this link to view our proof of concept presentation video on YouTube
 
 ## [Proof of Concept Web App](https://blakeedwards.me:8443/EZBagWebapp/#/)
