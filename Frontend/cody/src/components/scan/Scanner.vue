@@ -163,7 +163,7 @@ export default {
             } else {
               // TODO: elegantly display temporary poppup indicating product not found
               ref.addProduct({barcode:barcode,
-              name:"Example (unfound) product",
+              name:"Unknown product ".concat(barcode),
               price: 10,
               tax: 0.30,
               description:"Not in our database",
