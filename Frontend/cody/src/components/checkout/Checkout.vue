@@ -39,6 +39,7 @@ export default {
           ref.$router.push('receipt');
         } else {
           console.log("Failed to submit cart to backend")
+          // TODO: hanlde failed cart submission
         }
       }
     );
