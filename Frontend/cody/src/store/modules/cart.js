@@ -60,6 +60,7 @@ const state = {
   ],
   businessID: 1,
   sessionID: null,
+  cartHash: null,
 };
 
 const getters = {
@@ -68,6 +69,7 @@ const getters = {
   getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
   getCartBusinessID: (state) => state.businessID,
   getSessionID: (state) => state.sessionID,
+  getCartHash: (state) => state.cartHash,
 };
 
 
@@ -111,6 +113,10 @@ const actions = {
     commit('setSessionID', id)
   },
 
+  setCartHash({commit}, {cartHash}) {
+    commit('setCartHash', cartHash)
+  }
+
 };
 
 
@@ -145,7 +151,11 @@ const mutations = {
 
   setSessionID (state, id) {
     state.sessionID = id
-  }
+  },
+
+  setCartHash (state, cartHash) {
+    state.cartHash = cartHash
+  },
 };
 
 export default {

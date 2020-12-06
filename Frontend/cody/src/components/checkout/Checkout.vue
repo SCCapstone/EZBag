@@ -9,12 +9,13 @@
 </template>
 
 <script>
-import { mapGetters} from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import jQuery from 'jquery'
 
 export default {
   computed: mapGetters(['getCart', 'getCartSubtotal', 'getCartTax', 'getCartBusinessID', 'getSessionID']),
   methods: {
+    ...mapActions(['setCartHash']),
     sendCartToBackend() {
       var data = {
         barcodes: this.getCart.map(product => product.barcode),
@@ -26,7 +27,7 @@ export default {
       data = JSON.stringify(data)
       console.log('cart before sending:', data)
       var ref = this
-      var p = jQuery.post(
+      jQuery.post(
         "http://localhost:8080/EZBagWebapp/webapi/cart",
         data,
         function(data, status) {
@@ -35,6 +36,7 @@ export default {
             data = JSON.parse(data)
           if (status == "success" && data.status !== "failure") {
             console.log("Successfully submitted cart")
+            ref.setCartHash({cartHash:data.hash})
             ref.$router.push('receipt');
             // TODO: store cart hash
           } else {
