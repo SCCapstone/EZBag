@@ -11,6 +11,9 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 1. [Open the web app](https://blakeedwards.me:8443/EZBagWebapp/#/)
 2. Allow camera access to the web app
 3. Scan the barcode below (Note: unknown products can be scanned, and they will appear in the cart with an example name, but they won't be included in the digital reciept).
+
+  ![](https://github.com/SCCapstone/EZBag/blob/master/Wiki/images/IMG_5787.jpg)
+
 4. Navigate to the "Cart" tab
 5. Press the "$" button to pay
 6. Press the "Checkout" button to mock pay
