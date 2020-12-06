@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title> Total: ${{ getCartSubtotal+getCartTax }}  </v-card-title>
     <v-card-subtitle> Subtotal: ${{getCartSubtotal}} Tax: ${{getCartTax}}</v-card-subtitle>
-    <v-card-actions>
+    <v-card-actions class="justify-center">
       <v-btn to="/receipt">Checkout</v-btn>
     </v-card-actions>
   </v-card>
