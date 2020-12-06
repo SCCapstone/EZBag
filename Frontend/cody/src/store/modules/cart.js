@@ -114,7 +114,7 @@ const actions = {
 
   // collect user 
   async sendCartToBackend({commit}) {
-
+    
 
   }
 };

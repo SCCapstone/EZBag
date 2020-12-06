@@ -8,6 +8,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
 import org.services.DatabaseService;
+import org.services.ReceiptService;
 import org.services.Utils;
 
 import java.util.ArrayList;
@@ -59,6 +60,8 @@ public class CartRoute {
                 insertDoc.append("time", System.currentTimeMillis());
                 insertDoc.append("cartHash", cartHash);
                 // TODO kick of event to send customer digital receipt (async call ReceiptService)
+                ReceiptService.generateEReceipt(insertDoc);
+
                 String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
                 JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();
                 respObject.addProperty("hash", cartHash);

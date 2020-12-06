@@ -6,10 +6,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.database.MongoDB;
-import org.services.DatabaseService;
-import org.services.ReceiptService;
-import org.services.StartupService;
-import org.services.Utils;
+import org.services.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,9 +108,8 @@ public class main {
 
         // Testing eReceipt generator
         List<String> barcodes = new ArrayList<String>();
-        barcodes.add("6704330931001");
-        barcodes.add("0246000104361");
-        barcodes.add("2262700000011");
+//        barcodes.add("9780061241895");
+        barcodes.add("12345678");
         List<String> barcodeTypes = new ArrayList<String>();
         barcodeTypes.add("ean13");
         barcodeTypes.add("ean13");
@@ -133,7 +129,7 @@ public class main {
                 .append("total", 12.15);
         String receipt = ReceiptService.generateEReceipt(mockCartObject);
         System.out.println(receipt);
-
+        SMSService.sendSMS("8436108275", receipt);
     }
     // TODO: json to document converter to easily communicate between frontend and backend
 
