@@ -7,6 +7,15 @@ Click this link to view our proof of concept presentation video on YouTube
 ## [Proof of Concept Web App](https://blakeedwards.me:8443/EZBagWebapp/#/)
 Click this link to view our proof of concept application. NOTE: Our website uses a self-signed SSL certificate and the best platform to use the EZBag app on is iPhone with the Safari browser. When opening the web application link if you you are presented with a "Your connection is not private" message (or something similar), override and continue to the site anyways. To do this, we recommend using Safari (as Google Chrome does not allow you to override and continue to the page). Also note that this application is built for a mobile web browser and therefore will not display correctly on a desktop view. If you would like to view the app on your desktop computer, we recommend opening this link in Safari and changing to Responsive Design Mode ("Develop" menu item > "Enter Responsive Design Mode").
 
+## Instructions to use the demo
+1. [Open the web app](https://blakeedwards.me:8443/EZBagWebapp/#/)
+2. Allow camera access to the web app
+3. Scan the barcode below
+4. Navigate to the "Cart" tab
+5. Press the "$" button to pay
+6. Press the "Checkout" button to mock pay
+7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
+
 ## What is EZBag?
 
 Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
@@ -28,8 +37,6 @@ A patron at a participating store can use the EZBag web app on their phone to sc
     * Run it and follow the prompts for installation
 * [MongoDB](https://www.mongodb.com/)
     * [Official Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
-
-
 
 
 ## Setup
