@@ -86,7 +86,6 @@ export default {
                   ]),
     onScan(barcode) {
 
-      this.show_scanned_product = true
       var product = this.getCart.find(product => product.barcode == barcode)
       // if product is in cart
       if(product!==undefined) {
@@ -94,6 +93,7 @@ export default {
         this.product_loaded_from_cart = true
         // save the state of the scanned product before allowing user to make changes
         this.initial_product_quantity = product.quantity
+        this.show_scanned_product = true
       } else {
         // product not in cart
         this.product_loaded_from_cart = false
@@ -155,6 +155,7 @@ export default {
               description:"Not in our database",
               businessID:businessID})
             }
+            ref.show_scanned_product = true
           }
         );
     }
