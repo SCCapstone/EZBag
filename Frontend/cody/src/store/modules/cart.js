@@ -1,4 +1,4 @@
-//import axios from 'axios';
+import jQuery from 'jquery'
 // this is a vuex state module, it is called by store/index.js 
 
 //TODO: remove default products when no longer needed for debug
@@ -110,6 +110,12 @@ const actions = {
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
     // TODO: send generated session id to backend
     commit('setSessionID', id)
+  },
+
+  // collect user 
+  async sendCartToBackend({commit}) {
+
+
   }
 };
 
