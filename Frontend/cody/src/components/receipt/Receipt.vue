@@ -5,15 +5,15 @@
       Your cart number is:
     </div>
     <div class="centerText" id="cartNumber">
-      {{cartNum="#45"}}
+      {{ this.getCartHash.substring(this.getCartHash.length - 3) }}
     </div>
     <div class="horizontalBar"></div>
     <div class="centerText" id="headerText">
       Enter your email and or phone number<br>
       to receive a digital receipt
     </div>
-    <input class="inputForm" placeholder="email">
-    <input class="inputForm" type="number" placeholder="phone number">
+    <input id="emailForm" class="inputForm" placeholder="email">
+    <input id="phoneForm" class="inputForm" type="number" placeholder="phone number">
     <button
       @touchstart="mobiledown"
       @mousedown="mousedown"
@@ -28,22 +28,20 @@
 
 <script>
 
-function clicked()
-{
-  console.log("Clicked")
-}
-
 // https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components
 import { mapGetters, mapActions } from 'vuex';
+import jQuery from 'jquery'
 
 export default {
   name:"Receipt",
+  computed: mapGetters(['getCartHash']),
   methods: {
+    ...mapActions([]),
     mobiledown: function(e) {
       e.target.classList.add("buttonActive")
     },
     mobileup: function(e) {
-      clicked()
+      this.clicked()
       e.target.classList.remove("buttonActive")
     },
     mousedown: function(e) {
@@ -58,12 +56,81 @@ export default {
       if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
         return // we are on mobile. return to avoid calling method twice
       }
-      clicked()
+      this.clicked()
       e.target.classList.remove("buttonActive")
     },
-    ...mapActions([])
+    clicked() {
+      // TODO: get data from input forms
+      var email = document.getElementById("emailForm").value;
+      var addEmail = false;
+      var phone = document.getElementById("phoneForm").value;
+      var addPhone = false;
+
+      // simple checks on phone and email
+      if (email !== "") {
+        
+        if (email.includes("@")) {
+          console.log("proper email: ", email)
+          addEmail = true;
+        } else {
+          // TODO: elegant correction message
+          console.log("Email improperly formatted")
+        }
+      } else {
+        console.log("email field empty")
+      }
+
+      if (phone !== "") {
+        if (phone.length == 10) {
+          console.log("proper phone: ", phone)
+          addPhone = true;
+        } else {
+          // TODO: elegant correction message
+          console.log("Phone number improper length")
+        }
+      } else {
+        console.log("phone field empty")
+      }
+
+      var data = {
+                "hash": this.getCartHash
+              }
+      if (addEmail) {
+        data.email = email;
+      }
+      if (addPhone) {
+        data.phone = phone;
+      }
+      console.log(data)
+
+      if (addEmail || addPhone) {
+        console.log("sending digital receipt to given contact")
+        // send to backend for digital receipt
+        data = JSON.stringify(data)
+        var ref = this
+        jQuery.post(
+          "/EZBagWebapp/webapi/info",
+          data,
+          function(data, status) {
+            // handle json object return as string
+            if (typeof(data) == "string")
+              data = JSON.parse(data)
+            if (status == "success" && data.status !== "failure") {
+              console.log("Successfully sent digital receipt")
+              ref.$router.push('/');
+              alert("Sent digital receipt, starting new shopping session");
+            } else {
+              console.log("Failed to send digital receipt")
+            }
+          }
+        );
+      } else {
+        alert("To receive a digital receipt, please enter a valid email and/or phone number")
+      }
+
+  }
+
   },
-  computed: mapGetters([])
 }
 </script>
 

@@ -28,7 +28,7 @@ public class CustomerInfoRoute {
     public String doPost(String payload) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
-        if ((payloadObject.has("phone") || payloadObject.has("phone"))
+        if ((payloadObject.has("email") || payloadObject.has("phone"))
                 && payloadObject.has("hash")) {
             // TODO: generate customer receipt string here
             String cartHash = payloadObject.get("hash").getAsString();
@@ -44,22 +44,36 @@ public class CustomerInfoRoute {
                 return Utils.generateResponse(false, message);
             }
 
-            if (payloadObject.has("email"))
-            {
-                String email = payloadObject.get("email").getAsString();
-                insertDoc.append("email", email);
-                EmailService.sendEmail(email, "EZBag eReceipt", receipt);
+            try {
+                if (payloadObject.has("email"))
+                {
+                    String email = payloadObject.get("email").getAsString();
+                    insertDoc.append("email", email);
+                    EmailService.sendEmail(email, "EZBag eReceipt", receipt);
+                }
+            } catch (Exception e) {
+                System.out.println("Error when sending receipt via email");
             }
-            if (payloadObject.has("phone"))
-            {
-                String number = payloadObject.get("phone").getAsString();
-                insertDoc.append("phone", number);
-                SMSService.sendSMS(number, receipt);
+
+            try {
+                if (payloadObject.has("phone"))
+                {
+                    String number = payloadObject.get("phone").getAsString();
+                    insertDoc.append("phone", number);
+                    SMSService.sendSMS(number, receipt);
+                }
+            } catch (Exception e) {
+                System.out.println("Error when sending receipt via email");
             }
+
             insertDoc.append("time", System.currentTimeMillis());
             System.out.println(insertDoc.toString());
-            String resp = DatabaseService.insertInfo(insertDoc);
-            return resp;
+            // TODO: fix insert integration with receipts
+//            String resp = DatabaseService.insertInfo(insertDoc);
+            JsonObject response = new JsonObject();
+            response.addProperty("status", "success");
+            return response.toString();
+
         } else
         {
             String message = "Submitted customer info json object is not valid";

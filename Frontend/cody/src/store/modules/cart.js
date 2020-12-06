@@ -3,60 +3,7 @@
 //TODO: remove default products when no longer needed for debug
 const state = {
   cart: [
-    {
-      barcode: "9780061241895",
-      name: "Influence, The Psychology of Persuasion",
-      price: 10.00,
-      tax: 0.60,
-      description: "National Best Seller. By Robert B. Cialdini, PH.D.",
-      businessID: "1",
-      quantity: 1,
-    },
-    {
-      barcode:"abc",
-      name:"chip",
-      price: 5.99,
-      tax: 0.36,
-      description:"good ole chips",
-      businessID:"1",
-      quantity: 2,
-    },
-    {
-      barcode:"abd",
-      name:"better chip",
-      price: 5.99,
-      tax: 0.36,
-      description:"good ole chips",
-      businessID:"1",
-      quantity: 2,
-    },
-    {
-      barcode:"abe",
-      name:"bestest chip",
-      price: 5.99,
-      tax: 0.36,
-      description:"good ole chips",
-      businessID:"1",
-      quantity: 2,
-    },
-    {
-      barcode:"abf",
-      name:"Better than bestest chip",
-      price: 5.99,
-      tax: 0.36,
-      description:"good ole chips",
-      businessID:"1",
-      quantity: 2,
-    },
-    {
-      barcode:"abg",
-      name:"Xtreme chip",
-      price: 5.99,
-      tax: 0.36,
-      description:"good ole chips",
-      businessID:"1",
-      quantity: 2,
-    }
+
   ],
   businessID: 1,
   sessionID: null,

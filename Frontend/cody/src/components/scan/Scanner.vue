@@ -22,13 +22,19 @@
         v-bind:elevation="0"
         v-on:removed-product="hideScannedProductCard"
         />
-        <v-card-actions class="justify-center">
-          <v-btn @click="cancelScannedProduct">Remove
-            <v-icon right>mdi-close</v-icon>
-          </v-btn>
-          <v-btn @click="hideScannedProductCard">Add to
-            <v-icon right>mdi-cart</v-icon>
-          </v-btn>
+        <v-card-actions>
+          <v-row align="center" justify="center">
+            <v-col>
+              <v-btn @click="cancelScannedProduct" icon>
+                <v-icon>mdi-close-circle</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col>
+              <v-btn @click="hideScannedProductCard" icon>
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-card-actions>
       </v-card>
     </v-sheet>
@@ -62,7 +68,7 @@ export default {
     };
   },
   mounted () {
-    // var ref = this
+    var ref = this
     ScanditSDK.configure("AUZPWwnfFoljEUPsdi9NGuRA5C5zF7MWiH2ATlBzzRoUMTzzCyz2eIsc4K/IXEg79zR0P/MyBvLGWYeasF4Mb8dy0uW0N2YJP129zwZy2Lp0UWEdXmEzKCRdM8SaeS63XlnLFaZKvjQUeTBPYgcylbkVWWH6KcrqvBrisCWjchbaBjIkY1Jg04dgfp+bv0AEn1+Zx2hUKE94qzXxHXGos8w4n7JOgigJVYbC4xgWS6g/3WmXebi22sBQh3gxkQqGEsfKC5XLPPPXS4ZM3GQR8Yih2iTOe0F88gkbwcQj86EMURTe6/3o7iobP13CS7DkIBJX2kq/i/fXbPrr0Hey46yRJM7z5TaZeMbQV9j+fe9TNBPlsNdZ1HOVwjKgYqxBSqNBuBJ8K7gGz+yaV8vkV+xVGroIWNfolxt5BQeRrX+aqFc65NnfSuYyMds01a5M0Mj8cXwWwBJCifFpLPE02KrZkOmJ/gYC+un1qGbjkn1y0sbXdrhun5utExw6atXKvfQ04WOI/jwTSmdzo6RtMqdFUit5vhls8x1aPkPUWSVmpOQC2ot+CifFfW19ltPhklmNryRAot8Nso3AMkzbMW9h1sMb/gFyf8eIP4Zcs5BsnWNDVKGJrSyznv5JlJpQQiGdyb6QVa5F0sqt4KUT9uiquaMDVjxeDusuWPgv3pooHDre/Rf34ffbtEd7uWcuF7wLqZ6BbnNSA6BMv45Sh3tZ4v1arG7NGNSZUZKg23qUiPoP+XvcmbAtHcN4vfZCaywUj60pv916l4/0DXrlqRFnA5aSx/yKh4Evu4PgROYieHH2Vd67HnePg1Dq5FMZkySgfkagORlufg==", {
       engineLocation: "https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/",
     })
@@ -80,10 +86,9 @@ export default {
           if (this.show_scanned_product==false && this.scanned_product_barcode !== barcode) {
             console.log("Scanning")
             this.scanned_product_barcode = barcode
-            this.onScan(barcode);
+            ref.onScan(barcode);
           } else {
-            console.log("Product already shown:", this.show_scanned_product,
-                        "Product already scanned:", this.scanned_product_barcode == barcode)
+            console.log("Product scanned but product card already showing!")
           }
         });
       });
@@ -95,6 +100,7 @@ export default {
                   ]),
     onScan(barcode) {
 
+      this.show_scanned_product = true
       var product = this.getCart.find(product => product.barcode == barcode)
       // if product is in cart
       if(product!==undefined) {
@@ -102,13 +108,11 @@ export default {
         this.product_loaded_from_cart = true
         // save the state of the scanned product before allowing user to make changes
         this.initial_product_quantity = product.quantity
-        this.show_scanned_product = true
       } else {
         // product not in cart
         this.product_loaded_from_cart = false
         this.getProduct(barcode, this.getCartBusinessID);
       }
-      
       // TODO: implement function to pause scanner while show_scanned_product = true
       
     },
@@ -142,7 +146,7 @@ export default {
       data = JSON.stringify(data);
       // TODO: handle api call failed case elegantly 
       jQuery.post(
-          "http://localhost:8080/EZBagWebapp/webapi/lookup",
+          "/EZBagWebapp/webapi/lookup",
           data,
           function(data, status) {
             // handle json object return as string
@@ -165,7 +169,6 @@ export default {
               description:"Not in our database",
               businessID:businessID})
             }
-            ref.show_scanned_product = true
           }
         );
     }

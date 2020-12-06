@@ -4,6 +4,7 @@
     fixed bottom
     rounded
     id="TotalButton"
+    @click="clickedTotalBtn"
     :style="{left : '50%', transform:'translateX(-50%)'}"
     >${{total}}</v-btn>   
 </template>
@@ -13,7 +14,12 @@ export default {
     name: 'ScanButtons',
     props: {
         total: Number
-    }
+    },
+    methods: {
+        clickedTotalBtn() {
+            this.$router.push('cart');
+        }
+    },
 }
 </script>
 
