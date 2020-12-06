@@ -62,7 +62,11 @@ const actions = {
 
   setCartHash({commit}, {cartHash}) {
     commit('setCartHash', cartHash)
-  }
+  },
+
+  emptyCart({commit}) {
+    commit('emptyCart', )
+  },
 
 };
 
@@ -95,7 +99,6 @@ const mutations = {
     state.cart.find(product => product.barcode == barcode).quantity += amount
   },
 
-
   setSessionID (state, id) {
     state.sessionID = id
   },
@@ -103,6 +106,10 @@ const mutations = {
   setCartHash (state, cartHash) {
     state.cartHash = cartHash
   },
+
+  emptyCart (state) {
+    state.cart = []
+  }
 };
 
 export default {

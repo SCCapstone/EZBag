@@ -36,7 +36,7 @@ export default {
   name:"Receipt",
   computed: mapGetters(['getCartHash']),
   methods: {
-    ...mapActions([]),
+    ...mapActions(['emptyCart']),
     mobiledown: function(e) {
       e.target.classList.add("buttonActive")
     },
@@ -117,6 +117,7 @@ export default {
               data = JSON.parse(data)
             if (status == "success" && data.status !== "failure") {
               console.log("Successfully sent digital receipt")
+              ref.emptyCart()
               ref.$router.push('/');
               alert("Sent digital receipt, starting new shopping session");
             } else {
