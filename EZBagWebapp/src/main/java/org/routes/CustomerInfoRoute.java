@@ -30,7 +30,11 @@ public class CustomerInfoRoute {
         Document insertDoc = new Document();
         if ((payloadObject.has("email") || payloadObject.has("phone"))
                 && payloadObject.has("hash")) {
-            // TODO: generate customer receipt string here
+
+            // TODO: check if customer info exists in database
+            // TODO: if it does not, insert, if it does, do not
+//            String resp = DatabaseService.insertInfo(insertDoc);
+
             String cartHash = payloadObject.get("hash").getAsString();
             Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
             // TODO: handle case when customer cart returns as null
@@ -68,8 +72,6 @@ public class CustomerInfoRoute {
 
             insertDoc.append("time", System.currentTimeMillis());
             System.out.println(insertDoc.toString());
-            // TODO: fix insert integration with receipts
-//            String resp = DatabaseService.insertInfo(insertDoc);
             JsonObject response = new JsonObject();
             response.addProperty("status", "success");
             return response.toString();

@@ -59,8 +59,6 @@ public class CartRoute {
                 insertDoc.append("total", subtotal+insertDoc.getDouble("tax"));
                 insertDoc.append("time", System.currentTimeMillis());
                 insertDoc.append("cartHash", cartHash);
-                // TODO kick of event to send customer digital receipt (async call ReceiptService)
-                ReceiptService.generateEReceipt(insertDoc);
 
                 String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
                 JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();
