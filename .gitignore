@@ -1,6 +1,5 @@
 .DS_Store
 EZBagWebapp/target/*
-EZBagWebapp/src/main/webapp/*
 EZBagWebapp/.idea
 .idea
 
