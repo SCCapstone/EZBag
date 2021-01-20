@@ -46,17 +46,6 @@ public class ProductQueryRoute extends JerseyTest {
         StartupService.startup();
         return new ResourceConfig(ProductQueryRoute.class);
     }
-
-    @Test
-    public void testPost() {
-        Document insertDoc = new Document();
-        insertDoc.append("barcode", "12345678")
-                .append("businessID", "1");
-
-        final String hello = target("lookup").request().post(Entity.json(insertDoc.toJson()), String.class);
-
-        assertEquals("{ \"_id\" : { \"$oid\" : \"6005de23132a110351032487\" }, \"barcode\" : \"12345678\", \"barcodeType\" : \"ean8\", \"businessID\" : \"1\", \"name\" : \"Example Product\", \"price\" : 9.99, \"tax\" : 0.6, \"description\" : \"Example Product is used for testing. It is not a real item!\", \"time\" : { \"$numberLong\" : \"1610997283891\" } }", hello);
-    }
 }
 
 
