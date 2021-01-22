@@ -54,7 +54,7 @@ public class DatabaseService {
     }
 
     public static String insertInfo(Document customerInfo) {
-        System.out.println("Inserted info document");
+        System.out.println("Insert info document");
         return Utils.generateResponse(database.insertInfo(customerInfo), customerInfo.toJson());
     }
     public static String insertCustomerEvent(Document customerScanEvent) {

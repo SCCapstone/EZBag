@@ -24,65 +24,86 @@ public class CustomerInfoRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
-    // {}
     public String doPost(String payload) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
         if ((payloadObject.has("email") || payloadObject.has("phone"))
-                && payloadObject.has("hash")) {
+                && payloadObject.has("hash") && payloadObject.has("session")) {
 
-            // TODO: check if customer info exists in database
-            // TODO: if it does not, insert, if it does, do not
-//            String resp = DatabaseService.insertInfo(insertDoc);
+            if (payloadObject.has("email")) {
+                insertDoc.append("email", payloadObject.get("email").getAsString());
 
-            String cartHash = payloadObject.get("hash").getAsString();
-            Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
-            // TODO: handle case when customer cart returns as null
-            String receipt = "";
-            if (customerCart != null) {
-                // generate receipt
-                receipt = ReceiptService.generateEReceipt(customerCart);
-            } else {
-                // submitted invalid customer cart hash
-                String message = "Customer cart was not found in the database";
-                return Utils.generateResponse(false, message);
             }
-
-            try {
-                if (payloadObject.has("email"))
-                {
-                    String email = payloadObject.get("email").getAsString();
-                    insertDoc.append("email", email);
-                    EmailService.sendEmail(email, "EZBag eReceipt", receipt);
-                }
-            } catch (Exception e) {
-                System.out.println("Error when sending receipt via email");
+            if (payloadObject.has("phone")) {
+                insertDoc.append("phone", payloadObject.get("phone").getAsString());
             }
-
-            try {
-                if (payloadObject.has("phone"))
-                {
-                    String number = payloadObject.get("phone").getAsString();
-                    insertDoc.append("phone", number);
-                    SMSService.sendSMS(number, receipt);
-                }
-            } catch (Exception e) {
-                System.out.println("Error when sending receipt via email");
-            }
-
+            insertDoc.append("hash", payloadObject.get("hash").getAsString());
+            insertDoc.append("session", payloadObject.get("session").getAsString());
             insertDoc.append("time", System.currentTimeMillis());
-            System.out.println(insertDoc.toString());
-            JsonObject response = new JsonObject();
-            response.addProperty("status", "success");
-            return response.toString();
+
+            // check if customer has already in customer info database
+            // if it does not, insert, if it does, send back error response
+            // TODO: check cart collection for hash
+            // TODO: check customer info collection for cart existing there
+            String resp = DatabaseService.insertInfo(insertDoc);
+            System.out.println(resp);
+
+            // if insertInfo returns failure status, skip sending of digital receipt and return error msg
+            JsonObject respJson = new JsonParser().parse(resp).getAsJsonObject();
+            String status = respJson.get("status").getAsString();
+
+            if (!status.equals("failure")) {
+
+                String cartHash = payloadObject.get("hash").getAsString();
+                Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
+                // TODO: handle case when customer cart returns as null
+                String receipt = "";
+                if (customerCart != null) {
+                    // generate receipt
+                    receipt = ReceiptService.generateEReceipt(customerCart);
+                } else {
+                    // submitted invalid customer cart hash
+                    String message = "Customer cart was not found in the database";
+                    return Utils.generateResponse(false, message);
+                }
+
+                JsonObject response = new JsonObject();
+                try {
+                    if (payloadObject.has("email"))
+                    {
+                        response.addProperty("emailStatus", "success");
+                        String email = payloadObject.get("email").getAsString();
+                        EmailService.sendEmail(email, "EZBag eReceipt", receipt);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error when sending receipt via email");
+                    response.remove("emailStatus");
+                    response.addProperty("emailStatus", "failure");
+                }
+
+                try {
+                    if (payloadObject.has("phone"))
+                    {
+                        response.addProperty("phoneStatus", "success");
+                        String number = payloadObject.get("phone").getAsString();
+                        SMSService.sendSMS(number, receipt);
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error when sending receipt via phone");
+                    response.remove("phoneStatus");
+                    response.addProperty("phoneStatus", "failure");
+                }
+                return response.toString();
+
+            } else {
+                String message = "Digital receipt already requested.";
+                return Utils.generateResponse(false, "failure");
+            }
 
         } else
         {
-            String message = "Submitted customer info json object is not valid";
-            System.out.println(message);
-            JsonObject response = new JsonObject();
-            response.addProperty("message", message);
-            return response.toString();
+            String message = "Submitted invalid customer info object.";
+            return Utils.generateResponse(false, message);
         }
     }
 }
