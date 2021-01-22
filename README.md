@@ -100,6 +100,8 @@ Using the Jersey Test Framework, unit tests can be ran in the IDE (IntelliJ).
 
 Running the tests in the Jersey Test Framework is easy. All you have to do is right click on the test you want to run and click "run test". If you have multiple tests you can simply right click on the containing package and click "run all tests".
 
+To test with cypress you simply run $(npm bin)/cypress run in the command line while in the directory you are testing which will run all tests in the directory. 
+
 # Authors
 
 
