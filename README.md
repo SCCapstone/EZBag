@@ -94,7 +94,7 @@ Using the Jersey Test Framework, unit tests can be ran in the IDE (IntelliJ).
 
 ## Testing Technology
 
-(The Jersey Test Framework)[https://www.baeldung.com/jersey-test] creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. 
+pThe Jersey Test Framework](https://www.baeldung.com/jersey-test) creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. 
 
 ## Running Tests
 
