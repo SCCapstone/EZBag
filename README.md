@@ -84,27 +84,20 @@ git clone https://github.com/SCCapstone/EZBag.git
 - Tomcat will now auto-deploy the application which can be view at http://yourdomain.com:8080/EZBagWebapp 
 
 
+# Backend Unit Testing
+Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct.
 
-
-
-
-# Testing
-
-Using the Jersey Test Framework, unit tests can be ran in the IDE (IntelliJ). 
-
-## Testing Technology
-
-[The Jersey Test Framework](https://www.baeldung.com/jersey-test) creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. 
-
-## Running Tests
-
+## Running Backend Unit Tests
 Running the tests in the Jersey Test Framework is easy. All you have to do is right click on the test you want to run and click "run test". If you have multiple tests you can simply right click on the containing package and click "run all tests".
 
-To test with cypress you simply run $(npm bin)/cypress run in the command line while in the directory you are testing which will run all tests in the directory. 
+# Frontend Behavioral Testing
+We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
+
+## Running Frontend Behavioral Tests
+If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+
 
 # Authors
-
-
 - [Blake Edwards](mailto:blakete@email.sc.edu)
 - [Brendan Reidy](mailto:bcreidy@email.sc.edu)
 - [Cody Shearer](mailto:shearerc@email.sc.edu)
