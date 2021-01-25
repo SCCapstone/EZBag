@@ -91,13 +91,14 @@ Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit te
 Running the tests in the Jersey Test Framework is easy. 
 1. Open the EZBagWebapp/src/main/java/test package 
 2. Right click on the test you want to run and click "run test"
-- To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
+3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
 # Frontend Behavioral Testing
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
 
 ## Running Frontend Behavioral Tests
-If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+1. If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend.
+2. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
 
 # Authors
