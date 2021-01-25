@@ -103,6 +103,7 @@ Tests location: /Frontend/customer/tests/
 
 1. If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend.
 2. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+3. A window will open displaying our tests. Select the test to run, or select 'run all tests'.
 
 
 # Authors
