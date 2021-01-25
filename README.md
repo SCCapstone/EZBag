@@ -88,7 +88,10 @@ git clone https://github.com/SCCapstone/EZBag.git
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct.
 
 ## Running Backend Unit Tests
-Running the tests in the Jersey Test Framework is easy. All you have to do is right click on the test you want to run and click "run test". If you have multiple tests you can simply right click on the containing package and click "run all tests".
+Running the tests in the Jersey Test Framework is easy. 
+1. Open the EZBagWebapp/src/main/java/test package 
+2. Right click on the test you want to run and click "run test"
+- To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
 # Frontend Behavioral Testing
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
