@@ -46,7 +46,6 @@ public class CustomerInfoRoute {
             // TODO: check cart collection for hash
             // TODO: check customer info collection for cart existing there
             String resp = DatabaseService.insertInfo(insertDoc);
-            System.out.println(resp);
 
             // if insertInfo returns failure status, skip sending of digital receipt and return error msg
             JsonObject respJson = new JsonParser().parse(resp).getAsJsonObject();
@@ -97,7 +96,7 @@ public class CustomerInfoRoute {
 
             } else {
                 String message = "Digital receipt already requested.";
-                return Utils.generateResponse(false, "failure");
+                return Utils.generateResponse(false, message);
             }
 
         } else
