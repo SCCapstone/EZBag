@@ -19,7 +19,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertEquals;
 
 @Path("/lookup")
-public class ProductQueryRoute extends {
+public class ProductQueryRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
@@ -46,7 +46,7 @@ public class ProductQueryRoute extends {
         StartupService.startup();
         return new ResourceConfig(ProductQueryRoute.class);
     }
-    
+
      */
 }
 
