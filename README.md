@@ -88,7 +88,9 @@ git clone https://github.com/SCCapstone/EZBag.git
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct.
 
 ## Running Backend Unit Tests
-Running the tests in the Jersey Test Framework is easy. 
+Tests location: EZBagWebapp/src/main/java/test
+
+Running the tests in the Jersey Test Framework is easy:
 1. Open the EZBagWebapp/src/main/java/test package 
 2. Right click on the test you want to run and click "run test"
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
@@ -97,6 +99,8 @@ Running the tests in the Jersey Test Framework is easy.
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
 
 ## Running Frontend Behavioral Tests
+Tests location: /Frontend/customer/tests/
+
 1. If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend.
 2. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
