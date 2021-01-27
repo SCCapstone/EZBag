@@ -17,7 +17,8 @@ export default {
     },
     methods: {
         clickedTotalBtn() {
-            this.$router.push('cart');
+            // https://stackoverflow.com/questions/59770610/uncaught-in-promise-in-vue-router-when-multiple-clicks-on-a-button
+            this.$router.push('cart').catch(error => {console.error(error);});
         }
     },
 }

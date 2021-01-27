@@ -1,8 +1,10 @@
 <template>
-  <div id='barcodePickerOrigin'>
-    <div id="scandit-barcode-picker"></div>
-    <ScanButtons 
-      v-bind:total=getCartSubtotal />
+  <div>
+    <div id="scan-content">
+      <div id="scandit-barcode-picker"></div>
+      <ScanButtons 
+        v-bind:total=getCartSubtotal />
+    </div>
     <v-bottom-sheet
       v-model="show_scanned_product"
       inset
@@ -61,10 +63,15 @@ export default {
       engineLocation: "https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build",
       })
         .then(() => {
-          return ScanditSDK.BarcodePicker.create(document.getElementById("scandit-barcode-picker"), {
-          videoFit: ScanditSDK.BarcodePicker.ObjectFit.COVER,
-        }).then((picker) => {
+          return ScanditSDK.BarcodePicker
+                  .create(document.getElementById("scandit-barcode-picker"))
+                  .then((picker) =>
+          {
           barcodePicker = picker;// access to barcode picker outside of ScanditSDK call
+          // set scandit settings https://docs.scandit.com/stable/web/classes/barcodepicker.html
+          picker.setMirrorImageEnabled(false);
+          picker.setVideoFit(ScanditSDK.BarcodePicker.ObjectFit.COVER);
+          picker.setGuiStyle(ScanditSDK.BarcodePicker.GuiStyle.NONE);
           barcodePicker.applyScanSettings(
             new ScanditSDK.ScanSettings({
               enabledSymbologies: [
@@ -79,11 +86,13 @@ export default {
           barcodePicker
             .on("scan", (scanResult) => {
               barcodePicker.pauseScanning();
+              console.log("paused scanning", barcodePicker)
               var barcode = scanResult.barcodes[0].data
+              console.log("read barcode", barcode)
               this.onScan(barcode);
             })
             .on("scanError", console.error);
-      });
+        });
     })
     .catch(console.error);
   },
@@ -93,21 +102,19 @@ export default {
                     "addProduct",
                   ]),
     onScan(barcode) {
-
-      var product = this.getCart.find(product => product.barcode == barcode)
-      // if product is in cart
-      if(product!==undefined) {
-        // product already in cart
-        this.product_loaded_from_cart = true
-        // save the state of the scanned product before allowing user to make changes
-        this.initial_product_quantity = product.quantity
-      } else {
-        // product not in cart
-        this.product_loaded_from_cart = false
-        this.getProduct(barcode, this.getCartBusinessID);
-      }
       this.scanned_product_barcode = barcode
-      this.show_scanned_product = true
+      // attempt to find product in cart
+      var product = this.getCart.find(product => product.barcode == barcode)
+      if(product!==undefined) { // product was already in cart
+        // save the state of the scanned product before allowing user to make changes
+        this.product_loaded_from_cart = true
+        this.initial_product_quantity = product.quantity
+        this.show_scanned_product = true
+      } else { // product was not in cart
+        this.product_loaded_from_cart = false
+        // request product information from backend
+        this.requestProductFromBackend(barcode, this.getCartBusinessID);
+      }
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
@@ -115,8 +122,10 @@ export default {
     hideScannedProductCard() {
       this.show_scanned_product = false;
       this.scanned_product_barcode = null;
-      console.log('resume scanning', barcodePicker)
+      // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
       barcodePicker.resumeScanning();
+      barcodePicker.clearSession();
+      console.log('resume scanning', barcodePicker)
     },
     cancelScannedProduct() {
       if (this.product_loaded_from_cart == true) 
@@ -125,14 +134,14 @@ export default {
         this.removeProduct({barcode:this.scanned_product_barcode}) 
       this.hideScannedProductCard()
     },
-    getProduct(barcode, businessID) {
+    requestProductFromBackend(barcode, businessID) {
       var data = {
         "barcode": barcode,
         "businessID": businessID
       };
-      var ref = this
       data = JSON.stringify(data);
       // TODO: handle api call failed case elegantly 
+      var self = this;
       jQuery.post(
           process.env.VUE_APP_ROOT_API+"EZBagWebapp/webapi/lookup",
           data,
@@ -140,32 +149,30 @@ export default {
             // handle json object return as string
             if (typeof(data) == "string")
               data = JSON.parse(data)
-            if (status == "success" && data.status !== "failure") {
-              ref.addProduct({barcode:data.barcode,
-                              name:data.name,
-                              price: data.price,
-                              tax: data.tax,
-                              description:data.description,
-                              businessID:businessID})
-            } else {
-              // TODO: elegantly display temporary poppup indicating product not found
-              ref.addProduct({barcode:barcode,
-              name:"Unknown product ".concat(barcode),
-              price: 10,
-              tax: 0.30,
-              description:"Not in our database",
-              businessID:businessID})
+            if (status == "success" && data.status !== "failure") { 
+              let product = {barcode:data.barcode,
+                      name:data.name,
+                      price: data.price,
+                      tax: data.tax,
+                      description:data.description,
+                      businessID:businessID};
+              self.addProduct(product)
+              self.show_scanned_product = true
+            } else { // product was not found by backend
+              console.log("product was not found by backend")
+              // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
+              barcodePicker.resumeScanning();
+              barcodePicker.clearSession();
             }
           }
         );
     }
-
   },
 }
 </script>
 
 <style scoped>
-  #barcodePickerOrigin {
+  #scan-content {
     height: 100%;
     width: 100%;
   }
