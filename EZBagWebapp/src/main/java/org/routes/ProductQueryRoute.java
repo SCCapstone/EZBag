@@ -40,14 +40,6 @@ public class ProductQueryRoute {
             return response.toString();
         }
     }
-    /*
-    @Override
-    protected Application configure() {
-        StartupService.startup();
-        return new ResourceConfig(ProductQueryRoute.class);
-    }
-    
-     */
 }
 
 
