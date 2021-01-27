@@ -1,0 +1,2 @@
+barcode	barcodeType	businessID	name	price	tax	description
+12345678	ean8	1	Example Product	9.99	0.60	Example Product is used for testing. It is not a real item!
