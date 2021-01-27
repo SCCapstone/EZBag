@@ -90,11 +90,11 @@ public class MongoDB {
     // method to check whether the given document already exists within a collection collection
     private Boolean documentExistsInCollection(MongoCollection<Document> collection, Document insertDoc, String idField) {
         Document respDoc = collection.find(eq(idField, insertDoc.getString(idField))).first();
-        System.out.println(respDoc.toString());
         if (respDoc != null) {
-            return false;
+            System.out.println(respDoc.toString());
+            return true;
         }
-        return true;
+        return false;
     }
 
     public String getByEAN(String barcode) {
@@ -118,7 +118,6 @@ public class MongoDB {
     // todo check if insert was actually successful for all insert methods
     public Boolean insertInfo(Document customerInfo) {
         // only insert document if it does not exist
-        System.out.println((documentExistsInCollection(collectionsMap.get(infoCollectionName), customerInfo, "hash")));
         if (!(documentExistsInCollection(collectionsMap.get(infoCollectionName), customerInfo, "hash")))
         {
             collectionsMap.get(infoCollectionName).insertOne(customerInfo);

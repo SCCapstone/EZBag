@@ -30,9 +30,21 @@ public class CustomerInfoRoute {
         if ((payloadObject.has("email") || payloadObject.has("phone"))
                 && payloadObject.has("hash") && payloadObject.has("session")) {
 
+            // check cart collection for hash, aka existence of cart
+            String cartHash = payloadObject.get("hash").getAsString();
+            Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
+            String receipt = "";
+            if (customerCart != null) {
+                // generate receipt
+                receipt = ReceiptService.generateEReceipt(customerCart);
+            } else {
+                // submitted invalid customer cart hash
+                String message = "Customer cart was not found in the database";
+                return Utils.generateResponse(false, message);
+            }
+
             if (payloadObject.has("email")) {
                 insertDoc.append("email", payloadObject.get("email").getAsString());
-
             }
             if (payloadObject.has("phone")) {
                 insertDoc.append("phone", payloadObject.get("phone").getAsString());
@@ -43,29 +55,13 @@ public class CustomerInfoRoute {
 
             // check if customer has already in customer info database
             // if it does not, insert, if it does, send back error response
-            // TODO: check cart collection for hash
-            // TODO: check customer info collection for cart existing there
             String resp = DatabaseService.insertInfo(insertDoc);
-            System.out.println(resp);
 
             // if insertInfo returns failure status, skip sending of digital receipt and return error msg
             JsonObject respJson = new JsonParser().parse(resp).getAsJsonObject();
             String status = respJson.get("status").getAsString();
 
             if (!status.equals("failure")) {
-
-                String cartHash = payloadObject.get("hash").getAsString();
-                Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
-                // TODO: handle case when customer cart returns as null
-                String receipt = "";
-                if (customerCart != null) {
-                    // generate receipt
-                    receipt = ReceiptService.generateEReceipt(customerCart);
-                } else {
-                    // submitted invalid customer cart hash
-                    String message = "Customer cart was not found in the database";
-                    return Utils.generateResponse(false, message);
-                }
 
                 JsonObject response = new JsonObject();
                 try {
@@ -97,7 +93,7 @@ public class CustomerInfoRoute {
 
             } else {
                 String message = "Digital receipt already requested.";
-                return Utils.generateResponse(false, "failure");
+                return Utils.generateResponse(false, message);
             }
 
         } else

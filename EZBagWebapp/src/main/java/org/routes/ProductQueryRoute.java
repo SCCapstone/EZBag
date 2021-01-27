@@ -46,7 +46,7 @@ public class ProductQueryRoute {
         StartupService.startup();
         return new ResourceConfig(ProductQueryRoute.class);
     }
-
+    
      */
 }
 
