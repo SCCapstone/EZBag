@@ -26,10 +26,9 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
 
 
-## Setup, Running/Deployment, Testing
-This project is split into a frontend and a backend, so we will provide instructions for each.
+## Backend
 
-### Setup Backend
+### Setup
 
 1. Install the following requirements:
 * [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
@@ -43,7 +42,7 @@ This project is split into a frontend and a backend, so we will provide instruct
 2. Download or `git clone` this repository.
 3. Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
 
-### Build and Deploy Backend
+### Build and Deploy
 1. Open the EZBagWebapp project in IntelliJ
 2. Open Maven side menu -> Lifecycle menu and run
     - clean
@@ -56,7 +55,7 @@ This project is split into a frontend and a backend, so we will provide instruct
 
 Tomcat will now auto-deploy the application which can be viewed at http://localhost:8080/EZBagWebapp.
 
-### Backend Unit Testing
+### Unit Testing
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. Can also be used to test any backend methods without deploying the server via TomCat.
 
 Tests location: `EZBagWebapp/src/main/java/test`
@@ -66,29 +65,32 @@ Running the tests in the Jersey Test Framework:
 2. Right click on the test you want to run and click "run test"
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
-### Setup Frontend
+## Frontend
+Our frontend is built in vue.js, using vuex for storing data and vuetifyjs for material components.
+
+### Setup
 1. Download or `git clone` this repository if you haven't already.
 2. Install [`npm`](https://www.npmjs.com/get-npm).
 3. Open a terminal in `repository/Frontend/customer` and run `npm install` to install all dependencies.
 
-### Build and Run Frontend
+### Build
 Build the frontend:
 1. Open a terminal in `repository/Frontend/customer`
 2. Run `npm run build`
 The build will be placed in `repository/Frontend/customer/dist`.
 
+### Run
 Run a local development build:
 1. Open a terminal in `repository/Frontend/customer`
 2. Run `npm run serve`
 
-### Frontend Behavioral Testing
+### Behavioral Testing
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
 Running end-to-end behavioral tests:
 1. Open a terminal in `repository/Frontend/customer`
-2. Run `npm run test:e2e`.
-3. A window will open displaying our tests. Select the test to run, or select 'run all tests'.
-
+2. Run `npm run test:e2e`. A window will open displaying our tests. 
+3. Select the test to run, or select 'run all tests'.
 
 # Authors
 - [Blake Edwards](mailto:blakete@email.sc.edu)
