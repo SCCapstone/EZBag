@@ -20,13 +20,13 @@ public class EmailService {
         didInit = true;
     }
 
-    public static void sendEmail(String to, String subject, String messageText) {
+    public static int sendEmail(String to, String subject, String messageText) {
         System.out.println("Sending an email to: " + to);
         System.out.println("\tSubject: " + subject);
         System.out.println("\tText: " + messageText);
         if(!didInit){
             System.out.println("[EmailService] Warning, email service has not been initialized. Email not sent");
-            return;
+            return 3;
         }
         String host = "smtp.gmail.com";
         //*
@@ -50,7 +50,7 @@ public class EmailService {
         });
 
         // Used to debug SMTP issues
-        session.setDebug(false);
+        session.setDebug(true);
 
         try {
             // Create a default MimeMessage object.
@@ -69,8 +69,10 @@ public class EmailService {
             message.setText(messageText);
             // Send message
             Transport.send(message);
+            return 1;
         } catch (MessagingException mex) {
             mex.printStackTrace();
+            return 0;
         }
         //*/
     }
