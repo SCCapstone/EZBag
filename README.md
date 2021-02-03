@@ -31,7 +31,7 @@ This project is split into a frontend and a backend, so we will provide instruct
 
 ### Setup Backend
 
-Install the following requirements:
+1. Install the following requirements:
 * [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
 * [IntelliJ](https://www.jetbrains.com/idea/download/#section=windows)
 * [Tomcat 8](https://tomcat.apache.org/)
@@ -40,57 +40,53 @@ Install the following requirements:
 * [MongoDB](https://www.mongodb.com/)
     * [Official Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
-Download or `git clone` this repository.
-
-Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
+2. Download or `git clone` this repository.
+3. Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
 
 ### Build and Deploy Backend
-Open the EZBagWebapp project in IntelliJ
-
-Open Maven side menu
-
-- Open Lifecycle menu
+1. Open the EZBagWebapp project in IntelliJ
+2. Open Maven side menu -> Lifecycle menu and run
     - clean
     - compile
     - package
-
-Open "target" folder in project root
-
-Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
-
-Start Tomcat and navigate to `/path-to-tomcat-install/tomcat/bin/`
-
-Run `startup.sh`/`startup.bat` if your on (linux/windows)
+3. Open "target" folder in project root
+4. Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
+5. Start Tomcat and navigate to `/path-to-tomcat-install/tomcat/bin/`
+6. Run `startup.sh`/`startup.bat` if your on (linux/windows)
 
 Tomcat will now auto-deploy the application which can be viewed at http://localhost:8080/EZBagWebapp.
 
 ### Backend Unit Testing
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. Can also be used to test any backend methods without deploying the server via TomCat.
 
-Tests location: EZBagWebapp/src/main/java/test
+Tests location: `EZBagWebapp/src/main/java/test`
 
-Running the tests in the Jersey Test Framework is easy:
+Running the tests in the Jersey Test Framework:
 1. Open the EZBagWebapp/src/main/java/test package 
 2. Right click on the test you want to run and click "run test"
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
 ### Setup Frontend
-Download or `git clone` this repository if you haven't already.
-Install [`npm`](https://www.npmjs.com/get-npm).
-Open a terminal in `repository/Frontend/customer` and run `npm install` to install all dependencies.
+1. Download or `git clone` this repository if you haven't already.
+2. Install [`npm`](https://www.npmjs.com/get-npm).
+3. Open a terminal in `repository/Frontend/customer` and run `npm install` to install all dependencies.
 
 ### Build and Run Frontend
-To build the frontend, open a terminal in `repository/Frontend/customer` and run `npm run build`. The build will be placed in `repository/Frontend/customer/dist`.
+Build the frontend:
+1. Open a terminal in `repository/Frontend/customer`
+2. Run `npm run build`
+The build will be placed in `repository/Frontend/customer/dist`.
 
-To run a local development build of the frontend at localhost:9000/, open a terminal in `repository/Frontend/customer` and run `npm run serve` 
+Run a local development build:
+1. Open a terminal in `repository/Frontend/customer`
+2. Run `npm run serve`
 
 ### Frontend Behavioral Testing
-We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
+We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
-Tests location: /Frontend/customer/tests/
-
-1. If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend.
-2. Then, simply run `npm run test:e2e`. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+Running end-to-end behavioral tests:
+1. Open a terminal in `repository/Frontend/customer`
+2. Run `npm run test:e2e`.
 3. A window will open displaying our tests. Select the test to run, or select 'run all tests'.
 
 
