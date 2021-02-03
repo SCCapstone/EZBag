@@ -1,5 +1,11 @@
+# EZBag
 
-# EZBag Project
+Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
+However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
+Therefore, EZBag is a free web app that aims to allow any brick-and-mortar store to implement scan-and-go. 
+A patron at a participating store can use the EZBag web app on their phone to scan and pay for items without going through the typical checkout process.
+[EZBag web app view mockups can be found here.](https://github.com/SCCapstone/EZBag/wiki/Requirements)
+
 
 ## [EZBag Proof of Concept Presentation & Demo](https://youtu.be/l9hTREqO-ws)
 Click this link to view our proof of concept presentation video on YouTube
@@ -19,20 +25,13 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 6. Press the "Checkout" button to mock pay
 7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
 
-## What is EZBag?
 
-Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
-However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
-Therefore, EZBag is a free web app that aims to allow any brick-and-mortar store to implement scan-and-go. 
-A patron at a participating store can use the EZBag web app on their phone to scan and pay for items without going through the typical checkout process.
+## Setup, Running/Deployment, Testing
+This project is split into a frontend and a backend, so we will provide instructions for each.
 
+### Setup Backend
 
-[EZBag web app view mockups can be found here.](https://github.com/SCCapstone/EZBag/wiki/Requirements)
-
-
-## External Requirements
-
-
+Install the following requirements:
 * [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
 * [IntelliJ](https://www.jetbrains.com/idea/download/#section=windows)
 * [Tomcat 8](https://tomcat.apache.org/)
@@ -41,53 +40,33 @@ A patron at a participating store can use the EZBag web app on their phone to sc
 * [MongoDB](https://www.mongodb.com/)
     * [Official Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
 
+Download or `git clone` this repository.
 
-## Setup
+Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
 
+### Build and Deploy Backend
+Open the EZBagWebapp project in IntelliJ
 
-- Download this repository
-```
-git clone https://github.com/SCCapstone/EZBag.git
-```
-- Open the EZBagWebapp project in IntelliJ
-    - The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies for you
+Open Maven side menu
 
+- Open Lifecycle menu
+    - clean
+    - compile
+    - package
 
-## Running
+Open "target" folder in project root
 
+Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
 
-- Open the EZBagWebapp project in IntelliJ
-- Open Maven side menu
-    - Open Lifecycle menu
-        - clean
-        - compile
-        - package
-- Open "target" folder in project root
-- Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
-- Start Tomcat
-```
-/path-to-tomcat-install/tomcat/bin/./startup.sh
-```
-- Tomcat will now auto-deploy the application which can be view at http://localhost:8080/EZBagWebapp 
+Start Tomcat and navigate to `/path-to-tomcat-install/tomcat/bin/`
 
+Run `startup.sh`/`startup.bat` if your on (linux/windows)
 
-# Deployment
+Tomcat will now auto-deploy the application which can be viewed at http://localhost:8080/EZBagWebapp.
 
-
-- Perform all steps for running up until “Copy…”
-- Secure copy the "EZBagWebapp.war" to your remote server
-- Copy the "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
-- Start tomcat on remote server
-```
-/path-to-tomcat-install/tomcat/bin/./startup.sh
-```
-- Tomcat will now auto-deploy the application which can be view at http://yourdomain.com:8080/EZBagWebapp 
-
-
-# Backend Unit Testing
+### Backend Unit Testing
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. Can also be used to test any backend methods without deploying the server via TomCat.
 
-## Running Backend Unit Tests
 Tests location: EZBagWebapp/src/main/java/test
 
 Running the tests in the Jersey Test Framework is easy:
@@ -95,10 +74,19 @@ Running the tests in the Jersey Test Framework is easy:
 2. Right click on the test you want to run and click "run test"
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
-# Frontend Behavioral Testing
+### Setup Frontend
+Download or `git clone` this repository if you haven't already.
+Install [`npm`](https://www.npmjs.com/get-npm).
+Open a terminal in `repository/Frontend/customer` and run `npm install` to install all dependencies.
+
+### Build and Run Frontend
+To build the frontend, open a terminal in `repository/Frontend/customer` and run `npm run build`. The build will be placed in `repository/Frontend/customer/dist`.
+
+To run a local development build of the frontend at localhost:9000/, open a terminal in `repository/Frontend/customer` and run `npm run serve` 
+
+### Frontend Behavioral Testing
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. 
 
-## Running Frontend Behavioral Tests
 Tests location: /Frontend/customer/tests/
 
 1. If you haven't already, install `npm` and run `npm install` in the /Frontend/customer/ directory to install all dependencies for building/testing the frontend.
