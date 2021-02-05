@@ -5,4 +5,5 @@ EZBagWebapp/src/main/*
 EZBagWebapp/src/main/*/
 !/EZBagWebapp/src/main/webapp
 .idea
+Frontend/customer/package-lock.json
 
