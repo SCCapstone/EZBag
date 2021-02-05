@@ -56,7 +56,7 @@ public class CustomerInfoRoute {
             // check if customer has already in customer info database
             // if it does not, insert, if it does, send back error response
             String resp = DatabaseService.insertInfo(insertDoc);
-
+            System.out.println(resp);
             // if insertInfo returns failure status, skip sending of digital receipt and return error msg
             JsonObject respJson = new JsonParser().parse(resp).getAsJsonObject();
             String status = respJson.get("status").getAsString();

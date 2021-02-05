@@ -28,6 +28,7 @@ public class MongoDB {
     private String productCollectionName;
     private String eventsCollectionName;
     private String checkoutCartCollectionName;
+    private String userCollectionName;
     public MongoDB(Properties prop)
     {
         System.out.println("[MongoDB] Loading database properties");
@@ -41,6 +42,7 @@ public class MongoDB {
         infoCollectionName = prop.getProperty("infoCollection");
         eventsCollectionName = prop.getProperty("eventCollection");
         checkoutCartCollectionName = prop.getProperty("cartCollection");
+        userCollectionName = prop.getProperty("userCollection");
         init();
     }
     public void init()
@@ -60,6 +62,8 @@ public class MongoDB {
         collectionsMap.put(eventsCollectionName, database.getCollection(eventsCollectionName));
         System.out.print("[MongoDB] Fetching checkout collection...");
         collectionsMap.put(checkoutCartCollectionName, database.getCollection(checkoutCartCollectionName));
+        System.out.print("[MongoDB] Fetching user collection...");
+        collectionsMap.put(userCollectionName, database.getCollection(userCollectionName));
         System.out.print("[MongoDB] initialization done\n");
     }
     public Document getProductByBarcodeBusinessID(String barcode, String businessID) {
@@ -88,13 +92,21 @@ public class MongoDB {
     }
 
     // method to check whether the given document already exists within a collection collection
-    private Boolean documentExistsInCollection(MongoCollection<Document> collection, Document insertDoc, String idField) {
-        Document respDoc = collection.find(eq(idField, insertDoc.getString(idField))).first();
+    private Boolean documentExistsInCollection(String collectionName, String idField, String value) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject(idField, value));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(collectionName).find(query).first();
         if (respDoc != null) {
             System.out.println(respDoc.toString());
             return true;
         }
         return false;
+    }
+
+    public Boolean userExists(String userEmail) {
+        return documentExistsInCollection(userCollectionName, "email", userEmail);
     }
 
     public String getByEAN(String barcode) {
@@ -115,10 +127,11 @@ public class MongoDB {
         JsonObject resp = new JsonObject();
         return resp.toString();
     }
+
     // todo check if insert was actually successful for all insert methods
     public Boolean insertInfo(Document customerInfo) {
         // only insert document if it does not exist
-        if (!(documentExistsInCollection(collectionsMap.get(infoCollectionName), customerInfo, "hash")))
+        if (!(documentExistsInCollection(infoCollectionName,"hash", customerInfo.getString("hash"))))
         {
             collectionsMap.get(infoCollectionName).insertOne(customerInfo);
             return true;
@@ -139,6 +152,15 @@ public class MongoDB {
                 newProduct.getString("businessID"));
         if (resp == null) {
             collectionsMap.get(productCollectionName).insertOne(newProduct);
+            return true;
+        }
+        return false;
+    }
+    public Boolean insertUser(Document newUser) {
+        // only insert document if it does not exist
+        if (!(documentExistsInCollection(userCollectionName,"email", newUser.getString("email"))))
+        {
+            collectionsMap.get(userCollectionName).insertOne(newUser);
             return true;
         }
         return false;

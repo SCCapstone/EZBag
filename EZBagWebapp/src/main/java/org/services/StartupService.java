@@ -49,7 +49,7 @@ public class StartupService implements ServletContextListener {
                 .append("businessID", "1")
                 .append("name", "Example Product")
                 .append("price", 9.99)
-                .append("tax", 0.60)
+                .append("tax", 0.06)
                 .append("description", "Example Product is used for testing. It is not a real item!")
                 .append("time", System.currentTimeMillis());
         String resp = DatabaseService.insertProduct(insertDoc);

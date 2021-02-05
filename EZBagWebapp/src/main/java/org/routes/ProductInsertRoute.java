@@ -23,6 +23,7 @@ public class ProductInsertRoute {
                 && payloadObject.has("tax")
                 && payloadObject.has("description"))
         {
+
             insertDoc.append("barcode", payloadObject.get("barcode").getAsString())
                     .append("barcodeType", payloadObject.get("barcodeType").getAsString())
                     .append("businessID", payloadObject.get("businessID").getAsString())
@@ -31,6 +32,7 @@ public class ProductInsertRoute {
                     .append("tax", payloadObject.get("tax").getAsDouble())
                     .append("description", payloadObject.get("description").getAsString())
                     .append("time", System.currentTimeMillis());
+            // TODO: change to reply with message of why the addition failed
             return DatabaseService.insertProduct(insertDoc);
         } else
         {
@@ -38,6 +40,7 @@ public class ProductInsertRoute {
             System.out.println(message);
             JsonObject response = new JsonObject();
             response.addProperty("message", message);
+            response.addProperty("status", "failure");
             return response.toString();
         }
     }

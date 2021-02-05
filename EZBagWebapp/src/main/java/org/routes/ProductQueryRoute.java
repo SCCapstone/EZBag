@@ -37,6 +37,7 @@ public class ProductQueryRoute {
             String message = "Barcode product lookup requires: barcode, businessID";
             JsonObject response = new JsonObject();
             response.addProperty("message", message);
+            response.addProperty("status", "failure");
             return response.toString();
         }
     }
