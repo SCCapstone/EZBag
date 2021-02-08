@@ -42,17 +42,5 @@ public class StartupService implements ServletContextListener {
         SMSService.init(mediaProp);
         System.out.println("[Startup] Server started successfully in " + (System.currentTimeMillis() - clock) + "ms");
 
-        // insert example product to the database to be used for testing
-        Document insertDoc = new Document();
-        insertDoc.append("barcode", "12345678")
-                .append("barcodeType", "ean8")
-                .append("businessID", "1")
-                .append("name", "Example Product")
-                .append("price", 9.99)
-                .append("tax", 0.06)
-                .append("description", "Example Product is used for testing. It is not a real item!")
-                .append("time", System.currentTimeMillis());
-        String resp = DatabaseService.insertProduct(insertDoc);
-        System.out.println(resp);
     }
 }
