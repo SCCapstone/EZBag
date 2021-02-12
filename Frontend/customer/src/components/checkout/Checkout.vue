@@ -46,10 +46,9 @@ export default {
           }
         );
       } else {
+        this.$emit("show-popup")
         // TODO: add mor elegant empty cart message
-        alert("Please add an item to your cart checking out!")
       }
-      
     }
   }
 }
