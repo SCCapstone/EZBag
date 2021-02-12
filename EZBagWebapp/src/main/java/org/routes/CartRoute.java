@@ -1,25 +1,15 @@
 package org.routes;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.client.Entity;
-import jakarta.ws.rs.core.Application;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
-import org.junit.Test;
 import org.services.DatabaseService;
-import org.services.ReceiptService;
-import org.services.StartupService;
 import org.services.Utils;
 
 import java.util.*;
-
-import static junit.framework.TestCase.assertEquals;
 
 @Path("/cart")
 public class CartRoute {
@@ -39,42 +29,54 @@ public class CartRoute {
             String businessID = payloadObject.get("businessID").getAsString();
             String session = payloadObject.get("session").getAsString();
             JsonArray barcodes = payloadObject.get("barcodes").getAsJsonArray();
-            List<String> codes = new ArrayList<String>();
-            // TODO make sure given product in database
-            // TODO if product in database get its price, mult by quantity, add to total
-            for (int i=0; i<barcodes.size(); i++) {
-                codes.add(barcodes.get(i).getAsString());
-            }
             JsonArray productQuantities = payloadObject.get("quantities").getAsJsonArray();
+            // check if product and quantities array lengths match
+            if (barcodes.size() != productQuantities.size()) {
+                String message = "Submitted number of products and quantities does not match!";
+                return Utils.generateResponse(false, message);
+            }
+            List<String> codes = new ArrayList<String>();
             List<Integer> quantities = new ArrayList<Integer>();
-            for (int i=0; i<productQuantities.size(); i++) {
+            // calculate subtotal and taxes of cart
+            Double cartSubtotal = 0.0;
+            Double cartTaxTotal = 0.0;
+            for (int i=0; i<barcodes.size(); i++) {
+                // checking if product with given barcode and BID exists in DB
+                String resp = DatabaseService.getProductByBarcodeBusinessID(barcodes.get(i).getAsString(), businessID);
+                JsonObject productResp = new JsonParser().parse(resp).getAsJsonObject();
+                // if does, get price
+                if (!productResp.has("status"))
+                {
+                    Double productPrice = productResp.get("price").getAsDouble();
+                    int productQuantity = productQuantities.get(i).getAsInt();
+                    cartSubtotal += (double) Math.ceil(100 * productPrice * productQuantity) / 100.0;
+                    cartTaxTotal += (double) Math.ceil(100* productResp.get("tax").getAsDouble() * (productPrice * productQuantity)) / 100.0;
+                } else {
+                    String message = "Submitted product does not exist: "+barcodes.get(i).getAsString();
+                    return Utils.generateResponse(false, message);
+                }
+                codes.add(barcodes.get(i).getAsString());
                 quantities.add(productQuantities.get(i).getAsInt());
             }
-            // TODO: check the product exists in database before checking the price of it
-            // TODO: calculate subtotal based on product prices
-            Double subtotal = 10.99;
-            if (codes.size() == quantities.size()) {
-                insertDoc.append("barcodes", codes);
-                insertDoc.append("quantities", quantities);
-                insertDoc.append("businessID", businessID);
-                insertDoc.append("subtotal", subtotal);
-                insertDoc.append("session", session);
-                // TODO calculate real tax on cart
-                insertDoc.append("tax", 0.06*subtotal);
-                // TODO calculate cart total using ReceiptService getCartProducts
-                insertDoc.append("total", subtotal+insertDoc.getDouble("tax"));
-                insertDoc.append("time", System.currentTimeMillis());
-                insertDoc.append("cartHash", cartHash);
 
-                String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
-                JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();
-                respObject.addProperty("hash", cartHash);
-                return respObject.toString();
-            }
-            return Utils.generateResponse(false, "Number of barcodes and barcode types did not match");
+            insertDoc.append("barcodes", codes);
+            insertDoc.append("quantities", quantities);
+            insertDoc.append("businessID", businessID);
+            insertDoc.append("subtotal", cartSubtotal);
+            insertDoc.append("session", session);
+            insertDoc.append("tax", cartTaxTotal);
+            insertDoc.append("total", cartSubtotal+cartTaxTotal);
+            insertDoc.append("time", System.currentTimeMillis());
+            insertDoc.append("cartHash", cartHash);
+
+            String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
+            JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();
+            respObject.addProperty("hash", cartHash);
+            return respObject.toString();
+
         } else
         {
-            return Utils.generateResponse(false, "Submitted customer event json object is not valid");
+            return Utils.generateResponse(false, "Submitted cart json object does not contain required fields");
         }
     }
 }

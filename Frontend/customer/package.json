@@ -11,6 +11,7 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "jquery": "^3.5.1",
+    "js-cookie": "^2.2.1",
     "scandit-sdk": "^5.4.2",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",

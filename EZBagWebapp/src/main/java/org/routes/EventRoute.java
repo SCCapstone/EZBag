@@ -30,6 +30,7 @@ public class EventRoute {
             System.out.println(message);
             JsonObject response = new JsonObject();
             response.addProperty("message", message);
+            response.addProperty("status", "failure");
             return response.toString();
         }
     }

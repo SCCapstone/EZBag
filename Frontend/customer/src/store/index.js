@@ -4,10 +4,19 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersist from 'vuex-persist';
 import cart from './modules/cart';
+import Cookie from 'js-cookie';
 
 
 // Load Vuex
 Vue.use(Vuex);
+
+// Setting cookies tut: https://sandulat.com/safely-persisting-vuex-store-in-local-storage/
+const tokenCookieName = 'userToken'
+// uuid gen courtesy of https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
+const token = Cookie.get(tokenCookieName) || ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16))
+// about cookie expiration https://stackoverflow.com/questions/532635/javascript-cookie-with-no-expiration-date
+Cookie.set(tokenCookieName, token, {secure: true, expires: 99983090})  // generate a new session ID 
 
 // https://www.digitalocean.com/community/tutorials/vuejs-vuex-persist-state
 // TODO: consider using the reducer to only save state that we want to persist (currently saves everything)

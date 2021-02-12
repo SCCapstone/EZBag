@@ -11,6 +11,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import jQuery from 'jquery'
+import Cookie from 'js-cookie'
 
 export default {
   computed: mapGetters(['getCart', 'getCartSubtotal', 'getCartTax', 'getCartBusinessID', 'getSessionID']),
@@ -21,7 +22,7 @@ export default {
         var data = {
           barcodes: this.getCart.map(product => product.barcode),
           quantities: this.getCart.map(product => product.quantity),
-          session: this.getSessionID,
+          session: Cookie.get('userToken'),
           businessID: this.getCartBusinessID
         }
         console.log('cart before stringify', data)
@@ -29,7 +30,7 @@ export default {
         console.log('cart before sending:', data)
         var ref = this
         jQuery.post(
-          "/EZBagWebapp/webapi/cart",
+          process.env.VUE_APP_ROOT_API+"EZBagWebapp/webapi/cart",
           data,
           function(data, status) {
             // handle json object return as string
