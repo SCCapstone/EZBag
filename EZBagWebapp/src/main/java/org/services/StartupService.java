@@ -1,15 +1,10 @@
 package org.services;
 
-import com.sun.corba.se.impl.orb.DataCollectorBase;
-import org.bson.Document;
 import org.database.MongoDB;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Properties;
 
 @WebListener
