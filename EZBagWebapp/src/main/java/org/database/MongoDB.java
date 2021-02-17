@@ -79,6 +79,16 @@ public class MongoDB {
         return null;
     }
 
+    public Document getUserByEmailPassword(String email, String password) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("email", email));
+        matchDoc.add(new BasicDBObject("password", password));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(userCollectionName).find(query).first();
+        return respDoc;
+    }
+
     public Document getCustomerCartByHash(String cartHash) {
         BasicDBObject query = new BasicDBObject();
         List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();

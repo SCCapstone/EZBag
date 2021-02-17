@@ -1,5 +1,6 @@
 package org.services;
 
+import com.sun.corba.se.impl.orb.DataCollectorBase;
 import org.bson.Document;
 import org.database.MongoDB;
 
@@ -35,8 +36,11 @@ public class StartupService implements ServletContextListener {
         Properties mediaProp = Utils.getPropertiesFile(mediaProperties);
         System.out.println("[Startup] Connecting to database");
         MongoDB mongo = new MongoDB(prop);
+
         DatabaseService.database = mongo;
         ReceiptService.database = mongo;
+        DatabaseService.SECRET_KEY = prop.getProperty("secretKey"); // TODO test this
+        System.out.println("Secret key: "+ prop.getProperty("secret"));
         System.out.println("[Startup] Initializing media services");
         EmailService.init(mediaProp);
         SMSService.init(mediaProp);

@@ -2,8 +2,10 @@ package org.services;
 
 import org.database.MongoDB;
 import org.bson.Document;
+import sun.font.TrueTypeFont;
 
 public class DatabaseService {
+    public static String SECRET_KEY = null;
     public static MongoDB database = null;
     // TODO change to support "ean8", "ean13", "upca", "upce"
     public static String getProductByBarcodeBusinessID(String barcode, String businessID) {
@@ -48,6 +50,14 @@ public class DatabaseService {
     // used to check if user with email exists
     public static Boolean userExists(String userEmail) {
         return database.userExists(userEmail);
+    }
+
+    public static Boolean userLoginCredentialsValid(String userEmail, String userPassword) {
+        Document returnedUser = database.getUserByEmailPassword(userEmail, userPassword);
+        if (returnedUser != null) {
+            return true;
+        }
+        return false;
     }
 
     public static String insertInfo(Document customerInfo) {

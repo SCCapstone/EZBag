@@ -106,31 +106,32 @@ public class main {
 //        String resp7 = DatabaseService.insertCustomerCheckoutCart(customerCheckoutCartObject);
 //        System.out.println(resp7.toString());
 
-        // Testing eReceipt generator
-        List<String> barcodes = new ArrayList<String>();
-//        barcodes.add("9780061241895");
-        barcodes.add("12345678");
-        List<String> barcodeTypes = new ArrayList<String>();
-        barcodeTypes.add("ean13");
-        barcodeTypes.add("ean13");
-        barcodeTypes.add("ean13");
-        List<Integer> quantities = new ArrayList<Integer>();
-        quantities.add(1);
-        quantities.add(2);
-        quantities.add(3);
-        Document mockCartObject = new Document("time", System.currentTimeMillis())
-                .append("barcodes", barcodes)
-                .append("barcodeTypes", barcodeTypes)
-                .append("quantities", quantities)
-                .append("businessID", "1")
-                .append("session", "1")
-                .append("subtotal", 10.99)
-                .append("tax", 1.16)
-                .append("total", 12.15);
-        String receipt = ReceiptService.generateEReceipt(mockCartObject);
-        System.out.println(receipt);
-//        SMSService.sendSMS("8436108275", receipt);
-        EmailService.sendEmail("blakete@email.sc.edu", "EZBag eReceipt", receipt);
+//        // Testing eReceipt generator
+//        List<String> barcodes = new ArrayList<String>();
+////        barcodes.add("9780061241895");
+//        barcodes.add("12345678");
+//        List<String> barcodeTypes = new ArrayList<String>();
+//        barcodeTypes.add("ean13");
+//        barcodeTypes.add("ean13");
+//        barcodeTypes.add("ean13");
+//        List<Integer> quantities = new ArrayList<Integer>();
+//        quantities.add(1);
+//        quantities.add(2);
+//        quantities.add(3);
+//        Document mockCartObject = new Document("time", System.currentTimeMillis())
+//                .append("barcodes", barcodes)
+//                .append("barcodeTypes", barcodeTypes)
+//                .append("quantities", quantities)
+//                .append("businessID", "1")
+//                .append("session", "1")
+//                .append("subtotal", 10.99)
+//                .append("tax", 1.16)
+//                .append("total", 12.15);
+//        String receipt = ReceiptService.generateEReceipt(mockCartObject);
+//        System.out.println(receipt);
+////        SMSService.sendSMS("8436108275", receipt);
+//        EmailService.sendEmail("blakete@email.sc.edu", "EZBag eReceipt", receipt);
+
     }
     // TODO: json to document converter to easily communicate between frontend and backend
 

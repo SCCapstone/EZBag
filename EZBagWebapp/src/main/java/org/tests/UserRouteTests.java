@@ -24,7 +24,7 @@ public class UserRouteTests extends JerseyTest {
     }
 
     @Test
-    public void testPost() {
+    public void testRegister() {
         // TODO: finish writing test
         Document exampleUser = new Document();
         String randEmail = String.valueOf((int)Math.round(Math.random() * (100000 - 0 + 1))) + "@email.com";
@@ -46,4 +46,17 @@ public class UserRouteTests extends JerseyTest {
 
 
     }
+
+    @Test
+    public void testLogin() {
+        // TODO: finish writing test
+        Document exampleUser = new Document();
+        String randEmail = String.valueOf((int)Math.round(Math.random() * (100000 - 0 + 1))) + "@email.com";
+        exampleUser.append("email", "blakete@email.sc.edu")
+                .append("password", "");
+        final String response1 = target("register").request().post(Entity.text(exampleUser.toJson()), String.class);
+        JsonObject payloadObject = new JsonParser().parse(response1).getAsJsonObject();
+        assertEquals(payloadObject.get("status").getAsString(), "success");
+    }
+
 }
