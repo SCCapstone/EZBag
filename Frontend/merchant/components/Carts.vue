@@ -3,8 +3,11 @@
     <div v-bind:key="cart.id" v-for="cart in carts" class="carts">
       <div class="cart" v-bind:class="{'is-paid':cart.paid}
       ">
-        <h4>Cart {{cart.id}}</h4>
+        <h4>Cart {{cart.businessID}}</h4>
         <Contents />
+        <p4> Subtotal: {{cart.subtotal}} </p4> 
+        <p4> Tax: {{cart.tax}} </p4> 
+        <p2> Total: {{cart.total}} </p2> 
         <p>
           <button @click="$emit('verify',carts.id)" class="verify">Verify</button>
         </p>
