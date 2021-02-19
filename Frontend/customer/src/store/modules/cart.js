@@ -25,12 +25,8 @@ if(process.env.VUE_APP_SHOW_DEBUG=='true') {
 import Cookie from 'js-cookie'
 /////////////////////////////////////////////////
 const state = {
-  knownProducts: [
-
-  ],
-  productsInCart: [
-
-  ],
+  knownProducts: [],
+  productsInCart: [],
   businessID: 1,
   cartHash: null,
 }
@@ -48,12 +44,12 @@ const getters = {
 const actions = {
 
   // attempts to add product to cart
-  async addProductToCart({ commit }, {barcode, businessID}) {
+  async addProductToCart(context, {barcode, businessID}) {
     return new Promise((resolve, reject) => {
-      var product = state.productsInCart.find(product => product.barcode == barcode)
+      var product = context.state.productsInCart.find(product => product.barcode == barcode)
       if(product === undefined) {
         // product is not in cart, so check if product is known by frontend
-        product = state.knownProducts.find(product => product.barcode == barcode)
+        product = context.state.knownProducts.find(product => product.barcode == barcode)
         if(product === undefined) {
           // product is not known by frontend, so query backend for product
           axios.post("EZBagWebapp/webapi/lookup",
@@ -66,7 +62,7 @@ const actions = {
               // so construct product based on response
               if(result.data.status != "failure") {
                 // product was found by backend, so add to known products and cart
-                commit('addToKnownProducts', {
+                context.commit('addToKnownProducts', {
                   barcode: result.data.barcode,
                   name:result.data.name,
                   price: result.data.price,
@@ -75,7 +71,7 @@ const actions = {
                   businessID:businessID,
                   exists:true
                 })
-                commit('addToCartFromKnownProducts', barcode)
+                context.commit('addToCartFromKnownProducts', barcode)
                 resolve({
                   productIsInCart:true,
                   productWasAlreadyInCart:false,
@@ -84,7 +80,7 @@ const actions = {
               }
               else 
                 // product was not found by backend, so add only to known products
-                commit('addToKnownProducts', {
+                context.commit('addToKnownProducts', {
                   barcode:barcode,
                   exists:false
                 })
@@ -102,7 +98,7 @@ const actions = {
           // product is known by frontend, but it is not in the cart
           if(product.exists == true) {
             // the product is known by the frontend to exist in the backend's DB, so add it to the cart
-            commit('addToCartFromKnownProducts', barcode)
+            context.commit('addToCartFromKnownProducts', barcode)
             resolve({
               productIsInCart:true,
               productWasAlreadyInCart:false,
@@ -127,10 +123,10 @@ const actions = {
   },
 
   // attempts to checkout cart
-  checkoutCart({commit}) {
+  checkoutCart(context) {
     return new Promise((resolve, reject) => {
-      $dbg_console_log('TEST',state.productsInCart.length, state.productsInCart)
-      if(state.productsInCart.length == 0) 
+      $dbg_console_log('TEST',context.state.productsInCart.length, context.state.productsInCart)
+      if(context.state.productsInCart.length == 0) 
         resolve({ // cart is empty
           checkoutSuccesful:false,
           cartEmpty:true
@@ -138,15 +134,15 @@ const actions = {
       else  // cart is not empty
         axios.post("EZBagWebapp/webapi/cart",
           JSON.stringify({
-            barcodes: state.productsInCart.map(prod => prod.barcode),
-            quantities: state.productsInCart.map(prod => prod.quantity),
+            barcodes: context.state.productsInCart.map(prod => prod.barcode),
+            quantities: context.state.productsInCart.map(prod => prod.quantity),
             session: Cookie.get('userToken'),
-            businessID: state.businessID
+            businessID: context.state.businessID
           }))
           .then(function (result) { // backend responded
             if(result.data.status != "failure") { // Successfully submitted cart
-              commit('setCartHash', result.data.hash)
-              commit('emptyCart')
+              context.commit('setCartHash', result.data.hash)
+              context.commit('emptyCart')
               resolve({
                 checkoutSuccesful: true,
                 cartEmpty:true
