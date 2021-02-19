@@ -125,7 +125,6 @@ const actions = {
   // attempts to checkout cart
   checkoutCart(context) {
     return new Promise((resolve, reject) => {
-      $dbg_console_log('TEST',context.state.productsInCart.length, context.state.productsInCart)
       if(context.state.productsInCart.length == 0) 
         resolve({ // cart is empty
           checkoutSuccesful:false,
