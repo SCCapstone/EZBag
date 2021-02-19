@@ -1,55 +1,33 @@
 <template>
   <v-card>
-    <v-card-title class="text-center"> Total: ${{ getCartSubtotal+getCartTax }}  </v-card-title>
-    <v-card-subtitle class="text-center"> Subtotal: ${{getCartSubtotal}} Tax: ${{getCartTax}}</v-card-subtitle>
+    <v-card-title class="text-center"> Total: ${{ getSubtotal+getTax }}  </v-card-title>
+    <v-card-subtitle class="text-center"> Subtotal: ${{getSubtotal}} Tax: ${{getTax}}</v-card-subtitle>
     <v-card-actions class="justify-center">
-      <v-btn @click="sendCartToBackend">Checkout</v-btn>
+      <v-btn @click="checkout">Checkout</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import jQuery from 'jquery'
-import Cookie from 'js-cookie'
 
 export default {
-  computed: mapGetters(['getCart', 'getCartSubtotal', 'getCartTax', 'getCartBusinessID', 'getSessionID']),
+  computed: mapGetters(['getSubtotal', 'getTax']),
   methods: {
-    ...mapActions(['setCartHash']),
-    sendCartToBackend() {
-      if (this.getCart.length > 0) {
-        var data = {
-          barcodes: this.getCart.map(product => product.barcode),
-          quantities: this.getCart.map(product => product.quantity),
-          session: Cookie.get('userToken'),
-          businessID: this.getCartBusinessID
-        }
-        console.log('cart before stringify', data)
-        data = JSON.stringify(data)
-        console.log('cart before sending:', data)
-        var ref = this
-        jQuery.post(
-          process.env.VUE_APP_ROOT_API+"EZBagWebapp/webapi/cart",
-          data,
-          function(data, status) {
-            // handle json object return as string
-            if (typeof(data) == "string")
-              data = JSON.parse(data)
-            if (status == "success" && data.status !== "failure") {
-              console.log("Successfully submitted cart")
-              ref.setCartHash({cartHash:data.hash})
-              ref.$router.push('receipt');
-            } else {
-              console.log("Failed to submit cart to backend")
-              alert("Checkout failed, please try again")
-            }
-          }
-        );
-      } else {
-        this.$emit("show-popup")
-        // TODO: add mor elegant empty cart message
-      }
+    ...mapActions(['checkoutCart']),
+    checkout() {
+      this.checkoutCart()
+        .then((result) => { // backend succesfully responded
+          this.$dbg_console_log('Attempted to checkout', result)
+          if(result.checkoutSuccesful && result.cartEmpty)
+            this.$router.push('receipt') // succesful checkout
+          else if(!result.checkoutSuccesful && result.cartEmpty)
+            this.$emit("show-popup") // cannot checkout empty cart
+          else if(!result.checkoutSuccesful && !result.cartEmpty)
+            this.$dbg_console_log('Backend could not checkout cart for some reason')
+        }).catch(error => { // backend could not be reached
+          this.$dbg_console_log('Failed to checkout', error)
+        })
     }
   }
 }

@@ -1,93 +1,242 @@
-// this is a vuex state module, it is called by store/index.js 
+///// Vuex Store Module Settings and Imports ////
 
-//TODO: remove default products when no longer needed for debug
+// import debug function from mixin and destructure it
+// (global mixins are only used by components, not vuex modules)
+import debug from '../../mixins/debug'
+const { methods } = debug
+const { $dbg_console_log } = methods
+
+// import axios and set defaults
+import axios from 'axios'
+axios.defaults.baseURL = process.env.VUE_APP_ROOT_API
+axios.defaults.timeout = 2000
+// if in development, then all axios requests and responses will be logged
+if(process.env.VUE_APP_SHOW_DEBUG=='true') {
+  axios.interceptors.request.use(request => {
+    $dbg_console_log('Starting Request', request)
+    return request
+  })
+  axios.interceptors.response.use(response => {
+    $dbg_console_log('Response', response)
+    return response
+  })
+}
+
+import Cookie from 'js-cookie'
+/////////////////////////////////////////////////
 const state = {
-  cart: [
+  knownProducts: [
+
+  ],
+  productsInCart: [
 
   ],
   businessID: 1,
   cartHash: null,
-};
+}
 
 const getters = {
-  getCart: (state) => state.cart,
-  getCartSubtotal: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
-  getCartTax: (state) => (Math.ceil(state.cart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
-  getCartBusinessID: (state) => state.businessID,
-  getSessionID: (state) => state.sessionID,
+  getProductsInCart: (state) => state.productsInCart,
+  getSubtotal: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
+  getTax: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
+  getBusinessID: (state) => state.businessID,
   getCartHash: (state) => state.cartHash,
-};
+}
 
 
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
-  //TODO: send event to backend
-  async addProduct({ commit }, {barcode, name, tax, price, description, businessID}) {
-    if(state.cart.find(product => product.barcode == barcode) === undefined) {
-      commit('addProduct', {barcode:barcode, name:name, price:price, tax:tax,
-        description:description, businessID:businessID, quantity:1})
-    }
+
+  // attempts to add product to cart
+  async addProductToCart({ commit }, {barcode, businessID}) {
+    return new Promise((resolve, reject) => {
+      var product = state.productsInCart.find(product => product.barcode == barcode)
+      if(product === undefined) {
+        // product is not in cart, so check if product is known by frontend
+        product = state.knownProducts.find(product => product.barcode == barcode)
+        if(product === undefined) {
+          // product is not known by frontend, so query backend for product
+          axios.post("EZBagWebapp/webapi/lookup",
+            JSON.stringify({
+              barcode: barcode,
+              businessID: businessID
+            }))
+            .then(function (result) {
+              // backend has succesfully responded (may or may not have found product),
+              // so construct product based on response
+              if(result.data.status != "failure") {
+                // product was found by backend, so add to known products and cart
+                commit('addToKnownProducts', {
+                  barcode: result.data.barcode,
+                  name:result.data.name,
+                  price: result.data.price,
+                  tax: result.data.tax,
+                  description:result.data.description,
+                  businessID:businessID,
+                  exists:true
+                })
+                commit('addToCartFromKnownProducts', barcode)
+                resolve({
+                  productIsInCart:true,
+                  productWasAlreadyInCart:false,
+                  initialProductQuantity: 1
+                })
+              }
+              else 
+                // product was not found by backend, so add only to known products
+                commit('addToKnownProducts', {
+                  barcode:barcode,
+                  exists:false
+                })
+                resolve({
+                  productIsInCart:false,
+                  productWasAlreadyInCart:false,
+                  initialProductQuantity: -1
+                })
+            })
+            .catch(function (error) { // failed response from backend
+              reject(error)
+            })
+        }
+        else {
+          // product is known by frontend, but it is not in the cart
+          if(product.exists == true) {
+            // the product is known by the frontend to exist in the backend's DB, so add it to the cart
+            commit('addToCartFromKnownProducts', barcode)
+            resolve({
+              productIsInCart:true,
+              productWasAlreadyInCart:false,
+              initialProductQuantity: 1
+            })
+          }
+          else // product is known by the frontend to not exist in the backend's DB
+            resolve({
+              productIsInCart:false,
+              productWasAlreadyInCart:false,
+              initialProductQuantity: -1
+            })
+        }
+      }
+      else // product is already in the cart
+        resolve({
+          productIsInCart:true,
+          productWasAlreadyInCart:true,
+          initialProductQuantity: product.quantity
+        })
+    })
   },
 
-  // send product-remove-event to backend and call corresponding mutation
-  async removeProduct({ commit }, {barcode}) {
-    //TODO: send product removal event to backend
-    commit('removeProduct', barcode)
-  },
-
-  // send product-quantity-change-event to backend and call corresponding mutation
-  // to set the product quantity to the given amount
-  async setProductQuantity({ commit }, {barcode, amount}) {
-    //TODO: send product-quantity-change event to backend
-    commit('setProductQuantity', {barcode:barcode, amount:amount})
-  },
-
-  // send product-qunatity-adjust-event to backend and call corresponding mutation
-  // to add the given amount to the product quantity
-  async adjustProductQuantity({ commit }, {barcode, amount}) {
-    //TODO: send product-qunatity-adjust-event to backend
-    commit('adjustProductQuantity', {barcode:barcode, amount:amount})
-  },
-
-
-
-  setCartHash({commit}, {cartHash}) {
-    commit('setCartHash', cartHash)
-  },
-
-  emptyCart({commit}) {
-    commit('emptyCart', )
-  },
-
-};
+  // attempts to checkout cart
+  checkoutCart({commit}) {
+    return new Promise((resolve, reject) => {
+      $dbg_console_log('TEST',state.productsInCart.length, state.productsInCart)
+      if(state.productsInCart.length == 0) 
+        resolve({ // cart is empty
+          checkoutSuccesful:false,
+          cartEmpty:true
+        }) 
+      else  // cart is not empty
+        axios.post("EZBagWebapp/webapi/cart",
+          JSON.stringify({
+            barcodes: state.productsInCart.map(prod => prod.barcode),
+            quantities: state.productsInCart.map(prod => prod.quantity),
+            session: Cookie.get('userToken'),
+            businessID: state.businessID
+          }))
+          .then(function (result) { // backend responded
+            if(result.data.status != "failure") { // Successfully submitted cart
+              commit('setCartHash', result.data.hash)
+              commit('emptyCart')
+              resolve({
+                checkoutSuccesful: true,
+                cartEmpty:true
+              }) 
+            }
+            else { // backend could not submit cart
+              resolve({
+                checkoutSuccesful: false,
+                cartEmpty: false
+              })
+            }
+          })
+          .catch(function (error) { // failed response from backend
+            reject(error)
+          })
+    })
+  }
+}
 
 
 // https://vuex.vuejs.org/guide/mutations.html#mutations-must-be-synchronous
-// mutations are synchronous functions that modify client state and should only
-// be called by the above actions 
+// mutations are synchronous functions that modify client state
 const mutations = {
-  // add product to cart
-  //TODO: check if item exists before attempting to add product -
-  //      increment quantity if already in cart
-  addProduct (state, product) {
-    state.cart.push(product)
+  
+  addToKnownProducts(state, aProduct) {
+    const debugString = 'Attempted to add product, '+aProduct.barcode+', to cart, but '
+    if(state.knownProducts.find(product => product.barcode == aProduct.barcode) != undefined)
+      $dbg_console_log(debugString+'it is already known.')
+    else {
+      state.knownProducts.push(aProduct)
+    }
   },
 
-  // remove product from cart
-  removeProduct (state, barcode) {
-    state.cart = state.cart.filter(product => product.barcode !== barcode)
-  },
-
-  // set quantity of product in cart to the provided amount
-  //TODO: check if item exists before attempting to change quantity
-  setProductQuantity (state, {barcode, amount}) {
-    state.cart.find(product => product.barcode == barcode).quantity = amount
+  // searches known products for a product that is exists
+  addToCartFromKnownProducts (state, barcode) {
+    const debugString = 'Attempted to add product, '+barcode+', to cart, but '
+    if(state.productsInCart.find(product => product.barcode == barcode) != undefined)
+      $dbg_console_log(debugString+'it is already in the cart.')
+    else {
+      let product = state.knownProducts.find(product => product.barcode == barcode)
+      if(product == undefined)
+        $dbg_console_log(debugString+'it is not known by frontend')
+      else // product is known by frontend
+        if(product.exists == true)
+          // product is known by backend, so add it to the cart
+          state.productsInCart.push({
+            barcode:product.barcode,
+            name:product.name,
+            price: product.price,
+            tax: product.tax,
+            quantity: 1,
+            description:product.description
+          })
+        else // product is not known by backend
+          $dbg_console_log(debugString+'it does not exist in backend\'s DB')
+    }
   },
   
-  // add the provided amount to the product in the cart
-  //TODO: check if item exists before attempting to change quantity
-  adjustProductQuantity (state, {barcode, amount}) {
-    state.cart.find(product => product.barcode == barcode).quantity += amount
+  // remove product from cart
+  removeProductFromCart (state, barcode) {
+    state.productsInCart = state.productsInCart.filter(product => product.barcode !== barcode)
+  },
+
+  // Alters the quantity of product whose barcode matches the supplied one.
+  // Accepts a barcode and a second parameter - typeOrAmount, which can be
+  // either a string describing an "INCREMENT" or "DECREMENT" operation to be
+  // applied to the product's quantity, or it should be a number that will
+  // overwrite the product's quantity.
+  setProductQuantity (state, {barcode, typeOrAmount}) {
+    const debugString = 'Attempted to change quantity of product, '+barcode+', but '
+    const product = state.productsInCart.find(product => product.barcode == barcode)
+    if(product == undefined)
+      $dbg_console_log(debugString+'it is not in the cart')
+    else
+      switch(typeof(typeOrAmount)){
+        case "number":
+          product.quantity = typeOrAmount
+          break
+        case "string":
+          switch(typeOrAmount){
+            case "INCREMENT":
+              product.quantity += 1
+              break
+            case "DECREMENT":
+              product.quantity -= 1
+              break
+            default:
+              $dbg_console_log(debugString+typeOrAmount+'is not a recognized change type')
+          }
+      }
   },
 
   setCartHash (state, cartHash) {
@@ -95,9 +244,9 @@ const mutations = {
   },
 
   emptyCart (state) {
-    state.cart = []
+    state.productsInCart = []
   }
-};
+}
 
 export default {
   state,

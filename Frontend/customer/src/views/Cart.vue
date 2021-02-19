@@ -74,9 +74,7 @@ export default {
     dialog: false
   }),
   methods: {
-    showPopUp()
-    {
-      console.log("Test")
+    showPopUp() {
       this.$emit("showPopUp")
       this.dialog = true
     },
