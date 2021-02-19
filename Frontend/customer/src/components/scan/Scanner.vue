@@ -5,6 +5,39 @@
       <ScanButtons 
         v-bind:total=getSubtotal />
     </div>
+    <!--
+      Pop up
+    !-->
+    <div v-show="show_popup==true">
+      <v-row justify="center">
+          <v-dialog
+            v-model="show_popup"
+            persistent
+            max-width="290"
+          >
+            <v-card>
+              <v-card-title class="headline">
+                Item not found!
+              </v-card-title>
+              <v-card-text>The item you have scanned could not be found in our database!</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  justify="center"
+                  color="green darken-1"
+                  text
+                  @click="show_popup = false"
+                >
+                  OK
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+      </v-row>
+    </div>
+    <!--
+      Scan buttons
+    !-->
     <v-bottom-sheet
       v-model="show_scanned_product"
       inset
@@ -48,6 +81,7 @@ export default {
     return {
       show_scanned_product: false, // for displaying scanned product card
       product_loaded_from_cart: false,
+      show_popup: false,
       initial_product_quantity: 0,
       scanned_product_barcode: 0
     };
@@ -113,6 +147,7 @@ export default {
           }
           else {
             // TODO: gracefully handle "product not recognized"
+            this.show_popup = true
             this.resetBarcodeScanner()
           }
         }).catch(error => {
