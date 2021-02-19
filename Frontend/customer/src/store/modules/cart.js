@@ -135,7 +135,7 @@ const actions = {
           JSON.stringify({
             barcodes: context.state.productsInCart.map(prod => prod.barcode),
             quantities: context.state.productsInCart.map(prod => prod.quantity),
-            session: Cookie.get('userToken'),
+            session: "SES" + Cookie.get('userToken'),
             businessID: context.state.businessID
           }))
           .then(function (result) { // backend responded
