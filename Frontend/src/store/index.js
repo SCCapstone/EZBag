@@ -3,7 +3,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VuexPersist from 'vuex-persist';
-import cart from './modules/cart';
+import cart from '@/store/modules/customer/cart';
 import Cookie from 'js-cookie';
 
 

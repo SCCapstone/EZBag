@@ -16,7 +16,7 @@
 <script>
 // https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components
 import { mapGetters } from 'vuex';
-import Product from '@/components/checkout/Product'
+import Product from '@/components/customer/checkout/Product'
 
 export default {
   name:"CartList",

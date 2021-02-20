@@ -4,7 +4,7 @@
 
 <script>
 // @ is an alias to /src
-import Receipt from '@/components/receipt/Receipt'
+import Receipt from '@/components/customer/receipt/Receipt'
 
 export default {
   name: 'ReceiptPage',

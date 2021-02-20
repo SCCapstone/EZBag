@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -8,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'Scan',
-    component: () => import('../views/Scan.vue')
+    component: () => import('@/views/customer/Scan.vue')
   },
   {
     path: '/cart',
@@ -16,15 +15,27 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/Cart.vue')
+    component: () => import(/* webpackChunkName: "about" */ '@/views/customer/Cart.vue')
   },
   {
     path: '/receipt',
     name: 'Receipt',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ReceiptPage.vue')
+    component: () => import('@/views/customer/ReceiptPage.vue')
+  },
+  {
+    path: '/onboard',
+    name: 'Onboard',
+    component: () => import('@/views/merchant/Onboard.vue')
+  },
+  {
+    path: '/statistics',
+    name: 'Statistics',
+    component: () => import('@/views/merchant/Stats.vue')
+  },
+  {
+    path: '/store',
+    name: 'Store',
+    component: () => import('@/views/merchant/Store.vue')
   }
 ]
 

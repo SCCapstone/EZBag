@@ -58,8 +58,8 @@
 
 <script>
 // @ is an alias to /src
-import CartList from '@/components/checkout/CartList'
-import Checkout from '@/components/checkout/Checkout'
+import CartList from '@/components/customer/checkout/CartList'
+import Checkout from '@/components/customer/checkout/Checkout'
 
 export default {
   name: 'Cart',

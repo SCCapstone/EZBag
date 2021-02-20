@@ -2,7 +2,7 @@
 
 // import debug function from mixin and destructure it
 // (global mixins are only used by components, not vuex modules)
-import debug from '../../mixins/debug'
+import debug from '@/mixins/debug'
 const { methods } = debug
 const { $dbg_console_log } = methods
 

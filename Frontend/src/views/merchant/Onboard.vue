@@ -155,7 +155,6 @@
 <style scoped>
   .v-text-field {
     margin: 0px;
-    size: ;
   }
 
   .v-select {

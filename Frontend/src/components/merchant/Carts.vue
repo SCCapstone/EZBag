@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-    import Contents from '@/components/Contents.vue'
+import Contents from '@/components/merchant/Contents.vue'
 export default {
     name: "Carts",
     props:["carts"],

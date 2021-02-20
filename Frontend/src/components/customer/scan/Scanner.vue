@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations} from 'vuex';
-import ScanButtons from '@/components/scan/ScanButtons'
-import Product from '@/components/checkout/Product'
+import ScanButtons from '@/components/customer/scan/ScanButtons'
+import Product from '@/components/customer/checkout/Product'
 import * as ScanditSDK from "scandit-sdk";
 
 let barcodePicker;
