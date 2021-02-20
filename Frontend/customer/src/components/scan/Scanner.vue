@@ -3,8 +3,41 @@
     <div id="scan-content">
       <div id="scandit-barcode-picker"></div>
       <ScanButtons 
-        v-bind:total=getCartSubtotal />
+        v-bind:total=getSubtotal />
     </div>
+    <!--
+      Pop up
+    !-->
+    <div v-show="show_popup==true">
+      <v-row justify="center">
+          <v-dialog
+            v-model="show_popup"
+            persistent
+            max-width="290"
+          >
+            <v-card>
+              <v-card-title class="headline">
+                Item not found!
+              </v-card-title>
+              <v-card-text>The item you have scanned could not be found in our database!</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  justify="center"
+                  color="green darken-1"
+                  text
+                  @click="show_popup = false"
+                >
+                  OK
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+      </v-row>
+    </div>
+    <!--
+      Scan buttons
+    !-->
     <v-bottom-sheet
       v-model="show_scanned_product"
       inset
@@ -31,15 +64,12 @@
 </template>
 
 <script>
-import { mapGetters, mapActions} from 'vuex';
+import { mapGetters, mapActions, mapMutations} from 'vuex';
 import ScanButtons from '@/components/scan/ScanButtons'
 import Product from '@/components/checkout/Product'
 import * as ScanditSDK from "scandit-sdk";
 
 let barcodePicker;
-
-import jQuery from 'jquery'
-global.jQuery = jQuery
 
 export default {
   name: 'Scanner',
@@ -47,14 +77,13 @@ export default {
     ScanButtons,
     Product
   },
-  computed: mapGetters(['getCartSubtotal', 'getCart', 'getCartBusinessID']),
   data() {
     return {
       show_scanned_product: false, // for displaying scanned product card
-      scanned_product_barcode: null,
-      initial_product_quantity: null,
-      scanned_product_loaded_from_cart: false,
-      scanned_barcode: null,
+      product_loaded_from_cart: false,
+      show_popup: false,
+      initial_product_quantity: 0,
+      scanned_product_barcode: 0
     };
   },
   mounted () {
@@ -85,87 +114,70 @@ export default {
           );
           barcodePicker
             .on("scan", (scanResult) => {
-              barcodePicker.pauseScanning();
-              console.log("paused scanning", barcodePicker)
+              barcodePicker.pauseScanning()
+              this.$dbg_console_log("paused scanning", barcodePicker)
               var barcode = scanResult.barcodes[0].data
-              console.log("read barcode", barcode)
-              this.onScan(barcode);
+              this.$dbg_console_log("read barcode", barcode)
+              this.onScan(barcode)
             })
             .on("scanError", console.error);
         });
     })
     .catch(console.error);
   },
+  computed: mapGetters(['getSubtotal', 'getBusinessID']),
   methods:{
-    ...mapActions([ "removeProduct",
-                    "setProductQuantity",
-                    "addProduct",
-                  ]),
+    ...mapActions(["addProductToCart"]),
+    ...mapMutations(["removeProductFromCart",
+                      "setProductQuantity",
+                    ]),
     onScan(barcode) {
       this.scanned_product_barcode = barcode
-      // attempt to find product in cart
-      var product = this.getCart.find(product => product.barcode == barcode)
-      if(product!==undefined) { // product was already in cart
-        // save the state of the scanned product before allowing user to make changes
-        this.product_loaded_from_cart = true
-        this.initial_product_quantity = product.quantity
-        this.show_scanned_product = true
-      } else { // product was not in cart
-        this.product_loaded_from_cart = false
-        // request product information from backend
-        this.requestProductFromBackend(barcode, this.getCartBusinessID);
-      }
+      // attempt to add product to cart
+      this.addProductToCart({barcode:barcode, businessID:this.getBusinessID})
+        .then((result) => { // no backend errors thrown
+          this.$dbg_console_log(result)
+          if(result.productIsInCart == true){
+            if(result.productWasAlreadyInCart){
+              // save the product quantity before allowing user to make changes
+              this.product_loaded_from_cart = true
+              this.initial_product_quantity = result.initialProductQuantity
+            }
+            this.show_scanned_product = true
+          }
+          else {
+            // TODO: gracefully handle "product not recognized"
+            this.show_popup = true
+            this.resetBarcodeScanner()
+          }
+        }).catch(error => {
+          this.$dbg_console_log(error)
+          this.resetBarcodeScanner()
+        })
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
     // if the product was not originally from the cart, we should remove it from the cart
+    cancelScannedProduct() {
+      if (this.product_loaded_from_cart == true) 
+        this.setProductQuantity({
+          barcode:this.scanned_product_barcode,
+          typeOrAmount: this.initial_product_quantity,
+        })
+      else
+        this.removeProductFromCart(this.scanned_product_barcode) 
+      this.hideScannedProductCard()
+    },
     hideScannedProductCard() {
       this.show_scanned_product = false;
-      this.scanned_product_barcode = null;
+      this.scanned_product_barcode = 0;
+      this.resetBarcodeScanner()
+    },
+    resetBarcodeScanner() {
       // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
       barcodePicker.resumeScanning();
       barcodePicker.clearSession();
-      console.log('resume scanning', barcodePicker)
-    },
-    cancelScannedProduct() {
-      if (this.product_loaded_from_cart == true) 
-        this.setProductQuantity({barcode:this.scanned_product_barcode, amount:this.initial_product_quantity})
-      else
-        this.removeProduct({barcode:this.scanned_product_barcode}) 
-      this.hideScannedProductCard()
-    },
-    requestProductFromBackend(barcode, businessID) {
-      var data = {
-        "barcode": barcode,
-        "businessID": businessID
-      };
-      data = JSON.stringify(data);
-      // TODO: handle api call failed case elegantly 
-      var self = this;
-      jQuery.post(
-          process.env.VUE_APP_ROOT_API+"EZBagWebapp/webapi/lookup",
-          data,
-          function(data, status) {
-            // handle json object return as string
-            if (typeof(data) == "string")
-              data = JSON.parse(data)
-            if (status == "success" && data.status !== "failure") { 
-              let product = {barcode:data.barcode,
-                      name:data.name,
-                      price: data.price,
-                      tax: data.tax,
-                      description:data.description,
-                      businessID:businessID};
-              self.addProduct(product)
-              self.show_scanned_product = true
-            } else { // product was not found by backend
-              console.log("product was not found by backend")
-              // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
-              barcodePicker.resumeScanning();
-              barcodePicker.clearSession();
-            }
-          }
-        );
+      this.$dbg_console_log('resume scanning', barcodePicker)
     }
   },
 }

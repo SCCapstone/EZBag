@@ -6,7 +6,7 @@
       <v-spacer></v-spacer>
       <!-- Remove product button - conditionally rendered-->
       <v-btn 
-        @click="removeProduct({barcode})"
+        @click="removeProductFromCart(barcode)"
         v-show="getProduct.quantity === 1"
         v-on:click="$emit('removed-product')"
         icon
@@ -15,7 +15,7 @@
         <v-icon>mdi-delete</v-icon>
       </v-btn>
       <v-btn 
-        @click="adjustProductQuantity({barcode:barcode,amount:-1})"
+        @click="setProductQuantity({barcode:barcode,typeOrAmount:'DECREMENT'})"
         v-show="getProduct.quantity !== 1" 
         icon
       >
@@ -25,7 +25,7 @@
       <!-- TODO: make this a button, which can be clicked to edit the quantity directly-->
       <span class="subheading mr-2 ml-2"> {{ getProduct.quantity }}</span>
       <!-- Increment product quantity -->
-      <v-btn @click="adjustProductQuantity({barcode:barcode,amount:1})" icon>
+      <v-btn @click="setProductQuantity({barcode:barcode,typeOrAmount:'INCREMENT'})" icon>
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-card-actions>
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 
 export default {
   props: ['barcode'],
   computed: {
-    ...mapGetters(['getCart']),
+    ...mapGetters(['getProductsInCart']),
     getProduct: function() {
-      const product = this.getCart.find(product => product.barcode == this.barcode)
+      const product = this.getProductsInCart.find(product => product.barcode == this.barcode)
       if (product===undefined)
         return {barcode:'Failed to find product in Product.vue',
                 name: "None",
@@ -54,10 +54,7 @@ export default {
     }
   },
   methods: {
-  ...mapActions([ "removeProduct",
-                  "setProductQuantity",
-                  "adjustProductQuantity"
-                ])
+  ...mapMutations([ 'removeProductFromCart', 'setProductQuantity'])
   },
 }
 </script>

@@ -2,7 +2,7 @@
   <div>
     <v-container class="CartList">
       <v-row
-        v-for="product in getCart"
+        v-for="product in getProductsInCart"
         v-bind:key="product.barcode"
       >
         <v-col>
@@ -23,6 +23,6 @@ export default {
   components: {
     Product
   },
-  computed: mapGetters(['getCart'])
+  computed: mapGetters(['getProductsInCart'])
 }
 </script>
