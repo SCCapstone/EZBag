@@ -1,5 +1,32 @@
 <template>
   <div id="backgroundCard">
+    <div v-show="show_popup==true">
+      <v-row justify="center">
+          <v-dialog
+            v-model="show_popup"
+            persistent
+            max-width="290"
+          >
+            <v-card>
+              <v-card-title class="headline">
+                Invalid Entry
+              </v-card-title>
+              <v-card-text>Please enter a valid email address or phone number to receive a digital recepit</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  justify="center"
+                  color="green darken-1"
+                  text
+                  @click="show_popup = false"
+                >
+                  OK
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+      </v-row>
+    </div>
     <div class="centerText" id="headerText">
       Checkout successful<br>
       Your cart number is:
@@ -35,6 +62,11 @@ import jQuery from 'jquery'
 export default {
   name:"Receipt",
   computed: mapGetters(['getCartHash']),
+  data() {
+    return {
+      show_popup: false,
+    };
+  },
   methods: {
     ...mapActions(['emptyCart']),
     mobiledown: function(e) {
@@ -119,14 +151,14 @@ export default {
               console.log("Successfully sent digital receipt")
               ref.emptyCart()
               ref.$router.push('/');
-              alert("Sent digital receipt, starting new shopping session");
+              //alert("Sent digital receipt, starting new shopping session");
             } else {
               console.log("Failed to send digital receipt")
             }
           }
         );
       } else {
-        alert("To receive a digital receipt, please enter a valid email and/or phone number")
+        this.show_popup = true
       }
 
   }

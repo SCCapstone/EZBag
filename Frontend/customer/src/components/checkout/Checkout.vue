@@ -1,7 +1,7 @@
 <template>
   <v-card>
-    <v-card-title class="text-center"> Total: ${{ getSubtotal+getTax }}  </v-card-title>
-    <v-card-subtitle class="text-center"> Subtotal: ${{getSubtotal}} Tax: ${{getTax}}</v-card-subtitle>
+    <v-card-title class="text-center"> Total: ${{ showTwoDecimal(getSubtotal + getTax) }}  </v-card-title>
+    <v-card-subtitle class="text-center"> Subtotal: ${{showTwoDecimal(getSubtotal)}} Tax: ${{showTwoDecimal(getTax)}}</v-card-subtitle>
     <v-card-actions class="justify-center">
       <v-btn @click="checkout">Checkout</v-btn>
     </v-card-actions>
@@ -15,6 +15,9 @@ export default {
   computed: mapGetters(['getSubtotal', 'getTax']),
   methods: {
     ...mapActions(['checkoutCart']),
+    showTwoDecimal(num) {		
+      return (num).toFixed(2);
+    },
     checkout() {
       this.checkoutCart()
         .then((result) => { // backend succesfully responded

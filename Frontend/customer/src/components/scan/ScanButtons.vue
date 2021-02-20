@@ -6,7 +6,7 @@
     id="TotalButton"
     @click="clickedTotalBtn"
     :style="{left : '50%', transform:'translateX(-50%)'}"
-    >${{total}}</v-btn>   
+    >${{showTwoDecimal(total)}}</v-btn>   
 </template>
 
 <script>
@@ -16,6 +16,9 @@ export default {
         total: Number
     },
     methods: {
+        showTwoDecimal(num) {		
+            return (num).toFixed(2);
+        },
         clickedTotalBtn() {
             // https://stackoverflow.com/questions/59770610/uncaught-in-promise-in-vue-router-when-multiple-clicks-on-a-button
             this.$router.push('cart').catch(error => {console.error(error);});
