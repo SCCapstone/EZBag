@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.bson.Document;
 import org.services.DatabaseService;
 import org.services.Utils;
@@ -50,6 +51,8 @@ public class RegisterUserRoute {
                 insertDoc.append("email", payloadObject.get("email").getAsString());
                 insertDoc.append("password", payloadObject.get("password").getAsString());
                 insertDoc.append("role", 1);
+                String hashString = payloadObject.get("email").getAsString();
+                insertDoc.append("businessID", DigestUtils.sha256Hex(hashString));
                 // TODO: change to reply with message of why the addition failed
                 return DatabaseService.insertUser(insertDoc);
             }

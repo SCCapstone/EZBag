@@ -1,8 +1,12 @@
 package org.database;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -13,6 +17,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.gte;
 
 
 public class MongoDB {
@@ -29,6 +34,7 @@ public class MongoDB {
     private String eventsCollectionName;
     private String checkoutCartCollectionName;
     private String userCollectionName;
+
     public MongoDB(Properties prop)
     {
         System.out.println("[MongoDB] Loading database properties");
@@ -45,6 +51,7 @@ public class MongoDB {
         userCollectionName = prop.getProperty("userCollection");
         init();
     }
+
     public void init()
     {
         System.out.print("[MongoDB] Establishing connection...");
@@ -66,6 +73,7 @@ public class MongoDB {
         collectionsMap.put(userCollectionName, database.getCollection(userCollectionName));
         System.out.print("[MongoDB] initialization done\n");
     }
+
     public Document getProductByBarcodeBusinessID(String barcode, String businessID) {
         BasicDBObject query = new BasicDBObject();
         List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
@@ -77,6 +85,23 @@ public class MongoDB {
             return respDoc;
         }
         return null;
+    }
+
+    public String getLast24HourCartsByBusinessID(String businessID) {
+        long dayMillis = System.currentTimeMillis() - 86400000;
+        FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
+                .find(new Document().append("time", new Document().append("$gt" , dayMillis)));
+
+        JsonArray jsArray = new JsonArray();
+        for (Document doc : result) {
+            doc.remove("_id");
+            JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
+            jsArray.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.add("carts", jsArray);
+        resp.addProperty("status", "success");
+        return resp.toString();
     }
 
     public Document getUserByEmailPassword(String email, String password) {
@@ -117,6 +142,15 @@ public class MongoDB {
 
     public Boolean userExists(String userEmail) {
         return documentExistsInCollection(userCollectionName, "email", userEmail);
+    }
+
+    public String getUserBusinessID(String userEmail) {
+        Document respDoc = collectionsMap.get(userCollectionName).find(eq("email", userEmail)).first();
+        if (respDoc != null) {
+            System.out.println(respDoc.toString());
+            return respDoc.get("businessID").toString();
+        }
+        return null;
     }
 
     public String getByEAN(String barcode) {

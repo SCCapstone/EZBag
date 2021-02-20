@@ -68,6 +68,7 @@ public class CartRoute {
             insertDoc.append("total", cartSubtotal+cartTaxTotal);
             insertDoc.append("time", System.currentTimeMillis());
             insertDoc.append("cartHash", cartHash);
+            insertDoc.append("verified", false);
 
             String resp = DatabaseService.insertCustomerCheckoutCart(insertDoc);
             JsonObject respObject = new JsonParser().parse(resp).getAsJsonObject();

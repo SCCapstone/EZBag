@@ -9,9 +9,11 @@ import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.routes.LoginUserRoute;
 import org.routes.RegisterUserRoute;
 import org.services.DatabaseService;
 import org.services.StartupService;
+import org.services.Utils;
 
 
 import static junit.framework.TestCase.assertEquals;
@@ -20,7 +22,7 @@ public class UserRouteTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(RegisterUserRoute.class);
+        return new ResourceConfig(RegisterUserRoute.class, LoginUserRoute.class);
     }
 
     @Test
@@ -39,6 +41,7 @@ public class UserRouteTests extends JerseyTest {
 
         final String response1 = target("register").request().post(Entity.text(exampleUser.toJson()), String.class);
         JsonObject payloadObject = new JsonParser().parse(response1).getAsJsonObject();
+        System.out.println(payloadObject.toString());
         // TODO message is simply inserted object in text form
         assertEquals(payloadObject.get("status").getAsString(), "success");
 
@@ -49,14 +52,31 @@ public class UserRouteTests extends JerseyTest {
 
     @Test
     public void testLogin() {
-        // TODO: finish writing test
+        // register user to make sure that it exists in DB
         Document exampleUser = new Document();
-        String randEmail = String.valueOf((int)Math.round(Math.random() * (100000 - 0 + 1))) + "@email.com";
-        exampleUser.append("email", "blakete@email.sc.edu")
-                .append("password", "");
+        String email = "13336@email.com";
+        exampleUser.append("businessName", "Test Biz 1")
+                .append("streetAddress", "650 Lincoln Street")
+                .append("city", "Columbia")
+                .append("state", "SC")
+                .append("country", "US")
+                .append("email", email)
+                .append("phone", "8603337654")
+                .append("password", "BadPassword1");
+        // can ignore this
         final String response1 = target("register").request().post(Entity.text(exampleUser.toJson()), String.class);
-        JsonObject payloadObject = new JsonParser().parse(response1).getAsJsonObject();
+
+        // login the registered user
+        Document exampleLoginUser = new Document();
+        exampleLoginUser.append("email", email)
+                .append("password", "BadPassword1");
+
+        final String response2 = target("login").request().post(Entity.text(exampleLoginUser.toJson()), String.class);
+        JsonObject payloadObject = new JsonParser().parse(response2).getAsJsonObject();
+        System.out.println(payloadObject.toString());
         assertEquals(payloadObject.get("status").getAsString(), "success");
+        assertEquals(Utils.validToken(payloadObject.get("token").getAsString()), true);
     }
+
 
 }

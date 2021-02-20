@@ -10,6 +10,8 @@ import org.bson.Document;
 import org.services.DatabaseService;
 import org.services.Utils;
 
+import javax.xml.crypto.Data;
+
 @Path("/login")
 public class LoginUserRoute {
     @POST
@@ -21,6 +23,7 @@ public class LoginUserRoute {
         String message = "";
         String status = "";
         String token = null;
+        String businessID = null;
         if (payloadObject.has("email")
                 && payloadObject.has("password"))
         {
@@ -29,8 +32,10 @@ public class LoginUserRoute {
             if (DatabaseService.userExists(email)) {
                 // todo
                 if (DatabaseService.userLoginCredentialsValid(email, password)) {
-                    // todo generate token, save in database, return it
+                    // TODO: get business ID and add to payload to be returned
+                    businessID = DatabaseService.getUserBusinessID(email);
                     token = Utils.createJWT(email, "bearer", "business", 86400000);
+//                    token = Utils.createJWT(email, "bearer", "business", 30000);
                     message = "Logged in!";
                     status = "success";
                 } else {
@@ -55,8 +60,11 @@ public class LoginUserRoute {
         JsonObject response = new JsonObject();
         response.addProperty("message", message);
         response.addProperty("status", status);
-        if (token != null)
+        if (token != null) {
             response.addProperty("token", token);
+            response.addProperty("businessID", businessID);
+        }
+
         return response.toString();
     }
 }

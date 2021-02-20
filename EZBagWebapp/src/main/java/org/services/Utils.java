@@ -1,10 +1,7 @@
 package org.services;
 
 import com.google.gson.JsonObject;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
@@ -107,6 +104,24 @@ public class Utils {
                 .setSigningKey(DatatypeConverter.parseBase64Binary(DatabaseService.SECRET_KEY))
                 .parseClaimsJws(jwt).getBody();
         return claims;
+    }
+
+    public static boolean validToken(String token) {
+        // TODO: check if token malformed
+        // if token decode fails with expired exception then return false
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(DatatypeConverter.parseBase64Binary(DatabaseService.SECRET_KEY))
+                    .parseClaimsJws(token).getBody();
+            return true;
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT token expired");
+        } catch (SignatureException e) {
+            System.out.println("Signature error occurred while parsing JWT");
+        } catch(Exception e){
+            System.out.println("Error occurred while parsing JWT");
+        }
+        return false;
     }
 
 }

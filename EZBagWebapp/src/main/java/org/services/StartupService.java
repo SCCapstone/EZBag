@@ -39,8 +39,8 @@ public class StartupService implements ServletContextListener {
 
         DatabaseService.database = mongo;
         ReceiptService.database = mongo;
-        DatabaseService.SECRET_KEY = prop.getProperty("secretKey"); // TODO test this
-        System.out.println("Secret key: "+ prop.getProperty("secret"));
+        DatabaseService.SECRET_KEY = prop.getProperty("secretKey");
+        System.out.println("Secret key: "+ prop.getProperty("secretKey"));
         System.out.println("[Startup] Initializing media services");
         EmailService.init(mediaProp);
         SMSService.init(mediaProp);

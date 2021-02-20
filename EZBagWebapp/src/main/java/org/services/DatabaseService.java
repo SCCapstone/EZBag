@@ -17,6 +17,12 @@ public class DatabaseService {
         return Utils.generateResponse(false, message);
     }
 
+    public static String getLast24HourCartsByBusinessID(String businessID) {
+        // TODO
+        String resp = database.getLast24HourCartsByBusinessID(businessID);
+        return resp;
+    }
+
     public static String getByProductCode(String productCode)
     {
         if(Utils.isEAN(productCode))
@@ -50,6 +56,10 @@ public class DatabaseService {
     // used to check if user with email exists
     public static Boolean userExists(String userEmail) {
         return database.userExists(userEmail);
+    }
+
+    public static String getUserBusinessID(String userEmail) {
+        return database.getUserBusinessID(userEmail);
     }
 
     public static Boolean userLoginCredentialsValid(String userEmail, String userPassword) {
