@@ -28,10 +28,10 @@ public class CustomerInfoRoute {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
         if ((payloadObject.has("email") || payloadObject.has("phone"))
-                && payloadObject.has("hash") && payloadObject.has("session")) {
+                && payloadObject.has("cartHash") && payloadObject.has("session")) {
 
-            // check cart collection for hash, aka existence of cart
-            String cartHash = payloadObject.get("hash").getAsString();
+            // check cart collection for cartHash, aka existence of cart
+            String cartHash = payloadObject.get("cartHash").getAsString();
             Document customerCart = DatabaseService.getCustomerCartByHash(cartHash);
             String receipt = "";
             if (customerCart != null) {
@@ -49,7 +49,7 @@ public class CustomerInfoRoute {
             if (payloadObject.has("phone")) {
                 insertDoc.append("phone", payloadObject.get("phone").getAsString());
             }
-            insertDoc.append("hash", payloadObject.get("hash").getAsString());
+            insertDoc.append("cartHash", payloadObject.get("cartHash").getAsString());
             insertDoc.append("session", payloadObject.get("session").getAsString());
             insertDoc.append("time", System.currentTimeMillis());
 

@@ -9,6 +9,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -90,7 +91,8 @@ public class MongoDB {
     public String getLast24HourCartsByBusinessID(String businessID) {
         long dayMillis = System.currentTimeMillis() - 86400000;
         FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
-                .find(new Document().append("time", new Document().append("$gt" , dayMillis)));
+                .find(new Document().append("businessID", businessID)
+                                    .append("time", new Document().append("$gt" , dayMillis)));
 
         JsonArray jsArray = new JsonArray();
         for (Document doc : result) {
@@ -127,21 +129,35 @@ public class MongoDB {
     }
 
     // method to check whether the given document already exists within a collection collection
-    private Boolean documentExistsInCollection(String collectionName, String idField, String value) {
+    private Boolean documentExistsInCollection(String collectionName, HashMap<String, String> matchMap) {
         BasicDBObject query = new BasicDBObject();
         List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
-        matchDoc.add(new BasicDBObject(idField, value));
+        // Iterate matchMap
+        for (String key : matchMap.keySet()) {
+            System.out.println("key: " + key + " value: " + matchMap.get(key));
+            matchDoc.add(new BasicDBObject(key, matchMap.get(key)));
+        }
         query.put("$and", matchDoc);
         Document respDoc = collectionsMap.get(collectionName).find(query).first();
         if (respDoc != null) {
             System.out.println(respDoc.toString());
             return true;
         }
+        System.out.println("Exists resp doc was null!");
         return false;
     }
 
     public Boolean userExists(String userEmail) {
-        return documentExistsInCollection(userCollectionName, "email", userEmail);
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("email", userEmail);
+        return documentExistsInCollection(userCollectionName, matchMap);
+    }
+
+    public Boolean cartExists(String cartHash, String businessID) {
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("cartHash", cartHash);
+        matchMap.put("businessID", businessID);
+        return documentExistsInCollection(checkoutCartCollectionName, matchMap);
     }
 
     public String getUserBusinessID(String userEmail) {
@@ -172,10 +188,31 @@ public class MongoDB {
         return resp.toString();
     }
 
+    public boolean verifyCart(String cartHash, String businessID) {
+        System.out.println("Verifying cart: " + cartHash + " " + businessID);
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("cartHash", cartHash));
+        matchDoc.add(new BasicDBObject("businessID", businessID));
+        query.put("$and", matchDoc);
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("verified", true);
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$set", newDocument);
+
+        UpdateResult res = collectionsMap.get(checkoutCartCollectionName).updateOne(query, updateObject);
+        System.out.println("Was acknowledged: " + res.toString());
+        return true;
+    }
+
     // todo check if insert was actually successful for all insert methods
     public Boolean insertInfo(Document customerInfo) {
         // only insert document if it does not exist
-        if (!(documentExistsInCollection(infoCollectionName,"hash", customerInfo.getString("hash"))))
+        HashMap<String, String> matchMap = new HashMap<>();
+        // TODO: test this b/c changed from hash to cartHash
+        matchMap.put("cartHash", customerInfo.getString("cartHash"));
+        if (!(documentExistsInCollection(infoCollectionName, matchMap)))
         {
             collectionsMap.get(infoCollectionName).insertOne(customerInfo);
             return true;
@@ -202,7 +239,9 @@ public class MongoDB {
     }
     public Boolean insertUser(Document newUser) {
         // only insert document if it does not exist
-        if (!(documentExistsInCollection(userCollectionName,"email", newUser.getString("email"))))
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("email", newUser.getString("email"));
+        if (!(documentExistsInCollection(userCollectionName, matchMap)))
         {
             collectionsMap.get(userCollectionName).insertOne(newUser);
             return true;

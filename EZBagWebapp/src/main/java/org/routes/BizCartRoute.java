@@ -20,11 +20,26 @@ public class BizCartRoute {
         if (Utils.validToken(authToken)) {
             JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
             if (payloadObject.has("cartHash") && payloadObject.has("businessID")) {
-                String businessID = payloadObject.get("cartHash").getAsString();
+                String businessID = payloadObject.get("businessID").getAsString();
+                String cartHash = payloadObject.get("cartHash").getAsString();
                 System.out.println("Verifying customer cart");
-                // TODO: mark customer cart as verifiedw/ cartHash and businessID
-//                return DatabaseService.verifyCart();
-                return "in progress";
+                JsonObject resp = new JsonObject();
+                // TODO : check if cart exists
+                boolean exists = DatabaseService.cartExists(cartHash, businessID);
+                System.out.println("Cart exists: " + exists);
+                String message = "Cart with given cartHash, businessID does not exist";
+                boolean verified = false;
+                if (exists) {
+                    // mark customer cart as verified w/ cartHash and businessID
+                    // TODO write logic in verify cart to ensure update happened
+                    verified = DatabaseService.verifyCart(cartHash, businessID);
+                    if (!verified) {
+                        message = "Cart not verified, hash or businessID invalid";
+                    } else {
+                        message = "Cart verified";
+                    }
+                }
+                return Utils.generateResponse(verified, message);
             } else {
                 return Utils.generateResponse(false, "Barcode product lookup requires: businessID");
             }
@@ -33,3 +48,21 @@ public class BizCartRoute {
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 package org.services;
 
+import com.mongodb.BasicDBObject;
 import org.database.MongoDB;
 import org.bson.Document;
 import sun.font.TrueTypeFont;
@@ -58,6 +59,11 @@ public class DatabaseService {
         return database.userExists(userEmail);
     }
 
+    // used to check if cart with cartHash + businessID exists
+    public static Boolean cartExists(String cartHash, String businessID) {
+        return database.cartExists(cartHash, businessID);
+    }
+
     public static String getUserBusinessID(String userEmail) {
         return database.getUserBusinessID(userEmail);
     }
@@ -68,6 +74,11 @@ public class DatabaseService {
             return true;
         }
         return false;
+    }
+
+    // TODO update cart verified boolean to true
+    public static boolean verifyCart(String cartHash, String businessID) {
+        return database.verifyCart(cartHash, businessID);
     }
 
     public static String insertInfo(Document customerInfo) {
