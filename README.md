@@ -71,25 +71,25 @@ Our frontend is built in vue.js, using vuex for storing data and vuetifyjs for m
 ### Setup:
 1. Download or `git clone` this repository if you haven't already.
 2. Install [`npm`](https://www.npmjs.com/get-npm).
-3. Open a terminal in `repository/Frontend/customer` and run `npm install` to install all dependencies.
+3. Open a terminal in `repository/Frontend/` and run `npm install` to install all dependencies.
 
 ### Build:
-1. Open a terminal in `repository/Frontend/customer`
+1. Open a terminal in `repository/Frontend/`
 2. Run `npm run build`
 
-The build will be placed in `repository/Frontend/customer/dist`.
+The build will be placed in `repository/Frontend/dist`.
 
 ### Run a local development build:
-1. Open a terminal in `repository/Frontend/customer`
+1. Open a terminal in `repository/Frontend/`
 2. Run `npm run serve`
 
 The frontend will be available at localhost:9000/.
 
 ### Behavioral Testing:
-We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/customer/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
 Running end-to-end behavioral tests:
-1. Open a terminal in `repository/Frontend/customer`
+1. Open a terminal in `repository/Frontend/`
 2. Run `npm run test:e2e`. A window will open displaying our tests. 
 3. Select the test to run, or select 'run all tests'.
 
