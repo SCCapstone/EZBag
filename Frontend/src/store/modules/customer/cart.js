@@ -43,9 +43,31 @@ const getters = {
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
 
+  async sendReceipt(context, receiptInfo) {
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/info",
+        JSON.stringify(receiptInfo), {timeout: "2000"})
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            resolve({
+              success: 1
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+            
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      })
+  },
+
   async loginUser(context, loginInfo) {
-    console.log("CTX", context)
-    console.log("INFO", loginInfo)
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/login",
         JSON.stringify(loginInfo))

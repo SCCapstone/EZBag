@@ -3,28 +3,28 @@
     <div v-show="show_popup==true">
       <v-row justify="center">
           <v-dialog
-            v-model="show_popup"
-            persistent
-            max-width="290"
-          >
-            <v-card>
-              <v-card-title class="headline">
-                Invalid Entry
-              </v-card-title>
-              <v-card-text>Please enter a valid email address or phone number to receive a digital recepit</v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  justify="center"
-                  color="green darken-1"
-                  text
-                  @click="show_popup = false"
-                >
-                  OK
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          v-model="show_popup"
+          persistent
+          max-width="290"
+        >
+          <v-card>
+            <v-card-title class="headline">
+              {{popupHeader}}
+            </v-card-title>
+            <v-card-text>{{popupText}}</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                justify="center"
+                color="green darken-1"
+                text
+                @click="show_popup = false"
+              >
+                OK
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-row>
     </div>
     <div class="centerText" id="headerText">
@@ -57,18 +57,19 @@
 
 // https://vuex.vuejs.org/guide/actions.html#dispatching-actions-in-components
 import { mapGetters, mapActions } from 'vuex';
-import jQuery from 'jquery'
-
+import Cookie from 'js-cookie'
 export default {
   name:"Receipt",
   computed: mapGetters(['getCartHash']),
   data() {
     return {
+      popupHeader: "Internal Error",
+      popupText: "Something went wrong",
       show_popup: false,
     };
   },
   methods: {
-    ...mapActions(['emptyCart']),
+    ...mapActions(['emptyCart', 'sendReceipt']),
     mobiledown: function(e) {
       e.target.classList.add("buttonActive")
     },
@@ -125,7 +126,7 @@ export default {
       }
 
       var data = {
-                "hash": this.getCartHash
+                "cartHash": this.getCartHash
               }
       if (addEmail) {
         data.email = email;
@@ -133,13 +134,31 @@ export default {
       if (addPhone) {
         data.phone = phone;
       }
+
+      data.session = "SES" + Cookie.get('userToken')
       console.log(data)
 
       if (addEmail || addPhone) {
         console.log("sending digital receipt to given contact")
         // send to backend for digital receipt
-        data = JSON.stringify(data)
-        var ref = this
+        //print(data)
+        this.sendReceipt(data
+        ).then((result) => { // no backend errors thrown
+          this.$dbg_console_log(result)
+          if(result.success==1) {
+            this.$router.push('/');
+          }else{
+            this.show_popup = true
+            this.popupHeader =  "Empty Fields"
+            this.popupText = result.message
+          }
+        }).catch(error => {
+          this.show_popup = true
+          this.popupHeader =  "Internal Server Error"
+          this.popupText = "Something went wrong"
+          console.log(error)
+        })
+        /*
         jQuery.post(
           "/EZBagWebapp/webapi/info",
           data,
@@ -157,7 +176,10 @@ export default {
             }
           }
         );
+        */
       } else {
+        this.popupHeader =  "Empty Fields"
+        this.popupText = "Email and phone number fields are empty!"
         this.show_popup = true
       }
 
