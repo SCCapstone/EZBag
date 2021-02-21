@@ -158,25 +158,6 @@ export default {
           this.popupText = "Something went wrong"
           console.log(error)
         })
-        /*
-        jQuery.post(
-          "/EZBagWebapp/webapi/info",
-          data,
-          function(data, status) {
-            // handle json object return as string
-            if (typeof(data) == "string")
-              data = JSON.parse(data)
-            if (status == "success" && data.status !== "failure") {
-              console.log("Successfully sent digital receipt")
-              ref.emptyCart()
-              ref.$router.push('/');
-              //alert("Sent digital receipt, starting new shopping session");
-            } else {
-              console.log("Failed to send digital receipt")
-            }
-          }
-        );
-        */
       } else {
         this.popupHeader =  "Empty Fields"
         this.popupText = "Email and phone number fields are empty!"
