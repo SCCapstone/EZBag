@@ -100,7 +100,7 @@ export default {
           // set scandit settings https://docs.scandit.com/stable/web/classes/barcodepicker.html
           picker.setMirrorImageEnabled(false);
           picker.setVideoFit(ScanditSDK.BarcodePicker.ObjectFit.COVER);
-          picker.setGuiStyle(ScanditSDK.BarcodePicker.GuiStyle.NONE);
+          // picker.setGuiStyle(ScanditSDK.BarcodePicker.GuiStyle.NONE);
           barcodePicker.applyScanSettings(
             new ScanditSDK.ScanSettings({
               enabledSymbologies: [
