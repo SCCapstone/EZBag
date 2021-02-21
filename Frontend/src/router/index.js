@@ -23,6 +23,16 @@ const routes = [
     component: () => import('@/views/customer/ReceiptPage.vue')
   },
   {
+    path: '/registrationSuccess',
+    name: 'SuccessRegister',
+    component: () => import('@/views/merchant/SignupSuccess.vue')
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/merchant/BusinessLogin.vue')
+  },
+  {
     path: '/onboard',
     name: 'Onboard',
     component: () => import('@/views/merchant/Onboard.vue')

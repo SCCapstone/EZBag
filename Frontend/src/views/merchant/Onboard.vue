@@ -1,43 +1,59 @@
 <template>
   <v-container>
+    <v-dialog
+      v-model="show_popup"
+      persistent
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          {{popupHeader}}
+        </v-card-title>
+        <v-card-text>{{popupText}}</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            justify="center"
+            color="green darken-1"
+            text
+            @click="show_popup = false"
+          >
+            OK
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <form>
       <v-text-field
         v-model="name"
-        :error-messages="nameErrors"
         :rules="[rules.required]"
         label="Business Name"
         required
-        @input="$v.name.$touch()"
-        @blur="$v.name.$touch()"
         id="businessName"
       ></v-text-field>
       <v-text-field
         v-model="address"
-        :error-messages="addressErrors"
         :rules="[rules.required]"
         label="Street Address"
         required
-        @input="$v.name.$touch()"
-        @blur="$v.name.$touch()"
         id="address"
       ></v-text-field>
       <v-text-field
-        v-model="address"
-        :error-messages="addressErrors"
+        v-model="city"
         :rules="[rules.required]"
         label="City"
         required
-        @input="$v.name.$touch()"
-        @blur="$v.name.$touch()"
         id="city"
       ></v-text-field>
       <v-select
+            v-model="state"
             :items="states"
             :rules="[rules.required]"
             label="State"
             id="state"
       ></v-select>
       <v-select
+            v-model="country"
             :items="countries"
             :rules="[rules.required]"
             label="Country"
@@ -45,23 +61,17 @@
       ></v-select>
       <v-text-field
         v-model="email"
-        :error-messages="emailErrors"
         :rules="[rules.required]"
         label="E-mail"
         required
-        @input="$v.email.$touch()"
-        @blur="$v.email.$touch()"
         id="email"
       ></v-text-field>
       <v-text-field
         v-model="phone"
-        :error-messages="phoneErrors"
         :rules="[rules.required]"
         label="Phone Number"
         :counter="10"
         required
-        @input="$v.phone.$touch()"
-        @blur="$v.phone.$touch()"
         id="phone"
       ></v-text-field>
       <v-text-field
@@ -77,18 +87,14 @@
       <v-checkbox
         class="check"
         v-model="checkbox"
-        :error-messages="checkboxErrors"
         label="Do you agree?"
         id="check"
         required
-        @change="$v.checkbox.$touch()"
-        @blur="$v.checkbox.$touch()"
       ></v-checkbox>
       <div class="center">
         <v-btn
           class="mr-4"
           @click="submit"
-          @click:clear="Confirm()"
           id="submit"
         >
           submit
@@ -99,10 +105,26 @@
 </template>
 
 <script>
+  import {mapActions} from 'vuex';
   export default {
     name: 'onboard',
 
     data: () => ({
+      name: "",
+      address: "",
+      city: "",
+      password: "",
+      phone: "",
+      email: "",
+      state: "",
+      country: "",
+      checkbox: false,
+
+      popupHeader: "Internal Error",
+      popupText: "Something went wrong",
+      show_popup: false,
+
+
       states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 
           'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 
           'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 
@@ -118,7 +140,6 @@
 
       show1: false,
       show2: false,
-      password: '',
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
@@ -128,13 +149,30 @@
     }),
 
     methods: {
-      Confirm(){
-        var password = document.getElementById("password").value
-        var confirmPassword = document.getElementById("confirmPassword").value
-        if (password != confirmPassword) {
-          alert("Passwords do not match!")
-          return false
-        }
+      ...mapActions(["registerUser"]),
+      submit(){
+        this.registerUser({
+          "businessName":this.name,
+          "streetAddress":this.address,
+          "country": this.country,
+          "city":this.city,
+          "state":this.state,
+          "email":this.email,
+          "phone":this.phone,
+          "password":this.password
+        }).then((result) => { // no backend errors thrown
+          this.$dbg_console_log(result)
+          if(result.success==1) {
+            this.$router.push('login');
+          }else{
+            this.show_popup = true
+            this.popupText = result.message
+          }
+        }).catch(error => {
+          this.$dbg_console_log(error)
+          this.resetBarcodeScanner()
+        })
+        //*/
         return true
       }
     }

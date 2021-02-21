@@ -43,6 +43,56 @@ const getters = {
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
 
+  async loginUser(context, loginInfo) {
+    console.log("CTX", context)
+    console.log("INFO", loginInfo)
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/login",
+        JSON.stringify(loginInfo))
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            resolve({
+              success: 1
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+            
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      })
+  },
+
+  async registerUser(context, registrationInfo) {
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/register",
+        JSON.stringify(registrationInfo))
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            resolve({
+              success: 1
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+            
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      })
+  },
+
   // attempts to add product to cart
   async addProductToCart(context, {barcode, businessID}) {
     return new Promise((resolve, reject) => {
