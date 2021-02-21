@@ -169,8 +169,10 @@
             this.popupText = result.message
           }
         }).catch(error => {
-          this.$dbg_console_log(error)
-          this.resetBarcodeScanner()
+          this.show_popup = true
+          this.popupHeader =  "Internal Server Error"
+          this.popupText = "Something went wrong"
+          console.log(error)
         })
         //*/
         return true

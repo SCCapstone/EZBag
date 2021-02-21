@@ -81,6 +81,9 @@
       popupText: "Something went wrong",
       show_popup: false,
 
+      show1: false,
+      show2: false,
+
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
@@ -102,11 +105,14 @@
                 console.log("Successful login")
             }else{
                 this.show_popup = true
+                this.popupHeader =  "Login failure"
                 this.popupText = result.message
             }
             }).catch(error => {
-            this.$dbg_console_log(error)
-            this.resetBarcodeScanner()
+                this.show_popup = true
+                this.popupHeader =  "Internal Server Error"
+                this.popupText = "Something went wrong"
+                console.log(error)
             })
             //*/
             return true
