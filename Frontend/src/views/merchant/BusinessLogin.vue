@@ -92,6 +92,9 @@
       },
   
     }),
+    mounted() {
+        this.$emit("toggleHeader", false)
+    },
 
     methods: {
       ...mapActions(["loginUser"]),

@@ -11,6 +11,9 @@
     components: {
       Scanner,
     },
+    mounted() {
+      this.$emit("toggleHeader", true)
+    },
     data: () => ({
       
     }),

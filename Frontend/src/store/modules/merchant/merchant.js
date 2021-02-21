@@ -25,11 +25,11 @@ if(process.env.VUE_APP_SHOW_DEBUG=='true') {
 import Cookie from 'js-cookie'
 /////////////////////////////////////////////////
 const state = {
-  businessID: null,
+  businessID2: null,
 }
 
 const getters = {
-  getBusinessID: (state) => state.businessID,
+  getBusinessID2: (state) => state.businessID,
 }
 
 // https://vuex.vuejs.org/guide/actions.html#actions 

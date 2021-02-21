@@ -68,6 +68,9 @@ export default {
     CartList,
     Checkout,
   },
+  mounted() {
+    this.$emit("toggleHeader", true)
+  },
   data: () => ({
     show_checkout: false,
     show_popup: false,
