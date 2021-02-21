@@ -33,9 +33,9 @@ const routes = [
     component: () => import('@/views/merchant/BusinessLogin.vue')
   },
   {
-    path: '/onboard',
-    name: 'Onboard',
-    component: () => import('@/views/merchant/Onboard.vue')
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/merchant/BusinessRegister.vue')
   },
   {
     path: '/statistics',

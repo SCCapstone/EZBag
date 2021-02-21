@@ -14,7 +14,7 @@ import org.services.Utils;
 import java.util.*;
 
 @Path("/register")
-public class RegisterUserRoute {
+public class BizRegisterRoute {
     static final String successfulSignupMessage = "Hello <business>,\n" +
             "Thank you for registering with EZBag! Your application is currently under review. Upon approval, you will get full access to the EZBag merchant platform. \n\nThanks,\nEZBag Team";
 

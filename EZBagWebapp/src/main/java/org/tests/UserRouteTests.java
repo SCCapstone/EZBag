@@ -9,9 +9,8 @@ import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
-import org.routes.LoginUserRoute;
-import org.routes.RegisterUserRoute;
-import org.services.DatabaseService;
+import org.routes.BizLoginRoute;
+import org.routes.BizRegisterRoute;
 import org.services.StartupService;
 import org.services.Utils;
 
@@ -22,7 +21,7 @@ public class UserRouteTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(RegisterUserRoute.class, LoginUserRoute.class);
+        return new ResourceConfig(BizRegisterRoute.class, BizLoginRoute.class);
     }
 
     @Test

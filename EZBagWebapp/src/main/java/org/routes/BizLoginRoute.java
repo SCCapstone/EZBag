@@ -13,7 +13,7 @@ import org.services.Utils;
 import javax.xml.crypto.Data;
 
 @Path("/login")
-public class LoginUserRoute {
+public class BizLoginRoute {
     @POST
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
@@ -39,23 +39,17 @@ public class LoginUserRoute {
                     message = "Logged in!";
                     status = "success";
                 } else {
-                    message = "User with the provided email address does not exist.";
-                    status = "success";
+                    message = "User email and password combination is incorrect.";
+                    status = "failure";
                 }
             } else {
                 message = "User with the provided email address does not exist.";
-                status = "success";
+                status = "failure";
             }
-            // TODO check password hash against hash stored in database
-            // if match
-            // TODO deactive old access token if exists in db?
-                // generate a token object w/ email, token, and expiry timestamp
-                // insert token into token collection
-                // send token back to user to be stored in secure cookie
         } else
         {
             message = "Login requires: email, password";
-            status = "success";
+            status = "failure";
         }
         JsonObject response = new JsonObject();
         response.addProperty("message", message);

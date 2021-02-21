@@ -27,7 +27,7 @@ import Cookie from 'js-cookie'
 const state = {
   knownProducts: [],
   productsInCart: [],
-  businessID: 1,
+  businessID: null,
   cartHash: null,
 }
 
@@ -47,54 +47,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/info",
         JSON.stringify(receiptInfo), {timeout: "2000"})
-        .then(function (result) {
-          if(result.data.status != "failure") {
-            resolve({
-              success: 1
-            })
-          }
-          else {
-            resolve({
-              success: 0,
-              message: result.data.message,
-            })
-          }
-            // product was not found by backend, so add only to known products
-            
-        }).catch(function (error) { // failed response from backend
-          reject(error)
-        })
-      })
-  },
-
-  async loginUser(context, loginInfo) {
-    return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/login",
-        JSON.stringify(loginInfo))
-        .then(function (result) {
-          if(result.data.status != "failure") {
-            resolve({
-              success: 1
-            })
-          }
-          else {
-            resolve({
-              success: 0,
-              message: result.data.message,
-            })
-          }
-            // product was not found by backend, so add only to known products
-            
-        }).catch(function (error) { // failed response from backend
-          reject(error)
-        })
-      })
-  },
-
-  async registerUser(context, registrationInfo) {
-    return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/register",
-        JSON.stringify(registrationInfo))
         .then(function (result) {
           if(result.data.status != "failure") {
             resolve({
@@ -275,6 +227,11 @@ const mutations = {
   // remove product from cart
   removeProductFromCart (state, barcode) {
     state.productsInCart = state.productsInCart.filter(product => product.barcode !== barcode)
+  },
+
+  // set businessID method
+  setBusinessID (state, businessID) {
+    state.businessID = businessID;
   },
 
   // Alters the quantity of product whose barcode matches the supplied one.

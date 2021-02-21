@@ -61,7 +61,7 @@
       ></v-select>
       <v-text-field
         v-model="email"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.emailRules]"
         label="E-mail"
         required
         id="email"
@@ -107,7 +107,7 @@
 <script>
   import {mapActions} from 'vuex';
   export default {
-    name: 'onboard',
+    name: 'register',
 
     data: () => ({
       name: "",
@@ -143,6 +143,8 @@
       rules: {
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
+        // emailRules credit to user @ https://stackoverflow.com/questions/50039793/email-validation-n-vuetify-js
+        emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid',
         //equal: ,
       },
   
@@ -150,32 +152,55 @@
 
     methods: {
       ...mapActions(["registerUser"]),
-      submit(){
-        this.registerUser({
-          "businessName":this.name,
-          "streetAddress":this.address,
-          "country": this.country,
-          "city":this.city,
-          "state":this.state,
-          "email":this.email,
-          "phone":this.phone,
-          "password":this.password
-        }).then((result) => { // no backend errors thrown
-          this.$dbg_console_log(result)
-          if(result.success==1) {
-            this.$router.push('registrationSuccess');
-          }else{
-            this.show_popup = true
-            this.popupText = result.message
-          }
-        }).catch(error => {
+      submit() {
+        if (!this.name
+            || !(this.address)
+            || !(this.city)
+            || !(this.state)
+            || !(this.country)
+            || !(this.email)
+            || !(this.phone)
+            || !(this.password)
+            || this.password.length < 8
+            || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
+            || !(this.checkbox))
+        {
+          console.log("ERROR: Register field requirements have not been met.")
           this.show_popup = true
-          this.popupHeader =  "Internal Server Error"
-          this.popupText = "Something went wrong"
-          console.log(error)
-        })
-        //*/
-        return true
+          this.popupHeader =  "Oops!"
+          this.popupText = "Field requirements have not been met."
+          return false
+        } else {
+          console.log(!(this.rules.min(this.password))
+            || !(this.rules.emailRules(this.email)))
+            console.log("Registering user!")
+            this.registerUser({
+              "businessName":this.name,
+              "streetAddress":this.address,
+              "country": this.country,
+              "city": this.city,
+              "state": this.state,
+              "email": this.email,
+              "phone": this.phone,
+              "password": this.password
+            }).then((result) => { // no backend errors thrown
+              this.$dbg_console_log(result)
+              if(result.success==1) {
+                this.$router.push('registrationSuccess');
+              }else{
+                this.show_popup = true
+                this.popupText = result.message
+              }
+            }).catch(error => {
+              this.show_popup = true
+              this.popupHeader =  "Internal Server Error"
+              this.popupText = "Something went wrong"
+              console.log(error)
+            })
+          //*/
+          return true
+        }
+
       }
     }
   }

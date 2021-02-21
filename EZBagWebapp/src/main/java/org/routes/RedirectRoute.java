@@ -9,8 +9,8 @@ import jakarta.ws.rs.core.MediaType;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.QueryParam;
 
-@Path("/redirect/{id}")
-public class redirect {
+@Path("/RedirectRoute/{id}")
+public class RedirectRoute {
     @GET
     @Produces({MediaType.TEXT_HTML})
     public String redirect(@PathParam("id") String ID) {

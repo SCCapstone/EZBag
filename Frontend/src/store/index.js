@@ -5,11 +5,12 @@ import Vuex from 'vuex';
 import VuexPersist from 'vuex-persist';
 import cart from '@/store/modules/customer/cart';
 import Cookie from 'js-cookie';
-
+import merchant from '@/store/modules/merchant/merchant'
 
 // Load Vuex
 Vue.use(Vuex);
 
+// TODO: remove this and get from login
 // Setting cookies tut: https://sandulat.com/safely-persisting-vuex-store-in-local-storage/
 const tokenCookieName = 'userToken'
 // uuid gen courtesy of https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
@@ -28,7 +29,8 @@ const vuexLocalStorage = new VuexPersist({
     cart: {
       productsInCart: state.cart.productsInCart,
       businessID: state.cart.businessID
-    }
+    },
+    merchant: state.merchant
   }),
   // Function that passes a mutation and lets you decide if it should update the state in localStorage.
   // filter: mutation => (true)
@@ -37,7 +39,8 @@ const vuexLocalStorage = new VuexPersist({
 // Create store 
 export default new Vuex.Store({
   modules: {
-    cart
+    cart,
+    merchant
   },
   plugins: [vuexLocalStorage.plugin]
 });

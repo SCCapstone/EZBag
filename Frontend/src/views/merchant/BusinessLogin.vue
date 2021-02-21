@@ -33,7 +33,7 @@
             </div>
             <v-text-field
             v-model="email"
-            :rules="[rules.required]"
+            :rules="[rules.required, rules.emailRules]"
             label="E-mail"
             required
             id="email"
@@ -60,7 +60,7 @@
         </form>
         <div>
             <br>
-            New to EZBag? <router-link to="/onboard">Sign up</router-link>
+            New to EZBag? <router-link to="/register">Sign up</router-link>
         </div>
     </div>
   </v-container>
@@ -88,6 +88,7 @@
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
         //equal: ,
+        emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid',
       },
   
     }),
@@ -95,27 +96,37 @@
     methods: {
       ...mapActions(["loginUser"]),
       submit(){
-        this.loginUser({
+        if (this.password.length < 8
+            || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email)))
+        {
+          this.show_popup = true
+          this.popupHeader =  "Oops!"
+          this.popupText = "Field requirements have not been met."
+          return false
+        } else {
+          this.loginUser({
             "email":this.email,
             "password":this.password
-            }).then((result) => { // no backend errors thrown
-            this.$dbg_console_log(result)
-            if(result.success==1) {
-                //TODO handle successful login
-                console.log("Successful login")
-            }else{
-                this.show_popup = true
-                this.popupHeader =  "Login failure"
-                this.popupText = result.message
-            }
-            }).catch(error => {
-                this.show_popup = true
-                this.popupHeader =  "Internal Server Error"
-                this.popupText = "Something went wrong"
-                console.log(error)
-            })
-            //*/
-            return true
+          }).then((result) => { // no backend errors thrown
+          this.$dbg_console_log(result)
+          if(result.success==1) {
+              //TODO: redirect to business dashboard
+              this.$router.push('registrationSuccess');
+              console.log("Successful login")
+          } else {
+              this.show_popup = true
+              this.popupHeader =  "Login failure"
+              this.popupText = result.message
+          }
+          }).catch(error => {
+              this.show_popup = true
+              this.popupHeader =  "Internal Server Error"
+              this.popupText = "Something went wrong"
+              console.log(error)
+          })
+          return true
+        }
+        
         }
     }
   }
