@@ -5,16 +5,13 @@
 </template>
 
 <script>
-import Carts from '@/components/merchant/Carts';
+import Carts from "@/components/Carts";
 export default {
-  name: 'store',
+  name: "store",
   components: {
-    Carts
+    Carts,
   },
-  markPaid() {
-        this.cart.paid = !this.cart.paid;
-  },
-  data(){
+  data() {
     return {
       carts: [
         {
@@ -30,31 +27,41 @@ export default {
           paid:true,
         },
         {
-          barcodes:[],
-          quantities:[],
+          barcodes: [],
+          quantities: [],
           businessID: 2,
           subtotal: 2,
-          session:1112,
+          session: 1112,
           tax: 2,
           total: 4,
           time: 2,
-          cartHash:"",
-          paid:false,
+          cartHash: "",
+          paid: false,
         },
         {
-          barcodes:[],
-          quantities:[],
+          barcodes: [],
+          quantities: [],
           businessID: 3,
           subtotal: 2,
-          session:1113,
+          session: 1113,
           tax: 2,
           total: 4,
           time: 2,
-          cartHash:"",
+          cartHash: "",
           paid: false,
-        }
-      ]
+        },
+      ],
+    };
+  },
+  methods: {
+    markPaid() {
+      //console.log(this.paid);
+      console.log("mark paid");
+      this.cart.paid = !this.cart.paid;
+    },
+    addCart(newCart) {
+      this.cart = [...this.carts, newCart];
     }
-  }
-}
+  },
+};
 </script>

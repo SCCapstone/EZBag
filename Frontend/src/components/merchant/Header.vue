@@ -1,9 +1,8 @@
 <template>
     <header class="header">
-      <h2>Merchant</h2>
+      <h2>Cart Verification</h2>
       <div id="nav">
-        <router-link to="/">Store</router-link> |
-        <router-link to="/stats">Stats</router-link>
+
       </div>
     </header>
 </template>
@@ -14,8 +13,8 @@ export default {
 </script>
 <style scoped>
  .header{
-     background:gray;
-     color:#fff;
+     background:#e1dfe1;
+     color:#0b0b0b;
      text-align: center;
      padding: 10px;
  }
