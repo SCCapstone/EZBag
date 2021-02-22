@@ -129,7 +129,7 @@ export default {
   methods:{
     ...mapActions(["addProductToCart"]),
     ...mapMutations(["removeProductFromCart",
-                      "setProductQuantity",
+                      "setProductQuantity"
                     ]),
     onScan(barcode) {
       this.scanned_product_barcode = barcode
