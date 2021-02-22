@@ -1,22 +1,6 @@
 <template>
   <v-container>
-    <div id="wrapper">
-        <div id="headerText" class="center">
-            Successfully submitted application<br>
-        </div>
-        <div class="center">
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            Return to
-        </div>
-        <div class="center">
-            <router-link to="/login"> login</router-link>
-        </div>
-    </div>
+    
   </v-container>
 </template>
 

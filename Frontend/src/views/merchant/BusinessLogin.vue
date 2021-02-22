@@ -93,7 +93,7 @@
   
     }),
     mounted() {
-        this.$emit("toggleHeader", false)
+        this.$emit("toggleHeader", "none")
     },
 
     methods: {
@@ -114,7 +114,7 @@
           this.$dbg_console_log(result)
           if(result.success==1) {
               //TODO: redirect to business dashboard
-              this.$router.push('registrationSuccess');
+              this.$router.push('/store');
               console.log("Successful login")
           } else {
               this.show_popup = true

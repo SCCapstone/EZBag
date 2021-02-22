@@ -149,7 +149,9 @@
       },
   
     }),
-
+    mounted() {
+        this.$emit("toggleHeader", "none")
+    },
     methods: {
       ...mapActions(["registerUser"]),
       submit() {
@@ -186,7 +188,7 @@
             }).then((result) => { // no backend errors thrown
               this.$dbg_console_log(result)
               if(result.success==1) {
-                this.$router.push('registrationSuccess');
+                this.$router.push('/login');
               }else{
                 this.show_popup = true
                 this.popupText = result.message

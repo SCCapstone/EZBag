@@ -5,11 +5,14 @@
 </template>
 
 <script>
-import Carts from "@/components/Carts";
+import Carts from "@/components/merchant/Carts";
 export default {
   name: "store",
   components: {
     Carts,
+  },
+  mounted() {
+    this.$emit("toggleHeader", "business")
   },
   data() {
     return {

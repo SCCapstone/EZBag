@@ -14,7 +14,7 @@
       Scanner,
     },
     mounted() {
-      this.$emit("toggleHeader", true)
+      this.$emit("toggleHeader", "customer")
       // set businessID
       this.initBusinessID()
     },

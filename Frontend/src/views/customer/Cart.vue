@@ -69,7 +69,7 @@ export default {
     Checkout,
   },
   mounted() {
-    this.$emit("toggleHeader", true)
+    this.$emit("toggleHeader", "customer")
   },
   data: () => ({
     show_checkout: false,
