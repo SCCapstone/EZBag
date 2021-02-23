@@ -58,8 +58,8 @@ export default {
   },
   methods: {
     markPaid() {
-      //console.log(this.paid);
-      console.log("mark paid");
+      //this.$dbg_console_log(this.paid);
+      this.$dbg_console_log("mark paid");
       this.cart.paid = !this.cart.paid;
     },
     addCart(newCart) {

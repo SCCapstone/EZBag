@@ -115,7 +115,7 @@
           if(result.success==1) {
               //TODO: redirect to business dashboard
               this.$router.push('/store');
-              console.log("Successful login")
+              this.$dbg_console_log("Successful login")
           } else {
               this.show_popup = true
               this.popupHeader =  "Login failure"
@@ -125,7 +125,7 @@
               this.show_popup = true
               this.popupHeader =  "Internal Server Error"
               this.popupText = "Something went wrong"
-              console.log(error)
+              this.$dbg_console_log(error)
           })
           return true
         }

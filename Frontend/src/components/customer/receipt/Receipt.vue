@@ -103,26 +103,26 @@ export default {
       if (email !== "") {
         
         if (email.includes("@")) {
-          console.log("proper email: ", email)
+          this.$dbg_console_log("proper email: ", email)
           addEmail = true;
         } else {
           // TODO: elegant correction message
-          console.log("Email improperly formatted")
+          this.$dbg_console_log("Email improperly formatted")
         }
       } else {
-        console.log("email field empty")
+        this.$dbg_console_log("email field empty")
       }
 
       if (phone !== "") {
         if (phone.length == 10) {
-          console.log("proper phone: ", phone)
+          this.$dbg_console_log("proper phone: ", phone)
           addPhone = true;
         } else {
           // TODO: elegant correction message
-          console.log("Phone number improper length")
+          this.$dbg_console_log("Phone number improper length")
         }
       } else {
-        console.log("phone field empty")
+        this.$dbg_console_log("phone field empty")
       }
 
       var data = {
@@ -136,10 +136,10 @@ export default {
       }
 
       data.session = "SES" + Cookie.get('userToken')
-      console.log(data)
+      this.$dbg_console_log(data)
 
       if (addEmail || addPhone) {
-        console.log("sending digital receipt to given contact")
+        this.$dbg_console_log("sending digital receipt to given contact")
         // send to backend for digital receipt
         //print(data)
         this.sendReceipt(data
@@ -156,7 +156,7 @@ export default {
           this.show_popup = true
           this.popupHeader =  "Internal Server Error"
           this.popupText = "Something went wrong"
-          console.log(error)
+          this.$dbg_console_log(error)
         })
       } else {
         this.popupHeader =  "Empty Fields"

@@ -167,15 +167,15 @@
             || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
             || !(this.checkbox))
         {
-          console.log("ERROR: Register field requirements have not been met.")
+          this.$dbg_console_log("ERROR: Register field requirements have not been met.")
           this.show_popup = true
           this.popupHeader =  "Oops!"
           this.popupText = "Field requirements have not been met."
           return false
         } else {
-          console.log(!(this.rules.min(this.password))
+          this.$dbg_console_log(!(this.rules.min(this.password))
             || !(this.rules.emailRules(this.email)))
-            console.log("Registering user!")
+            this.$dbg_console_log("Registering user!")
             this.registerUser({
               "businessName":this.name,
               "streetAddress":this.address,
@@ -197,7 +197,7 @@
               this.show_popup = true
               this.popupHeader =  "Internal Server Error"
               this.popupText = "Something went wrong"
-              console.log(error)
+              this.$dbg_console_log(error)
             })
           //*/
           return true
