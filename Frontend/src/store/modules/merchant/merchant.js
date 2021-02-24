@@ -22,7 +22,10 @@ if(process.env.VUE_APP_SHOW_DEBUG=='true') {
   })
 }
 
+import Vue from 'vue'
+import VueCookies from 'vue-cookies';
 import Cookie from 'js-cookie'
+Vue.use(VueCookies);
 /////////////////////////////////////////////////
 const state = {
   businessID2: null,
@@ -35,16 +38,45 @@ const getters = {
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
 
+  async fetchCarts(context, businessID) {
+    var data = JSON.stringify({businessID:businessID})
+    var authToken = Cookie.get('token')
+    console.log(businessID)
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/merchant/carts", data, {headers: {
+        "Authorization":authToken,
+        "Access-Control-Allow-Origin":"http://localhost:9000/",
+      }})
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            console.log(result.data)
+            resolve({
+              success: 1,
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      })
+  },
+
   async loginUser(context, loginInfo) {
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/login",
         JSON.stringify(loginInfo))
         .then(function (result) {
           if(result.data.status != "failure") {
-            Cookie.set("token", result.data.token, {secure: true, expires: 99983090}) 
             context.commit("setBusinessID", result.data.businessID)
             resolve({
               success: 1,
+              token: result.data.token,
             })
           }
           else {

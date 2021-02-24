@@ -68,6 +68,9 @@
 
 <script>
   import {mapActions} from 'vuex';
+  import Vue from 'vue'
+  import VueCookies from 'vue-cookies';
+  Vue.use(VueCookies);
   export default {
     name: 'login',
 
@@ -114,6 +117,8 @@
           this.$dbg_console_log(result)
           if(result.success==1) {
               //TODO: redirect to business dashboard
+              this.$cookies.set("token", result.token, {secure: true, expires: 99983090})
+              console.log("TOKEN",result.token)
               this.$router.push('/store');
               this.$dbg_console_log("Successful login")
           } else {

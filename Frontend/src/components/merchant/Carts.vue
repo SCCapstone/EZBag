@@ -6,14 +6,12 @@
         <h4>Cart {{cart.businessID}}</h4>
         <small>
             <p> 
+              <v-btn @click="markPaid(cart)">Verify</v-btn>
               Subtotal: {{cart.subtotal}}
               Tax: {{cart.tax}}
               Total: {{cart.total}} 
             </p> 
         </small>
-        <p>
-          <button v-on:click="markPaid">Verify</button>
-        </p>
       </div>
     </div>
   </div>
@@ -25,7 +23,9 @@ export default {
     components: {
     }, 
     methods: {
-      markPaid() {
+      markPaid(cart) {
+        console.log(cart)
+        cart.paid = !cart.paid
         //this.$dbg_console_log(this.paid);
         this.$dbg_console_log('mark paid');
         //this.cart.paid = !this.cart.paid;
@@ -45,7 +45,11 @@ export default {
     padding: 3px;
   }
 
-  .verify { 
-    padding: 1px;
+  .v-btn {
+    height: 110%;
+    position: absolute;
+    right: 0px;
+    margin-top: -15px;
+    margin-right: 10px;
   }
 </style>
