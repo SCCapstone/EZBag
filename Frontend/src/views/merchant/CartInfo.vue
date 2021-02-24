@@ -1,11 +1,11 @@
 <template>
   <v-container ma-0 pa-0>
-    <div v-for="Cart in Carts" v-bind:key="Cart.cartHash" class="grey" id="info">
-      <h>Cart {{ Cart.cartHash }}</h>
+    <div v-for="Cart in Carts" v-bind:key="Cart.cartHash" class="header">
+      <h class="cartHash">Cart {{ Cart.cartHash }}</h>
 
-      <p>{{ Cart.time }}</p>
-      <p>Total: ${{ Cart.total }}</p>
-      <p>Items: {{ Cart.quantity }}</p>
+      <p style="margin-bottom: 3px;">{{ Cart.time }}</p>
+      <p style="margin-bottom: 3px;" class="total">Total: ${{ Cart.total }}</p>
+      <p style="margin-bottom: 3px;" class="quantity">Items: {{ Cart.quantity }}</p>
     </div>
 
     <div class="items">
@@ -16,7 +16,7 @@
         no-gutters
       >
         <v-col>
-          <v-card>
+          <v-card class="product">
             <v-card-title>{{ product.name }}</v-card-title>
             <v-card-actions>
               <span class="subheading ml-2">${{ product.price }}</span>
@@ -27,7 +27,7 @@
         </v-col>
       </v-row>
     </div>
-    
+
     <div class="center">
         <v-btn
           class="mr-4"
@@ -47,7 +47,7 @@
     data(){
       return {
         Carts: [
-          { cartHash: '10', total: 10.99, quantity: 3 }
+          { cartHash: '10', time: '', total: 10.99, quantity: 3 }
         ],
 
         Products: [
@@ -83,15 +83,35 @@
     width: 100%;
   }
 
-  .grey {
+  .header {
     padding: 5px;
+    background-color: #e0e0e0;
   }
 
   .v-card__text, .v-card__title {
     word-break: normal;
   }
 
-  .products {
-  
+  .info {
+    margin-bottom: 2px;
+  }
+
+  .cartHash {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+
+  .product {
+    margin-bottom: -12px;
+  }
+
+  .total, .quantity {
+    display: inline-flex;
+  }
+
+  .quantity {
+    float: right;
+    margin-right: 20%;
   }
 </style>
