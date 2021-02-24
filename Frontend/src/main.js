@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify';
 import store from './store'
 import router from './router'
 import debug from './mixins/debug'
+import VScandit from 'vue-scandit';
 
 Vue.config.productionTip = false
 
@@ -12,8 +13,8 @@ Vue.config.productionTip = false
 // components. A mixin object can contain any component options. When a
 // component uses a mixin, all options in the mixin will be “mixed” into 
 // the component’s own options.
-
 Vue.mixin(debug)
+Vue.use(VScandit);
 
 new Vue({
   store,

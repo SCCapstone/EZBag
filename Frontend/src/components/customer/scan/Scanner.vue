@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div id="scan-content">
-      <div id="scandit-barcode-picker"></div>
-      <ScanButtons 
-        v-bind:total=getSubtotal />
-    </div>
+    <v-scandit 
+      license-key="AcN/DBgYOL7AKEDqcipZkFZAlsxfPT8wWnSu1HF/oAPwSPPNtlDJw/RzfunnSuo0fVUK1YUao28BYQ+vHUE86/8JaHQET5B1h3rJ8rRk8UcRdXx5pCBhz5QF5Fn1ODWosRhAJzNM0hxpXmSD2OjbpljflTYHVmzyCcIQTMsEAasUgE2cMu1Odx+TCUcZVIBvndjZdI473l4AEjl4VSZlzi/Iw103XcaWRj85gCTtFGRhw01sd356F8eoxvLGfAqS71GGiICahkk3GGm685hpup1myHzM7KB51cWksy2VCSmSLVHgprAlsDDihIaLEFBiJXpP1c0/6cGcE0Z2pHHNlSDr3WNnvT/A1EJaKrFSgZp8jqNnSYD9sqFHnuWazvY/lzc6CWNhG8L1OQ35HpLw+XFL/PB/qOrqfFj6boVaXvqEYFiCQZNgAhmkZivdumTROV8lWuP+BVypLD2pHvbm1iDcDmkXTWQhRymYqY8WuBqEINYMaYKny3exWhIoHW6rIofsjtshAZUZB+abul36dvv2STnU16tsG9/4Edibh0hnfUk5U8Cq/w/WeWGMhAosUpNCwUh1mOPpznJBDJr/kl5FkahLuBUsh40IMpltrleFfB0+7CuUFsJTxL0zKis7Xz7xgR4AGY8WmIKBnlgOYmSGO4TojK8fAVyuVfnWmg+uXrAucsCDpRlDPvrTnAk1XoyI3NZKif2rWl7ksglaVntNX3tNeXMObUKGKlQZfCvb4VnciPUe+OxUcd8GmOW9c830fR9sjkSu/m+E18OZNlSP1uq8dWDe/kEw2ByiNFp1fSBMWQ==" 
+      :configuration-options="{ engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/' }"
+      :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
+      v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
+      v-on:scan="(barcode) => { onScan(barcode.barcodes[0].data) }" />
+    <ScanButtons v-bind:total=getSubtotal />
     <!--
       Pop up
     !-->
@@ -67,9 +69,7 @@
 import { mapGetters, mapActions, mapMutations} from 'vuex';
 import ScanButtons from '@/components/customer/scan/ScanButtons'
 import Product from '@/components/customer/checkout/Product'
-import * as ScanditSDK from "scandit-sdk";
 
-let barcodePicker;
 
 export default {
   name: 'Scanner',
@@ -83,47 +83,9 @@ export default {
       product_loaded_from_cart: false,
       show_popup: false,
       initial_product_quantity: 0,
-      scanned_product_barcode: 0
+      scanned_product_barcode: 0,
+      barcodePicker: null,
     };
-  },
-  mounted () {
-    // https://github.com/Scandit/barcodescanner-sdk-for-web-samples/blob/master/vanilla-samples/proof-of-delivery/index.html
-    ScanditSDK.configure("AcN/DBgYOL7AKEDqcipZkFZAlsxfPT8wWnSu1HF/oAPwSPPNtlDJw/RzfunnSuo0fVUK1YUao28BYQ+vHUE86/8JaHQET5B1h3rJ8rRk8UcRdXx5pCBhz5QF5Fn1ODWosRhAJzNM0hxpXmSD2OjbpljflTYHVmzyCcIQTMsEAasUgE2cMu1Odx+TCUcZVIBvndjZdI473l4AEjl4VSZlzi/Iw103XcaWRj85gCTtFGRhw01sd356F8eoxvLGfAqS71GGiICahkk3GGm685hpup1myHzM7KB51cWksy2VCSmSLVHgprAlsDDihIaLEFBiJXpP1c0/6cGcE0Z2pHHNlSDr3WNnvT/A1EJaKrFSgZp8jqNnSYD9sqFHnuWazvY/lzc6CWNhG8L1OQ35HpLw+XFL/PB/qOrqfFj6boVaXvqEYFiCQZNgAhmkZivdumTROV8lWuP+BVypLD2pHvbm1iDcDmkXTWQhRymYqY8WuBqEINYMaYKny3exWhIoHW6rIofsjtshAZUZB+abul36dvv2STnU16tsG9/4Edibh0hnfUk5U8Cq/w/WeWGMhAosUpNCwUh1mOPpznJBDJr/kl5FkahLuBUsh40IMpltrleFfB0+7CuUFsJTxL0zKis7Xz7xgR4AGY8WmIKBnlgOYmSGO4TojK8fAVyuVfnWmg+uXrAucsCDpRlDPvrTnAk1XoyI3NZKif2rWl7ksglaVntNX3tNeXMObUKGKlQZfCvb4VnciPUe+OxUcd8GmOW9c830fR9sjkSu/m+E18OZNlSP1uq8dWDe/kEw2ByiNFp1fSBMWQ==", {
-      engineLocation: "https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build",
-      })
-        .then(() => {
-          return ScanditSDK.BarcodePicker
-                  .create(document.getElementById("scandit-barcode-picker"))
-                  .then((picker) =>
-          {
-          barcodePicker = picker;// access to barcode picker outside of ScanditSDK call
-          // set scandit settings https://docs.scandit.com/stable/web/classes/barcodepicker.html
-          picker.setMirrorImageEnabled(false);
-          picker.setVideoFit(ScanditSDK.BarcodePicker.ObjectFit.COVER);
-          // picker.setGuiStyle(ScanditSDK.BarcodePicker.GuiStyle.NONE);
-          barcodePicker.applyScanSettings(
-            new ScanditSDK.ScanSettings({
-              enabledSymbologies: [
-                ScanditSDK.Barcode.Symbology.UPCA,
-                ScanditSDK.Barcode.Symbology.UPCE,
-                ScanditSDK.Barcode.Symbology.EAN8,
-                ScanditSDK.Barcode.Symbology.EAN13
-              ],
-              codeDuplicateFilter: -1,
-            })
-          );
-          barcodePicker
-            .on("scan", (scanResult) => {
-              barcodePicker.pauseScanning()
-              this.$dbg_console_log("paused scanning", barcodePicker)
-              var barcode = scanResult.barcodes[0].data
-              this.$dbg_console_log("read barcode", barcode)
-              this.onScan(barcode)
-            })
-            .on("scanError", console.error);
-        });
-    })
-    .catch(console.error);
   },
   computed: mapGetters(['getSubtotal', 'getBusinessID']),
   methods:{
@@ -131,7 +93,15 @@ export default {
     ...mapMutations(["removeProductFromCart",
                       "setProductQuantity"
                     ]),
+    // set options for barcode picker and save picker                     
+    initPicker(barcodePicker) {
+      barcodePicker.setMirrorImageEnabled(false);
+      barcodePicker.setVideoFit('cover');
+      this.barcodePicker = barcodePicker
+    },
     onScan(barcode) {
+      this.barcodePicker.pauseScanning()
+      this.$dbg_console_log("scanning paused", this.barcodePicker)
       this.scanned_product_barcode = barcode
       // attempt to add product to cart
       this.addProductToCart({barcode:barcode, businessID:this.getBusinessID})
@@ -175,20 +145,20 @@ export default {
     },
     resetBarcodeScanner() {
       // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
-      barcodePicker.resumeScanning();
-      barcodePicker.clearSession();
-      this.$dbg_console_log('resume scanning', barcodePicker)
+      this.barcodePicker.resumeScanning();
+      this.barcodePicker.clearSession();
+      this.$dbg_console_log('resume scanning', this.barcodePicker)
     }
   },
 }
 </script>
 
 <style scoped>
-  #scan-content {
+  .scandit scandit-container {
     height: 100%;
     width: 100%;
   }
-  #scandit-barcode-picker {
+  v-scandit {
     position: absolute;
     top: 0%;
     margin: auto;
