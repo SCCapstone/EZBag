@@ -17,11 +17,13 @@ public class BizCartsRoute {
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
         // validate user token
-        if (Utils.validToken(authToken)) {
+//        if (Utils.validToken(authToken)) {
+        if (true) {
             JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
             if (payloadObject.has("businessID")) {
                 String businessID = payloadObject.get("businessID").getAsString();
                 System.out.println("Searching for carts");
+                // TODO: change returned carts to include item names array
                 return DatabaseService.getLast24HourCartsByBusinessID(businessID);
             } else {
                 return Utils.generateResponse(false, "Barcode product lookup requires: businessID");

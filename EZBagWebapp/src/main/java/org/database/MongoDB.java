@@ -1,6 +1,7 @@
 package org.database;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mongodb.BasicDBObject;
@@ -11,6 +12,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
+import org.services.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,10 +95,30 @@ public class MongoDB {
         FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
                 .find(new Document().append("businessID", businessID)
                                     .append("time", new Document().append("$gt" , dayMillis)));
-
         JsonArray jsArray = new JsonArray();
+        HashMap<String, String> productCache = new HashMap<>();
         for (Document doc : result) {
             doc.remove("_id");
+            // TODO: get product names
+            ArrayList<String> barcodes = (ArrayList<String>) doc.get("barcodes");
+            ArrayList<String> productNames = new ArrayList<>(barcodes.size());
+            for (int i = 0; i < barcodes.size(); i++) {
+                if (productCache.containsKey(barcodes.get(i))) {
+                    productNames.add(i, productCache.get(barcodes.get(i)));
+                } else {
+                    Document resp = getProductByBarcodeBusinessID(barcodes.get(i), businessID);
+                    if (resp != null)
+                    {
+                        productNames.add(i, resp.getString("name"));
+                        productCache.put(barcodes.get(i), resp.getString("name"));
+                    } else {
+                        // TODO: product doesnt exists do something else to handle this
+                        productNames.add(i, "UNKNOWN PRODUCT ERROR");
+                        productCache.put(barcodes.get(i), "UNKNOWN PRODUCT ERROR");
+                    }
+                }
+            }
+            doc.append("names", productNames);
             JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
             jsArray.add(payloadObject);
         }

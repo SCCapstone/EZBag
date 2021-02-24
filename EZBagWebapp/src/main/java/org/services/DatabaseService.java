@@ -19,7 +19,6 @@ public class DatabaseService {
     }
 
     public static String getLast24HourCartsByBusinessID(String businessID) {
-        // TODO
         String resp = database.getLast24HourCartsByBusinessID(businessID);
         return resp;
     }
