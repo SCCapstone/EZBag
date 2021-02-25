@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-bind:key="cart.cartHash" v-for="cart in carts" class="carts">
-      <div @click="test(cart)" class="cart" v-bind:class="{'is-paid':cart.verified}
+      <div @click="expandCart(cart)" class="cart" v-bind:class="{'is-paid':cart.verified}
       ">
         <h4><v-icon>mdi-cart</v-icon>{{cart.cartHash.substring(cart.cartHash.length - 3)}}</h4>
         <small>
@@ -13,7 +13,7 @@
               <u v-else>
                 <v-icon class="chevron" size=50>mdi-chevron-down</v-icon>
               </u>
-              Total: {{cart.total}}
+              Total: ${{showTwoDecimal(cart.total)}}
             </p>
         </small>
         <div v-if="cart.expanded==true">
@@ -26,19 +26,35 @@
   </div>
 </template>
 <script>
+import {mapGetters, mapActions} from 'vuex';
 export default {
     name: "Carts",
     props:["carts"],
     components: {
-    }, 
+    },
+    computed: mapGetters(['getBusinessID']),
     methods: {
-      test(cart){
+      ...mapActions(["verifyCart"]),
+      showTwoDecimal(num) {		
+        return (num).toFixed(2);
+      },
+      expandCart(cart){
         cart.expanded = !cart.expanded
-        console.log("working")
       },
       markPaid(cart) {
-        console.log(cart)
-        cart.verified = !cart.verified
+        var cartHash = cart.cartHash
+        var businessID = this.getBusinessID
+        this.verifyCart({businessID:businessID, cartHash:cartHash})
+        .then((result) => { // no backend errors thrown
+        this.$dbg_console_log(result)
+        if(result.success==1) {
+            cart.verified = true
+        } else {
+            console.log("Failed")
+        }
+        }).catch(error => {
+            this.$dbg_console_log(error)
+        })
         //this.$dbg_console_log(this.paid);
         this.$dbg_console_log('mark paid');
         //this.cart.paid = !this.cart.paid;

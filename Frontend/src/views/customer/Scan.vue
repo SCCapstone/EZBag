@@ -28,7 +28,7 @@
         if (storage.getItem("redirectID") === null) {
            // if does not exist, set to hardcoded development value
           console.log("ERROR: Cannot find redirectID, using development value!")
-          this.setBusinessID("cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727")
+          this.setBusinessID("179aa3e0fb88f6e4ec0ef0d0f5588d43f93713e7b7e4a5ddd8a3fdd1c39701fa")
         } else {
           console.log("Found redirectID!")
           this.setBusinessID(storage.getItem("redirectID"))

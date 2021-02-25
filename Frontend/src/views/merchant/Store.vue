@@ -98,12 +98,18 @@ export default {
     this.$dbg_console_log(result)
     if(result.success==1) {
         //TODO: redirect to business dashboard
-        this.$router.push('/store');
         this.$dbg_console_log("Successful login")
+        
+        var count = result.carts.length;
+        for(var i=0; i<count; i++)
+        {
+          result.carts[i]["expanded"]=false
+        }
         this.carts = result.carts
+        //this.carts = this.debugCarts   
     } else {
         console.log("Failed")
-        this.carts = this.debugCarts
+        //this.carts = this.debugCarts
         //this.show_popup = true
         //this.popupHeader =  "Login failure"
         //this.popupText = result.message
@@ -113,7 +119,7 @@ export default {
         this.popupHeader =  "Internal Server Error"
         this.popupText = "Something went wrong"
         this.carts = this.debugCarts   
-        //this.$dbg_console_log(error)
+        this.$dbg_console_log(error)
         if(error=="dumbassFuckingViewWarn"){
           console.log("Vue warnings are stupid")
         }

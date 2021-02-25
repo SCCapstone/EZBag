@@ -24,7 +24,7 @@ if(process.env.VUE_APP_SHOW_DEBUG=='true') {
 
 import Vue from 'vue'
 import VueCookies from 'vue-cookies';
-import Cookie from 'js-cookie'
+//import Cookie from 'js-cookie'
 Vue.use(VueCookies);
 /////////////////////////////////////////////////
 const state = {
@@ -38,19 +38,48 @@ const getters = {
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
 
-  async fetchCarts(context, businessID) {
-    var data = JSON.stringify({businessID:businessID})
-    var authToken = Cookie.get('token')
-    console.log(businessID)
+  async verifyCart(context, cartData) {
+    console.log("HASH2",cartData)
+    var data = JSON.stringify(cartData)
     return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/merchant/carts", data, {headers: {
-        "Authorization":authToken,
-        "Access-Control-Allow-Origin":"http://localhost:9000/",
-      }})
+      axios.post("EZBagWebapp/webapi/merchant/verify", data)
         .then(function (result) {
           if(result.data.status != "failure") {
             console.log(result.data)
             resolve({
+              success: 1,
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      })
+  },
+
+  async fetchCarts(context, businessID) {
+    var data = JSON.stringify({businessID:businessID})
+    //var authToken = Cookie.get('token')
+    /*
+    {headers: {
+        "Authorization":authToken,
+        "Access-Control-Allow-Origin":"http://localhost:9000/",
+      }}
+    */
+    console.log(businessID)
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/merchant/carts", data)
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            console.log(result.data)
+            resolve({
+              carts: result.data.carts,
               success: 1,
             })
           }

@@ -124,7 +124,6 @@
       popupText: "Something went wrong",
       show_popup: false,
 
-
       states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 
           'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 
           'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 
