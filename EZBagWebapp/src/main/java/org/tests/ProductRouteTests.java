@@ -14,7 +14,9 @@ import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
+import org.routes.ProductInsertRoute;
 import org.routes.ProductQueryRoute;
+import org.routes.ProductSearchRoute;
 import org.services.DatabaseService;
 import org.services.StartupService;
 
@@ -30,7 +32,7 @@ public class ProductRouteTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(ProductQueryRoute.class);
+        return new ResourceConfig(ProductQueryRoute.class, ProductInsertRoute.class, ProductSearchRoute.class);
     }
 
     @Test
@@ -80,5 +82,17 @@ public class ProductRouteTests extends JerseyTest {
         assertEquals(response2, "{\"message\":\"Product was not found in the database\",\"status\":\"failure\"}");
         assertEquals(response3, "{\"message\":\"Barcode product lookup requires: barcode, businessID\",\"status\":\"failure\"}");
        }
+
+    @Test
+    public void testSearch() {
+
+        // insert example product to the database to be used for testing
+        Document searchObj = new Document();
+        searchObj.append("businessID", "1")
+                .append("query", "example product");
+        final String response1 = target("search").request().post(Entity.text(searchObj.toJson()), String.class);
+        JsonObject payloadObject1 = new JsonParser().parse(response1).getAsJsonObject();
+        System.out.println("received: \n"+payloadObject1.toString());
+    }
 
 }

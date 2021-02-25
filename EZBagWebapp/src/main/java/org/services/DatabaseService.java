@@ -18,6 +18,11 @@ public class DatabaseService {
         return Utils.generateResponse(false, message);
     }
 
+    public static String searchProductsByBusinessIDQuery(String businessID, String query) {
+        String resp = database.searchProductsByBusinessIDQuery(businessID, query);
+        return resp;
+    }
+
     public static String getLast24HourCartsByBusinessID(String businessID) {
         String resp = database.getLast24HourCartsByBusinessID(businessID);
         return resp;
@@ -97,7 +102,7 @@ public class DatabaseService {
         return Utils.generateResponse(database.insertProduct(newProduct), newProduct.toJson());
     }
     public static String insertUser(Document newUser) {
-        System.out.println("Inserting new use");
+        System.out.println("Inserting new user");
         return Utils.generateResponse(database.insertUser(newUser), newUser.toJson());
     }
 }

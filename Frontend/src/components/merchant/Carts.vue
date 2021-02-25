@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div v-bind:key="cart.cartHash" v-for="cart in carts" class="carts">
+    <div v-bind:key="cart.cartHash" v-for="cart in carts.slice().reverse()" class="carts">
       <div @click="expandCart(cart)" class="cart" v-bind:class="{'is-paid':cart.verified}
       ">
         <h4><v-icon>mdi-cart</v-icon>{{cart.cartHash.substring(cart.cartHash.length - 3)}}</h4>
+        <h5> {{cart.dt}} </h5>
         <small>
             <p> 
               <v-btn v-on:click.stop @click="markPaid(cart)">Verify</v-btn>
@@ -13,7 +14,7 @@
               <u v-else>
                 <v-icon class="chevron" size=50>mdi-chevron-down</v-icon>
               </u>
-              Total: ${{showTwoDecimal(cart.total)}}
+              <b>Total: ${{showTwoDecimal(cart.total)}}</b>
             </p>
         </small>
         <div v-if="cart.expanded==true">

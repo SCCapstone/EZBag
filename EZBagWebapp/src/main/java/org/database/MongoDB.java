@@ -10,6 +10,10 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.Indexes;
+import com.mongodb.client.model.Projections;
+import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.services.DatabaseService;
@@ -19,8 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.gte;
+import static com.mongodb.client.model.Filters.*;
 
 
 public class MongoDB {
@@ -74,8 +77,14 @@ public class MongoDB {
         collectionsMap.put(checkoutCartCollectionName, database.getCollection(checkoutCartCollectionName));
         System.out.print("[MongoDB] Fetching user collection...");
         collectionsMap.put(userCollectionName, database.getCollection(userCollectionName));
+        // create product collection text index for for search of products
+        collectionsMap.get(productCollectionName).createIndex(Indexes.text("name"));
+
         System.out.print("[MongoDB] initialization done\n");
     }
+
+
+
 
     public Document getProductByBarcodeBusinessID(String barcode, String businessID) {
         BasicDBObject query = new BasicDBObject();
@@ -88,6 +97,24 @@ public class MongoDB {
             return respDoc;
         }
         return null;
+    }
+
+    public String searchProductsByBusinessIDQuery(String businessID, String queryString) {
+        // TODO: test this query method
+        FindIterable<Document> results = collectionsMap.get(productCollectionName)
+                .find(and(eq("businessID", businessID), Filters.text(queryString)))
+                .projection(Projections.metaTextScore("score"))
+                .sort(Sorts.metaTextScore("score"));
+        JsonArray searchResults = new JsonArray();
+        for (Document resDoc : results) {
+            resDoc.remove("_id");
+            JsonObject payloadObject = new JsonParser().parse(resDoc.toJson()).getAsJsonObject();
+            searchResults.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.add("results", searchResults);
+        resp.addProperty("status", "success");
+        return resp.toString();
     }
 
     public String getLast24HourCartsByBusinessID(String businessID) {

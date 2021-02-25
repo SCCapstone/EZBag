@@ -35,7 +35,7 @@ public class BizRegisterRoute {
         {
             // reject new user registration for already used email
             System.out.println(payloadObject.get("email").getAsString());
-            System.out.println(DatabaseService.userExists(payloadObject.get("email").getAsString()));
+            System.out.println("User exists: " + DatabaseService.userExists(payloadObject.get("email").getAsString()));
             if(DatabaseService.userExists(payloadObject.get("email").getAsString()))
             {
                 String message = "User with given email address already exists!";
