@@ -43,6 +43,41 @@
           cartHash: "",
           paid: false,
         },
+        {"carts":
+          [{"barcodes":
+            ["12345678","12345678"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190765106"},
+            "cartHash":"meeauCHFaWFP6lCPEsyM",
+            "verified":false
+          },
+          {"barcodes":["12345678","12345678"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190804970"},
+            "cartHash":"wLtqzC34bfFaxErqnVW2",
+            "verified":false},
+            {"barcodes":["12345678","12345678"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190805635"},
+            "cartHash":"KpaE791tFEiK2zC2P2Fx",
+            "verified":false
+          }
+          ],"status":"success"}
   */
 import {mapGetters, mapActions} from 'vuex';
 import Carts from "@/components/merchant/Carts";
@@ -65,22 +100,70 @@ export default {
         //TODO: redirect to business dashboard
         this.$router.push('/store');
         this.$dbg_console_log("Successful login")
+        this.carts = result.carts
     } else {
-        this.show_popup = true
-        this.popupHeader =  "Login failure"
-        this.popupText = result.message
+        console.log("Failed")
+        this.carts = this.debugCarts
+        //this.show_popup = true
+        //this.popupHeader =  "Login failure"
+        //this.popupText = result.message
     }
     }).catch(error => {
         this.show_popup = true
         this.popupHeader =  "Internal Server Error"
         this.popupText = "Something went wrong"
-        this.$dbg_console_log(error)
+        this.carts = this.debugCarts   
+        //this.$dbg_console_log(error)
+        if(error=="dumbassFuckingViewWarn"){
+          console.log("Vue warnings are stupid")
+        }
     })
   },
   data() {
     return {
       carts: [
       ],
+      debugCarts:
+          [{"barcodes":
+            ["12345678","12345678"],
+            "names":["Tooth brush", "Extra gum"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190765106"},
+            "cartHash":"meeauCHFaWFP6lCPEsyM",
+            "verified":false,
+            "expanded":false
+          },
+          {"barcodes":["12345678","12345678"],
+            "names":["Tooth brush", "Extra gum"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190804970"},
+            "cartHash":"wLtqzC34bfFaxErqnVW2",
+            "verified":false,
+            "expanded":false
+          },
+          {"barcodes":["12345678","12345678"],
+            "names":["Tooth brush", "Extra gum"],
+            "quantities":[3,2],
+            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
+            "subtotal":34.95,
+            "session":"2",
+            "tax":23.08,
+            "total":58.03,
+            "time":{"$numberLong":"1614190805635"},
+            "cartHash":"KpaE791tFEiK2zC2P2Fx",
+            "verified":false,
+            "expanded":false
+          }]
     };
   },
   computed: mapGetters(['getBusinessID']),
