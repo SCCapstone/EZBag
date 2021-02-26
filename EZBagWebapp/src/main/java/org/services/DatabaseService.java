@@ -18,6 +18,11 @@ public class DatabaseService {
         return Utils.generateResponse(false, message);
     }
 
+    public static String getProductsBusinessID(String businessID) {
+        String resp = database.getProductsBusinessID(businessID);
+        return resp;
+    }
+
     public static String searchProductsByBusinessIDQuery(String businessID, String query) {
         String resp = database.searchProductsByBusinessIDQuery(businessID, query);
         return resp;

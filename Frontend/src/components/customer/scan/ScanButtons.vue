@@ -55,7 +55,7 @@ export default {
     }
 
     .inner{
-    display: table-cell;
-    vertical-align: middle;
+        display: table-cell;
+        vertical-align: middle;
     }
 </style>

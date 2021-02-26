@@ -1,12 +1,16 @@
 <template>
   <div>
+
     <v-scandit class="v-scandit"
       license-key="ARv/1yo4Cha6Htq90Q/asSQ0VGsHRkfIKHyFSktTSM5faaemV3L89GZ4d67GXGERDAwSfJ5KEriIQSJUmBd64fN8R0x6Cph9xnbkKSpspIecckli/WLQP9N9dAmqfc7Up2xSEahD4AxSftZdigk6I9EZ8fesCPxqGUTa/XrCiO7D4ZS5vdwybGJJJo3SkJxiPQ6dya/m5z7DzfINzfFHCmj6fgnQR/TFINTsCklDnr8/DEpa+/hYLE2xw8SYA4205UViJRO0lCKpJfw5VeoGtglpJmQ9H65lgJOGCTkPSX1wX9cX7moF0A3cMto2ET+sjR+yaa98j5zCHzf8UZZUa2fCBgt1ud4pXm8XXqYNihP6EU9ryhFuw6dut1BIDoTkbD8jnZCWNl1ixYmpWRn/5kJXJwsvKfTGJ3UopiIbPWk1GH95g/Z1pIrtUjnEPfBNIMuYtTQWR7faTBUqLomgvtT9QCJ+FrSzzqdzUj1t/Sp12nm4yLOrRWJPagK0taAkSgpBf8Uzc6jhmwmLvgC2cWx7RuKIvOd8eSif4ZegBMbrasWfI5GR1it2bwnv0rVy3bD06eZdo3zLkNLfMz7jcFOMsMXjXb9VsgsFzMaq4HowXvvhJurh1+dwevpj80+4kS59YnHZF8GJYcdhcTYeF+tZ8xTE3ExEI4COubvuiRZT8mW8ZI4zaVWzl+ERzdIgYS3Js683+ednxHmakeLHfZtrUuRlTvNpZF5kPAQE9DROUjecaH/LPtGkePuuFUn4ZNfaG4NO60b6+QPPtzKp7mbZprf9Xp1X8IPQOsDjzDQcygecyIkPon0Nj8RLQQBHYLN/mXT5uJDrcA==" 
       :configuration-options="{ engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/' }"
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { onScan(barcode.barcodes[0].data) }" />
+    <ScanSearchBar/>
     <ScanButtons v-bind:total=getSubtotal />
+
+    
     <!--
       Pop up
     !-->
@@ -68,6 +72,7 @@
 <script>
 import { mapGetters, mapActions, mapMutations} from 'vuex';
 import ScanButtons from '@/components/customer/scan/ScanButtons'
+import ScanSearchBar from '@/components/customer/scan/ScanSearchBar'
 import Product from '@/components/customer/checkout/Product'
 
 
@@ -75,6 +80,7 @@ export default {
   name: 'Scanner',
   components: {
     ScanButtons,
+    ScanSearchBar,
     Product
   },
   data() {

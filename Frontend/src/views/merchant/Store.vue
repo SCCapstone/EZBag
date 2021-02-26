@@ -79,7 +79,7 @@
           }
           ],"status":"success"}
   */
-import {mapGetters, mapActions} from 'vuex';
+import { mapActions, mapGetters } from 'vuex'
 import Carts from "@/components/merchant/Carts";
 import Cookie from 'js-cookie'
 export default {
@@ -94,38 +94,38 @@ export default {
     console.log(businessID)
     console.log("AUTH",authToken)
     this.fetchCarts(businessID)
-    .then((result) => { // no backend errors thrown
-    this.$dbg_console_log(result)
-      if(result.success==1) {
-          //TODO: redirect to business dashboard
-          this.$dbg_console_log("Successful fetch of carts")
-          
-          var count = result.carts.length;
-          for(var i=0; i<count; i++)
-          {
-            result.carts[i]["expanded"]=false
-            var milliTime = Number(result.carts[i]["time"]["$numberLong"])
-            result.carts[i]["dt"]= new Date(milliTime).toLocaleString();
-          }
-          this.carts = result.carts
-          //this.carts = this.debugCarts   
-      } else {
-          console.log("Failed")
-          //this.carts = this.debugCarts
-          //this.show_popup = true
-          //this.popupHeader =  "Login failure"
-          //this.popupText = result.message
-      }
-    }).catch(error => {
-        this.show_popup = true
-        this.popupHeader =  "Internal Server Error"
-        this.popupText = "Something went wrong"
-        this.carts = this.debugCarts   
-        this.$dbg_console_log(error)
-        if(error=="dumbassFuckingViewWarn"){
-          console.log("Vue warnings are stupid")
+      .then((result) => { // no backend errors thrown
+      this.$dbg_console_log(result)
+        if(result.success==1) {
+            //TODO: redirect to business dashboard
+            this.$dbg_console_log("Successful fetch of carts")
+            
+            var count = result.carts.length;
+            for(var i=0; i<count; i++)
+            {
+              result.carts[i]["expanded"]=false
+              var milliTime = Number(result.carts[i]["time"]["$numberLong"])
+              result.carts[i]["dt"]= new Date(milliTime).toLocaleString();
+            }
+            this.carts = result.carts
+            //this.carts = this.debugCarts   
+        } else {
+            console.log("Failed")
+            //this.carts = this.debugCarts
+            //this.show_popup = true
+            //this.popupHeader =  "Login failure"
+            //this.popupText = result.message
         }
-    })
+      }).catch(error => {
+          this.show_popup = true
+          this.popupHeader =  "Internal Server Error"
+          this.popupText = "Something went wrong"
+          this.carts = this.debugCarts   
+          this.$dbg_console_log(error)
+          if(error=="dumbassFuckingViewWarn"){
+            console.log("Vue warnings are stupid")
+          }
+      })
   },
   data() {
     return {

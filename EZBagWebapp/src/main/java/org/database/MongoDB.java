@@ -99,6 +99,23 @@ public class MongoDB {
         return null;
     }
 
+    public String getProductsBusinessID(String businessID) {
+        FindIterable<Document> result = collectionsMap.get(productCollectionName)
+                .find(new Document().append("businessID", businessID));
+        JsonArray jsArray = new JsonArray();
+        for (Document doc : result) {
+            doc.remove("_id");
+            JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
+            jsArray.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.addProperty("count", jsArray.size());
+        resp.add("products", jsArray);
+        resp.addProperty("status", "success");
+        return resp.toString();
+
+    }
+
     public String searchProductsByBusinessIDQuery(String businessID, String queryString) {
         // TODO: test this query method
         FindIterable<Document> results = collectionsMap.get(productCollectionName)

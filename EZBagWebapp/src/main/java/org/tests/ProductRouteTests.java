@@ -17,6 +17,7 @@ import org.junit.Test;
 import org.routes.ProductInsertRoute;
 import org.routes.ProductQueryRoute;
 import org.routes.ProductSearchRoute;
+import org.routes.ProductsRoute;
 import org.services.DatabaseService;
 import org.services.StartupService;
 
@@ -32,7 +33,8 @@ public class ProductRouteTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(ProductQueryRoute.class, ProductInsertRoute.class, ProductSearchRoute.class);
+        return new ResourceConfig(ProductQueryRoute.class, ProductInsertRoute.class,
+                ProductSearchRoute.class, ProductsRoute.class);
     }
 
     @Test
@@ -91,6 +93,17 @@ public class ProductRouteTests extends JerseyTest {
         searchObj.append("businessID", "1")
                 .append("query", "example product");
         final String response1 = target("search").request().post(Entity.text(searchObj.toJson()), String.class);
+        JsonObject payloadObject1 = new JsonParser().parse(response1).getAsJsonObject();
+        System.out.println("received: \n"+payloadObject1.toString());
+    }
+
+    @Test
+    public void getProducts() {
+
+        // insert example product to the database to be used for testing
+        Document searchObj = new Document();
+        searchObj.append("businessID", "1");
+        final String response1 = target("products").request().post(Entity.text(searchObj.toJson()), String.class);
         JsonObject payloadObject1 = new JsonParser().parse(response1).getAsJsonObject();
         System.out.println("received: \n"+payloadObject1.toString());
     }

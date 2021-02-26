@@ -3,18 +3,20 @@
 
       <div v-if="show_customer_header">
         <v-app-bar app elevate-on-scroll color="primary" dark>
+
           <v-tabs fixed-tabs>
             <v-tab to="/">Home</v-tab>
             <v-tab to="/cart">Cart</v-tab>
           </v-tabs>
+
         </v-app-bar>
       </div>
 
       <div v-if="show_business_header">
         <v-app-bar app elevate-on-scroll color="primary" dark>
           <v-tabs fixed-tabs>
-            <v-tab to="/store">Cart Verification</v-tab>
-            <v-tab to="/statistics">Sales Dashboard</v-tab>
+            <v-tab to="/store">Verification</v-tab>
+            <v-tab to="/statistics">Sales</v-tab>
           </v-tabs>
         </v-app-bar>
       </div>
@@ -50,6 +52,9 @@ export default {
         this.show_business_header = false
       }
     },
+    navigateToSearchPage() {
+      this.$router.push('/search');
+    }
   }
 
 }
