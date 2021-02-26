@@ -5,7 +5,6 @@
         clearable
         filled
         rounded
-        solo-inverted
         v-model="model"
         :items="items"
         :loading="isLoading"
@@ -80,8 +79,10 @@ export default {
     watch: {
       search () {
         
-        if (this.model && !this.model.barcode == undefined) {
-            this.$emit("showproduct", this.model.barcode)   
+        if (this.model) {
+          console.log(this.model)
+          this.$emit("showproduct", this.model.barcode)   
+          this.model = null
         }
 
         // Items have already been loaded

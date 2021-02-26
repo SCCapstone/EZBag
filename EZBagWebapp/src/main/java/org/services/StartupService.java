@@ -42,5 +42,6 @@ public class StartupService implements ServletContextListener {
         SMSService.init(mediaProp);
         System.out.println("[Startup] Server started successfully in " + (System.currentTimeMillis() - clock) + "ms");
 
+        
     }
 }

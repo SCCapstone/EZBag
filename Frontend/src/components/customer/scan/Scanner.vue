@@ -47,6 +47,7 @@
     <v-bottom-sheet
       v-model="show_scanned_product"
       inset
+      persistent
     >
       <v-sheet>
         <v-card>
@@ -56,7 +57,7 @@
           v-on:removed-product="hideScannedProductCard"
           />
           <v-card-actions class="justify-center">
-            <v-btn @click="cancelScannedProduct">Remove
+            <v-btn @click="cancelScannedProduct">Cancel
               <v-icon right>mdi-close</v-icon>
             </v-btn>
             <v-btn @click="hideScannedProductCard">Add to
