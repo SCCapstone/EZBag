@@ -5,7 +5,7 @@
         clearable
         filled
         rounded
-        background-color="white"
+        background-color="grey"
         v-model="model"
         :items="items"
         :loading="isLoading"
