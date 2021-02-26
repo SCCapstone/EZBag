@@ -79,6 +79,11 @@ export default {
     },
     watch: {
       search () {
+        
+        if (this.model && !this.model.barcode == undefined) {
+            this.$emit("showproduct", this.model.barcode)   
+        }
+
         // Items have already been loaded
         if (this.items.length > 0) return
 

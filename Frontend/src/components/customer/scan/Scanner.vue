@@ -7,7 +7,7 @@
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { onScan(barcode.barcodes[0].data) }" />
-    <ScanSearchBar/>
+    <ScanSearchBar v-on:showproduct="onScan"/>
     <ScanButtons v-bind:total=getSubtotal />
 
     

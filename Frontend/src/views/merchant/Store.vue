@@ -122,9 +122,6 @@ export default {
           this.popupText = "Something went wrong"
           this.carts = this.debugCarts   
           this.$dbg_console_log(error)
-          if(error=="dumbassFuckingViewWarn"){
-            console.log("Vue warnings are stupid")
-          }
       })
   },
   data() {
