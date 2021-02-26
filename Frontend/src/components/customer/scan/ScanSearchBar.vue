@@ -3,9 +3,9 @@
 
     <v-autocomplete
         clearable
-        filled
         rounded
-        background-color="grey"
+        dark
+        filled
         v-model="model"
         :items="items"
         :loading="isLoading"
@@ -15,7 +15,6 @@
         hide-selected
         item-text="Product"
         item-value="Name"
-        label="Search Products"
         placeholder="Scan or start typing to search"
         return-object
       ></v-autocomplete>
