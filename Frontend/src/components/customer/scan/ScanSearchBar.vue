@@ -6,6 +6,7 @@
         rounded
         dark
         filled
+        solo
         v-model="model"
         :items="items"
         :loading="isLoading"

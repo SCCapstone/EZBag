@@ -113,6 +113,7 @@ export default {
       // attempt to add product to cart
       this.addProductToCart({barcode:barcode, businessID:this.getBusinessID})
         .then((result) => { // no backend errors thrown
+          this.$dbg_console_log("scanning result")
           this.$dbg_console_log(result)
           if(result.productIsInCart == true){
             if(result.productWasAlreadyInCart){
