@@ -10,7 +10,7 @@ A patron at a participating store can use the EZBag web app on their phone to sc
 ## [EZBag Proof of Concept Presentation & Demo](https://youtu.be/l9hTREqO-ws)
 Click this link to view our proof of concept presentation video on YouTube
 
-## [Proof of Concept Web App](https://blakeedwards.me:8443/EZBagWebapp/#/)
+## [Proof of Concept Web App](https://blakeedwards.me:8443/EZBagWebapp/webapi/redirect/179aa3e0fb88f6e4ec0ef0d0f5588d43f93713e7b7e4a5ddd8a3fdd1c39701fa)
 Click this link to view our proof of concept application. NOTE: Our website uses a self-signed SSL certificate and the best platform to use the EZBag app on is iPhone with the Safari browser. When opening the web application link if you you are presented with a "Your connection is not private" message (or something similar), override and continue to the site anyways. To do this, we recommend using Safari (as Google Chrome does not allow you to override and continue to the page). Also note that this application is built for a mobile web browser and therefore will not display correctly on a desktop view. If you would like to view the app on your desktop computer, we recommend opening this link in Safari and changing to Responsive Design Mode ("Develop" menu item > "Enter Responsive Design Mode").
 
 ## Instructions to use the demo
