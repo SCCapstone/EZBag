@@ -15,9 +15,6 @@
             
             };
         },
-        mounted() {
-            this.$emit("toggleHeader", "business")
-        },
         methods: {
             
         },

@@ -95,10 +95,6 @@
       },
   
     }),
-    mounted() {
-        this.$emit("toggleHeader", "none")
-    },
-
     methods: {
       ...mapActions(["loginUser"]),
       submit(){
@@ -118,8 +114,7 @@
           if(result.success==1) {
               //TODO: redirect to business dashboard
               this.$cookies.set("token", result.token, {secure: true, expires: 99983090})
-              console.log("TOKEN",result.token)
-              this.$router.push('/store');
+              this.$router.push('store');
               this.$dbg_console_log("Successful login")
           } else {
               this.show_popup = true

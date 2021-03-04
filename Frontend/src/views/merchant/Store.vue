@@ -5,95 +5,15 @@
 </template>
 
 <script>
-/*
-
-        {
-          barcodes:['bread'],
-          quantities:[],
-          businessID: 1,
-          subtotal: 2,
-          session:1112,
-          tax: 2,
-          total: 4,
-          time: 2,
-          cartHash:"",
-          paid:true,
-        },
-        {
-          barcodes: [],
-          quantities: [],
-          businessID: 2,
-          subtotal: 2,
-          session: 1112,
-          tax: 2,
-          total: 4,
-          time: 2,
-          cartHash: "",
-          paid: false,
-        },
-        {
-          barcodes: [],
-          quantities: [],
-          businessID: 3,
-          subtotal: 2,
-          session: 1113,
-          tax: 2,
-          total: 10,
-          time: 2,
-          cartHash: "",
-          paid: false,
-        },
-        {"carts":
-          [{"barcodes":
-            ["12345678","12345678"],
-            "quantities":[3,2],
-            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
-            "subtotal":34.95,
-            "session":"2",
-            "tax":23.08,
-            "total":58.03,
-            "time":{"$numberLong":"1614190765106"},
-            "cartHash":"meeauCHFaWFP6lCPEsyM",
-            "verified":false
-          },
-          {"barcodes":["12345678","12345678"],
-            "quantities":[3,2],
-            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
-            "subtotal":34.95,
-            "session":"2",
-            "tax":23.08,
-            "total":58.03,
-            "time":{"$numberLong":"1614190804970"},
-            "cartHash":"wLtqzC34bfFaxErqnVW2",
-            "verified":false},
-            {"barcodes":["12345678","12345678"],
-            "quantities":[3,2],
-            "businessID":"cad1ab052ffff19ff3f595c569f7a37f826921d07c4262946d81ef04ec72d727",
-            "subtotal":34.95,
-            "session":"2",
-            "tax":23.08,
-            "total":58.03,
-            "time":{"$numberLong":"1614190805635"},
-            "cartHash":"KpaE791tFEiK2zC2P2Fx",
-            "verified":false
-          }
-          ],"status":"success"}
-  */
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import Carts from "@/components/merchant/Carts";
-import Cookie from 'js-cookie'
 export default {
   name: "store",
   components: {
     Carts,
   },
   mounted() {
-    this.$emit("toggleHeader", "business")
-    var authToken = Cookie.get('token')
-    var businessID = this.getBusinessID
-    console.log(businessID)
-    console.log("AUTH",authToken)
-    this.fetchCarts(businessID)
+    this.fetchCarts(this.$route.params.id)
       .then((result) => { // no backend errors thrown
       this.$dbg_console_log(result)
         if(result.success==1) {
@@ -110,7 +30,7 @@ export default {
             this.carts = result.carts
             //this.carts = this.debugCarts   
         } else {
-            console.log("Failed")
+            this.$dbg_console_log("Backend Error: Failed to fetch carts")
             //this.carts = this.debugCarts
             //this.show_popup = true
             //this.popupHeader =  "Login failure"
@@ -171,7 +91,6 @@ export default {
           }]
     };
   },
-  computed: mapGetters(['getBusinessID']),
   methods: {
     ...mapActions(["fetchCarts"]),
     markPaid() {

@@ -25,17 +25,10 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SearchPage',
-    mounted() {
-
-    },
-    components: {
-
-    },
-
     // credit to example found here: https://vuetifyjs.com/en/components/autocompletes/
     data: () => ({
       nameLimit: 40,
@@ -50,7 +43,6 @@ export default {
 
     }),
     computed: {
-      ...mapGetters(['getBusinessID']),
       fields () {
         if (!this.model) return []
 
@@ -72,16 +64,12 @@ export default {
       },
     },
     methods: {
-      ...mapActions(["fetchProducts"]),
-      ...mapMutations([
-                      "setBusinessID"
-                    ]),
+      ...mapActions(["fetchProducts"])
     },
     watch: {
       search () {
         
         if (this.model) {
-          console.log(this.model)
           this.$emit("showproduct", this.model.barcode)   
           this.model = null
         }
@@ -95,17 +83,14 @@ export default {
         this.isLoading = true
 
         // TODO: front load products and store in vuex
-        console.log(this.getBusinessID)
-        this.fetchProducts(this.getBusinessID)
+        this.fetchProducts(this.$route.params.id)
           .then((result) => { // no backend errors thrown
-          this.$dbg_console_log(result)
             if(result.success==1) {
-                console.log("Success")
+                this.$dbg_console_log('ScanSearchBar: Succesfully received products from backend', result.products)
                 this.count = result.count
                 this.products = result.products
-                console.log(this.products)
             } else {
-                console.log("Failed to get products")
+                this.$dbg_console_log('ScanSearchBar: Could not get products')
             }
           }).catch(error => {
               this.show_popup = true

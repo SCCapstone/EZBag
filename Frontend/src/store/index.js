@@ -27,8 +27,7 @@ const vuexLocalStorage = new VuexPersist({
   // Function that passes the state and returns the state with only the objects you want to store.
   reducer: state => ({
     cart: {
-      productsInCart: state.cart.productsInCart,
-      businessID: state.cart.businessID
+      productsInCart: state.cart.productsInCart
     },
     merchant: state.merchant
   }),

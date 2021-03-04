@@ -6,21 +6,25 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Scan',
-    component: () => import('@/views/customer/Scan.vue')
+    component: () => import('@/views/Splash.vue')
   },
   {
-    path: '/cart',
-    name: 'Cart',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '@/views/customer/Cart.vue')
+    path: '/customer/:id/',
+    component: () => import('@/views/customer/Customer.vue'),
+    children: [
+      {path: 'scan', component: () => import('@/views/customer/Scan.vue')},
+      {path: 'cart', component: () => import('@/views/customer/Cart.vue')},
+      {path: 'receipt', component: () => import('@/views/customer/ReceiptPage.vue')}
+    ]
   },
   {
-    path: '/receipt',
-    name: 'Receipt',
-    component: () => import('@/views/customer/ReceiptPage.vue')
+    path: '/merchant/:id/',
+    component: () => import('@/views/merchant/Merchant.vue'),
+    children: [
+      {path: 'login', component: () => import('@/views/merchant/BusinessLogin.vue')},
+      {path: 'statistics', component: () => import('@/views/merchant/Stats.vue')},
+      {path: 'store', component: () => import('@/views/merchant/Store.vue')}
+    ]
   },
   {
     path: '/registrationSuccess',
@@ -28,24 +32,9 @@ const routes = [
     component: () => import('@/views/merchant/SignupSuccess.vue')
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: () => import('@/views/merchant/BusinessLogin.vue')
-  },
-  {
     path: '/register',
     name: 'Register',
     component: () => import('@/views/merchant/BusinessRegister.vue')
-  },
-  {
-    path: '/statistics',
-    name: 'Statistics',
-    component: () => import('@/views/merchant/Stats.vue')
-  },
-  {
-    path: '/store',
-    name: 'Store',
-    component: () => import('@/views/merchant/Store.vue')
   }
 ]
 

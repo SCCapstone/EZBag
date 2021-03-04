@@ -27,13 +27,12 @@
   </div>
 </template>
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapActions} from 'vuex';
 export default {
     name: "Carts",
     props:["carts"],
     components: {
     },
-    computed: mapGetters(['getBusinessID']),
     methods: {
       ...mapActions(["verifyCart"]),
       showTwoDecimal(num) {		
@@ -44,21 +43,17 @@ export default {
       },
       markPaid(cart) {
         var cartHash = cart.cartHash
-        var businessID = this.getBusinessID
-        this.verifyCart({businessID:businessID, cartHash:cartHash})
+        this.verifyCart({businessID:this.$route.params.id, cartHash:cartHash})
         .then((result) => { // no backend errors thrown
         this.$dbg_console_log(result)
         if(result.success==1) {
             cart.verified = true
         } else {
-            console.log("Failed")
+            this.$dbg_console_log("Failed to mark cart as paid")
         }
         }).catch(error => {
             this.$dbg_console_log(error)
         })
-        //this.$dbg_console_log(this.paid);
-        this.$dbg_console_log('mark paid');
-        //this.cart.paid = !this.cart.paid;
       },
     }
 }

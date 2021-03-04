@@ -27,7 +27,6 @@ import Cookie from 'js-cookie'
 const state = {
   knownProducts: [],
   productsInCart: [],
-  businessID: null,
   cartHash: null,
 }
 
@@ -35,7 +34,6 @@ const getters = {
   getProductsInCart: (state) => state.productsInCart,
   getSubtotal: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
   getTax: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
-  getBusinessID: (state) => state.businessID,
   getCartHash: (state) => state.cartHash,
 }
 
@@ -50,7 +48,6 @@ const actions = {
       axios.post("EZBagWebapp/webapi/products", data)
         .then(function (result) {
           if(result.data.status != "failure") {
-            console.log(result.data)
             resolve({
               // TODO: change this
               products: result.data.products,
@@ -175,7 +172,7 @@ const actions = {
   },
 
   // attempts to checkout cart
-  checkoutCart(context) {
+  checkoutCart(context, businessID) {
     return new Promise((resolve, reject) => {
       if(context.state.productsInCart.length == 0) 
         resolve({ // cart is empty
@@ -188,7 +185,7 @@ const actions = {
             barcodes: context.state.productsInCart.map(prod => prod.barcode),
             quantities: context.state.productsInCart.map(prod => prod.quantity),
             session: "SES" + Cookie.get('userToken'),
-            businessID: context.state.businessID
+            businessID: businessID
           }))
           .then(function (result) { // backend responded
             if(result.data.status != "failure") { // Successfully submitted cart
@@ -257,10 +254,6 @@ const mutations = {
     state.productsInCart = state.productsInCart.filter(product => product.barcode !== barcode)
   },
 
-  // set businessID method
-  setBusinessID (state, businessID) {
-    state.businessID = businessID;
-  },
 
   // Alters the quantity of product whose barcode matches the supplied one.
   // Accepts a barcode and a second parameter - typeOrAmount, which can be

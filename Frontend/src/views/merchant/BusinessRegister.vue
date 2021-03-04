@@ -148,9 +148,6 @@
       },
   
     }),
-    mounted() {
-        this.$emit("toggleHeader", "none")
-    },
     methods: {
       ...mapActions(["registerUser"]),
       submit() {

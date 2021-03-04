@@ -94,7 +94,7 @@ export default {
       barcodePicker: null,
     };
   },
-  computed: mapGetters(['getSubtotal', 'getBusinessID']),
+  computed: mapGetters(['getSubtotal']),
   methods:{
     ...mapActions(["addProductToCart"]),
     ...mapMutations(["removeProductFromCart",
@@ -111,7 +111,7 @@ export default {
       this.$dbg_console_log("scanning paused", this.barcodePicker)
       this.scanned_product_barcode = barcode
       // attempt to add product to cart
-      this.addProductToCart({barcode:barcode, businessID:this.getBusinessID})
+      this.addProductToCart({barcode:barcode, businessID:this.$route.params.id})
         .then((result) => { // no backend errors thrown
           this.$dbg_console_log("scanning result")
           this.$dbg_console_log(result)
