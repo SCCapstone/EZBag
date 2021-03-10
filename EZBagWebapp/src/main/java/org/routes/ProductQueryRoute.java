@@ -30,7 +30,7 @@ public class ProductQueryRoute {
                 && payloadObject.has("businessID"))
         {
             String resp = DatabaseService.getProductByBarcodeBusinessID(payloadObject.get("barcode").getAsString(),
-                    payloadObject.get("businessID").getAsString());
+                    payloadObject.get("businessID").getAsString(), true);
             return resp;
         } else
         {

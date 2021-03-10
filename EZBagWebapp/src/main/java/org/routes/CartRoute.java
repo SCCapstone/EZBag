@@ -42,15 +42,16 @@ public class CartRoute {
             Double cartTaxTotal = 0.0;
             for (int i=0; i<barcodes.size(); i++) {
                 // checking if product with given barcode and BID exists in DB
-                String resp = DatabaseService.getProductByBarcodeBusinessID(barcodes.get(i).getAsString(), businessID);
+                String resp = DatabaseService.getProductByBarcodeBusinessID(barcodes.get(i).getAsString(), businessID, false);
                 JsonObject productResp = new JsonParser().parse(resp).getAsJsonObject();
                 // if does, get price
                 if (!productResp.has("status"))
                 {
                     Double productPrice = productResp.get("price").getAsDouble();
+                    Double productTax = productResp.get("tax").getAsDouble();
                     int productQuantity = productQuantities.get(i).getAsInt();
                     cartSubtotal += (double) Math.ceil(100 * productPrice * productQuantity) / 100.0;
-                    cartTaxTotal += (double) Math.ceil(100* productResp.get("tax").getAsDouble() * (productPrice * productQuantity)) / 100.0;
+                    cartTaxTotal += (double) Math.ceil(100 * productTax * (productPrice * productQuantity)) / 100.0;
                 } else {
                     String message = "Submitted product does not exist: "+barcodes.get(i).getAsString();
                     return Utils.generateResponse(false, message);

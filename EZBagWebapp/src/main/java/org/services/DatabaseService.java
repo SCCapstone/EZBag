@@ -9,9 +9,17 @@ public class DatabaseService {
     public static String SECRET_KEY = null;
     public static MongoDB database = null;
     // TODO change to support "ean8", "ean13", "upca", "upce"
-    public static String getProductByBarcodeBusinessID(String barcode, String businessID) {
+    public static String getProductByBarcodeBusinessID(String barcode, String businessID, boolean forCustomer) {
         Document returnedProduct = database.getProductByBarcodeBusinessID(barcode, businessID);
         if (returnedProduct != null) {
+            // if the query is to be returned to customer, pre-calculate tax
+            // note: prevents frontend rounding errors
+            if (forCustomer) {
+                // TODO test this
+                Double calcTax = returnedProduct.getDouble("tax") * returnedProduct.getDouble("price");
+                returnedProduct.remove("tax");
+                returnedProduct.append("tax", calcTax);
+            }
             return returnedProduct.toJson();
         }
         String message = "Product was not found in the database";

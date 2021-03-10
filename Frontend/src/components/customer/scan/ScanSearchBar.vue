@@ -67,8 +67,11 @@ export default {
       ...mapActions(["fetchProducts"])
     },
     watch: {
-      search () {
-        
+      search (curr) {
+        // TODO: call substring search for products here
+        console.log("Current sub: "+curr);
+
+        // if you select product in drop down, show product card
         if (this.model) {
           this.$emit("showproduct", this.model.barcode)   
           this.model = null
@@ -83,7 +86,7 @@ export default {
         this.isLoading = true
 
         // TODO: front load products and store in vuex
-        this.fetchProducts(this.$route.params.id)
+        this.fetchProducts(this.$route.params.id, )
           .then((result) => { // no backend errors thrown
             if(result.success==1) {
                 this.$dbg_console_log('ScanSearchBar: Succesfully received products from backend', result.products)

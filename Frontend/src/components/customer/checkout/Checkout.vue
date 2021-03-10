@@ -19,6 +19,8 @@ export default {
       return (num).toFixed(2);
     },
     checkout() {
+      console.log("subtotal: "+this.getSubtotal)
+      console.log("tax: "+this.getTax)
       this.checkoutCart(this.$route.params.id)
         .then((result) => { // backend succesfully responded
           this.$dbg_console_log('Attempted to checkout', result)

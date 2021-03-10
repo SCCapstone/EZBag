@@ -33,7 +33,7 @@ const state = {
 const getters = {
   getProductsInCart: (state) => state.productsInCart,
   getSubtotal: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.price*val.quantity, 0)*100))/100,
-  getTax: (state) => (Math.ceil(state.productsInCart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
+  getTax: (state) => (Math.round(state.productsInCart.reduce((acc, val) => acc + val.tax*val.quantity, 0)*100))/100,
   getCartHash: (state) => state.cartHash,
 }
 
