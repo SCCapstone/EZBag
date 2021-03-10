@@ -112,9 +112,8 @@
           }).then((result) => { // no backend errors thrown
           this.$dbg_console_log(result)
           if(result.success==1) {
-              //TODO: redirect to business dashboard
               this.$cookies.set("token", result.token, {secure: true, expires: 99983090})
-              this.$router.push('store');
+              this.$router.push('merchant/'+result.businessID+'/store')
               this.$dbg_console_log("Successful login")
           } else {
               this.show_popup = true

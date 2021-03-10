@@ -87,6 +87,7 @@ const actions = {
             resolve({
               success: 1,
               token: result.data.token,
+              businessID: result.data.businessID
             })
           }
           else {
