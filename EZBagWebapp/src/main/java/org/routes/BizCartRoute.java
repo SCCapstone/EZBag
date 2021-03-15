@@ -11,6 +11,7 @@ import org.services.Utils;
 
 import java.util.*;
 
+// verify cart
 @Path("/merchant/verify")
 public class BizCartRoute {
     @POST

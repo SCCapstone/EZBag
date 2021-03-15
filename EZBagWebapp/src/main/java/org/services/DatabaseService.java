@@ -81,6 +81,14 @@ public class DatabaseService {
         return database.cartExists(cartHash, businessID);
     }
 
+    public static Boolean userWithIDExists(String userID) {
+        return database.userWithIDExists(userID);
+    }
+
+    public static Boolean userIsVerified(String userEmail) {
+        return database.userIsVerified(userEmail);
+    }
+
     public static String getUserBusinessID(String userEmail) {
         return database.getUserBusinessID(userEmail);
     }
@@ -96,6 +104,10 @@ public class DatabaseService {
     // TODO update cart verified boolean to true
     public static boolean verifyCart(String cartHash, String businessID) {
         return database.verifyCart(cartHash, businessID);
+    }
+
+    public static boolean verifyUser(String userID) {
+        return database.verifyUser(userID);
     }
 
     public static String insertInfo(Document customerInfo) {

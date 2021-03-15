@@ -15,8 +15,9 @@ import java.util.*;
 
 @Path("/register")
 public class BizRegisterRoute {
-    static final String successfulSignupMessage = "Hello <business>,\n" +
-            "Thank you for registering with EZBag! Your application is currently under review. Upon approval, you will get full access to the EZBag merchant platform. \n\nThanks,\nEZBag Team";
+    static final String successfulSignupMessage = "Hello <business>,\n\n" +
+            "Thank you for registering with EZBag! Please confirm your email address here:\nhttp://localhost:8080/EZBagWebapp/webapi/verify/<userid>\n"
+            + "\nYour application is currently under review. Upon approval, you will get full access to the EZBag merchant platform. \n\nThanks,\nEZBag Team";
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -45,9 +46,7 @@ public class BizRegisterRoute {
                 response.addProperty("status", "failure");
                 return response.toString();
             } else {
-                String responseMessage = successfulSignupMessage.replace("<business>", payloadObject.get("businessName").getAsString());
-                EmailService.sendEmail(payloadObject.get("email").getAsString(), "Your EZBag Confirmation", responseMessage);
-
+                System.out.println("Inserting user...");
                 insertDoc.append("email", payloadObject.get("email").getAsString());
                 insertDoc.append("phone", payloadObject.get("phone").getAsString());
                 insertDoc.append("businessName", payloadObject.get("businessName").getAsString());
@@ -56,11 +55,18 @@ public class BizRegisterRoute {
                 insertDoc.append("state", payloadObject.get("state").getAsString());
                 insertDoc.append("country", payloadObject.get("country").getAsString());
                 insertDoc.append("email", payloadObject.get("email").getAsString());
-                insertDoc.append("password", payloadObject.get("password").getAsString());
-                insertDoc.append("role", 1);
                 String hashString = payloadObject.get("email").getAsString();
                 insertDoc.append("businessID", DigestUtils.sha256Hex(hashString));
-                // TODO: change to reply with message of why the addition failed
+                insertDoc.append("role", 1);
+                insertDoc.append("verified", false);
+                insertDoc.append("userID", DigestUtils.sha256Hex(insertDoc.toJson()));
+                insertDoc.append("password", payloadObject.get("password").getAsString());
+
+                String responseMessage = successfulSignupMessage.replace("<business>", payloadObject.get("businessName").getAsString());
+                responseMessage = responseMessage.replace("<userid>", insertDoc.getString("userID"));
+                EmailService.sendEmail(payloadObject.get("email").getAsString(), "Your EZBag Confirmation", responseMessage);
+
+                // TODO: change to reply with message of why insert failed
                 return DatabaseService.insertUser(insertDoc);
             }
         }

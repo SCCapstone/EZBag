@@ -213,9 +213,30 @@ public class MongoDB {
         return false;
     }
 
+    public Boolean userIsVerified(String userEmail) {
+        System.out.println("Checking if user is verified: " + userEmail);
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("email", userEmail));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(userCollectionName).find(query).first();
+        if (respDoc != null) {
+            System.out.println("User verified: "+respDoc.getBoolean("verified"));
+            return respDoc.getBoolean("verified");
+        }
+        System.out.println("Exists resp doc was null!");
+        return false;
+    }
+
     public Boolean userExists(String userEmail) {
         HashMap<String, String> matchMap = new HashMap<>();
         matchMap.put("email", userEmail);
+        return documentExistsInCollection(userCollectionName, matchMap);
+    }
+
+    public Boolean userWithIDExists(String userID) {
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("userID", userID);
         return documentExistsInCollection(userCollectionName, matchMap);
     }
 
@@ -268,6 +289,23 @@ public class MongoDB {
         updateObject.put("$set", newDocument);
 
         UpdateResult res = collectionsMap.get(checkoutCartCollectionName).updateOne(query, updateObject);
+        System.out.println("Was acknowledged: " + res.toString());
+        return true;
+    }
+
+    public boolean verifyUser(String userID) {
+        System.out.println("Verifying user: " + userID);
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("userID", userID));
+        query.put("$and", matchDoc);
+
+        BasicDBObject newDocument = new BasicDBObject();
+        newDocument.put("verified", true);
+        BasicDBObject updateObject = new BasicDBObject();
+        updateObject.put("$set", newDocument);
+
+        UpdateResult res = collectionsMap.get(userCollectionName).updateOne(query, updateObject);
         System.out.println("Was acknowledged: " + res.toString());
         return true;
     }

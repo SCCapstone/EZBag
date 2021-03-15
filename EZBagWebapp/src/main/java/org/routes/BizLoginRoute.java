@@ -32,12 +32,17 @@ public class BizLoginRoute {
             if (DatabaseService.userExists(email)) {
                 // todo
                 if (DatabaseService.userLoginCredentialsValid(email, password)) {
-                    // TODO: get business ID and add to payload to be returned
-                    businessID = DatabaseService.getUserBusinessID(email);
-                    token = Utils.createJWT(email, "bearer", "business", 86400000);
+                    if (DatabaseService.userIsVerified(email)) {
+                        // TODO: get business ID and add to payload to be returned
+                        businessID = DatabaseService.getUserBusinessID(email);
+                        token = Utils.createJWT(email, "bearer", "business", 86400000);
 //                    token = Utils.createJWT(email, "bearer", "business", 30000);
-                    message = "Logged in!";
-                    status = "success";
+                        message = "Logged in!";
+                        status = "success";
+                    } else {
+                        message = "User email address has not been verified.";
+                        status = "failure";
+                    }
                 } else {
                     message = "User email and password combination is incorrect.";
                     status = "failure";
