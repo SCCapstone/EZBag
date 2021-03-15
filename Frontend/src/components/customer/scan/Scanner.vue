@@ -6,8 +6,8 @@
       :configuration-options="{ engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/' }"
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
-      v-on:scan="(barcode) => { onScan(barcode.barcodes[0].data) }" />
-    <ScanSearchBar v-on:showproduct="onScan"/>
+      v-on:scan="(barcode) => { findAndLoadProduct(barcode.barcodes[0].data) }" />
+    <ScanSearchBar v-on:showproduct="findAndLoadProduct"/>
     <ScanButtons v-bind:total=getSubtotal />
 
     
@@ -106,15 +106,18 @@ export default {
       barcodePicker.setVideoFit('cover');
       this.barcodePicker = barcodePicker
     },
-    onScan(barcode) {
-      this.barcodePicker.pauseScanning()
-      this.$dbg_console_log("scanning paused", this.barcodePicker)
+    // find product by barcode and open product card if found
+    findAndLoadProduct(barcode) {
+      // if camera permissions are off, then barcode picker is null
+      if(this.barcodePicker != null) {
+        this.barcodePicker.pauseScanning()
+        this.$dbg_console_log("scanning paused", this.barcodePicker)
+      }
       this.scanned_product_barcode = barcode
       // attempt to add product to cart
       this.addProductToCart({barcode:barcode, businessID:this.$route.params.id})
         .then((result) => { // no backend errors thrown
-          this.$dbg_console_log("scanning result")
-          this.$dbg_console_log(result)
+          this.$dbg_console_log("backend result", result)
           if(result.productIsInCart == true){
             if(result.productWasAlreadyInCart){
               // save the product quantity before allowing user to make changes
@@ -124,13 +127,16 @@ export default {
             this.show_scanned_product = true
           }
           else {
-            // TODO: gracefully handle "product not recognized"
             this.show_popup = true
-            this.resetBarcodeScanner()
+            // if camera permissions are off, then barcode picker is null
+            if(this.barcodePicker != null) 
+              this.resetBarcodeScanner()
           }
         }).catch(error => {
           this.$dbg_console_log(error)
-          this.resetBarcodeScanner()
+          // if camera permissions are off, then barcode picker is null
+          if(this.barcodePicker != null) 
+            this.resetBarcodeScanner()
         })
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
@@ -149,7 +155,9 @@ export default {
     hideScannedProductCard() {
       this.show_scanned_product = false;
       this.scanned_product_barcode = 0;
-      this.resetBarcodeScanner()
+      // if camera permissions are off, then barcode picker is null
+      if(this.barcodePicker != null)
+        this.resetBarcodeScanner()
     },
     resetBarcodeScanner() {
       // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
