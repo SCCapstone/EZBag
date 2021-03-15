@@ -7,7 +7,7 @@
               <v-tab to="statistics">Sales</v-tab>
           </v-tabs>
         </v-app-bar>
-        <v-tab class="logout" to="login"><v-icon>mdi-logout</v-icon></v-tab>
+        <v-tab v-on:click.stop @click="logout()" class="logout"><v-icon>mdi-logout</v-icon></v-tab>
     </v-app-bar>
     <router-view/>
   </div>
@@ -15,7 +15,11 @@
 
 <script>
 export default {
-
+  methods: {
+    logout() {
+      this.$router.push('/login');
+    }
+  },
 }
 </script>
 
