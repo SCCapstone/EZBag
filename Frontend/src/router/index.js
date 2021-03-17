@@ -38,6 +38,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: () => import('@/views/merchant/BusinessRegister.vue')
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('@/views/customer/404.vue')
   }
 ]
 
