@@ -15,7 +15,7 @@ public class StartupService implements ServletContextListener {
     public static String mediaProperties = "/usr/local/opt/EZBag/emailAndSMS.properties";
 
     public static String debugUserName = "owner@store.com";
-    public static String debugPassword = "BadPassword1";
+    public static String debugPassword = "password";
     public static String debugBusinessID = "179aa3e0fb88f6e4ec0ef0d0f5588d43f93713e7b7e4a5ddd8a3fdd1c39701fa";
 
     @Override
@@ -59,6 +59,7 @@ public class StartupService implements ServletContextListener {
             insertDoc.append("password", debugPassword);
             insertDoc.append("role", 1);
             insertDoc.append("businessID", debugBusinessID);
+            insertDoc.append("verified", true);
             // TODO: change to reply with message of why the addition failed
             String success =  DatabaseService.insertUser(insertDoc);
             System.out.println(success);
