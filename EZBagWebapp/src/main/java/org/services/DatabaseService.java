@@ -5,6 +5,8 @@ import org.database.MongoDB;
 import org.bson.Document;
 import sun.font.TrueTypeFont;
 
+import java.util.ArrayList;
+
 public class DatabaseService {
     public static String SECRET_KEY = null;
     public static MongoDB database = null;
@@ -69,6 +71,10 @@ public class DatabaseService {
             return returnedProduct;
         }
         return null;
+    }
+
+    public static Document getUserInfoByID(String userID, ArrayList<String> returnParams) {
+        return database.getUserEmailByUserID(userID, returnParams);
     }
 
     // used to check if user with email exists

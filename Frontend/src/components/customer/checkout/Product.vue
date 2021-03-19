@@ -42,7 +42,8 @@ export default {
     getProduct: function() {
       const product = this.getProductsInCart.find(product => product.barcode == this.barcode)
       if (product===undefined)
-        return {barcode:'Failed to find product in Product.vue',
+        return {
+                barcode:'Failed to find product in Product.vue',
                 name: "None",
                 price: 0,
                 tax: 0,

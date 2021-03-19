@@ -16,9 +16,11 @@ import VueCookies from 'vue-cookies';
 Vue.use(VueCookies);
 /////////////////////////////////////////////////
 const state = {
+  knownProducts: [],
 }
 
 const getters = {
+  getProductsInStore: (state) => state.knownProducts,
 }
 
 // https://vuex.vuejs.org/guide/actions.html#actions 
@@ -127,6 +129,57 @@ const actions = {
       })
   },
 
+  async lookupProduct(context, {barcode, businessID}) {
+    return new Promise((resolve, reject) => {
+      var product = context.state.knownProducts.find(product => product.barcode == barcode)
+      if (product === undefined) {
+        axios.post("EZBagWebapp/webapi/lookup",
+        JSON.stringify({
+            barcode: barcode,
+            businessID: businessID
+          }))
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            context.commit('addToKnownProducts', {
+              barcode: result.data.barcode,
+              name:result.data.name,
+              price: result.data.price,
+              tax: result.data.tax,
+              description:result.data.description,
+              businessID:businessID,
+              exists:true
+            })
+            resolve({
+              productIsInStore:true,
+            })
+          }
+          else {
+            context.commit('addToKnownProducts', {
+              barcode: barcode,
+              exists:false,
+            })
+            resolve({
+              productIsInStore:false,
+            })
+          }
+            // product was not found by backend, so add only to known products
+        }).catch(function (error) { // failed response from backend
+          reject(error)
+        })
+      } else {
+        if (product.exists) {
+          resolve({
+            productIsInStore:true,
+          })
+        } else {
+          resolve({
+            productIsInStore:false,
+          })
+        }
+      }
+    })
+  },
+
   // TODO: create get carts api call will token as Authorization parameters
 }
 
@@ -134,6 +187,15 @@ const actions = {
 // https://vuex.vuejs.org/guide/mutations.html#mutations-must-be-synchronous
 // mutations are synchronous functions that modify client state
 const mutations = {
+
+  addToKnownProducts(state, aProduct) {
+    const debugString = 'Attempted to add product, '+aProduct.barcode+', to merchant store, but '
+    if(state.knownProducts.find(product => product.barcode == aProduct.barcode) != undefined)
+      this.$dbg_console_log(debugString+'it is already known.')
+    else {
+      state.knownProducts.push(aProduct)
+    }
+  },
 
 }
 

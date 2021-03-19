@@ -52,14 +52,15 @@ public class StartupService implements ServletContextListener {
             insertDoc.append("phone", "5555555555");
             insertDoc.append("businessName", "EZBag Dev Team");
             insertDoc.append("streetAddress", "1600 Pennsylvania Avenue");
-            insertDoc.append("city", "");
-            insertDoc.append("state", "");
+            insertDoc.append("city", "Columbia");
+            insertDoc.append("state", "SC");
             insertDoc.append("country", "United States");
             insertDoc.append("email", debugUserName);
-            insertDoc.append("password", debugPassword);
             insertDoc.append("role", 1);
             insertDoc.append("businessID", debugBusinessID);
             insertDoc.append("verified", true);
+            insertDoc.append("userID", DigestUtils.sha256Hex(insertDoc.toJson()));
+            insertDoc.append("password", debugPassword);
             // TODO: change to reply with message of why the addition failed
             String success =  DatabaseService.insertUser(insertDoc);
             System.out.println(success);

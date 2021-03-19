@@ -213,6 +213,41 @@ public class MongoDB {
         return false;
     }
 
+    public Document getUserEmailByUserID(String userID, ArrayList<String> returnParams) {
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("userID", userID);
+        return documentGetFields(userCollectionName, matchMap, returnParams);
+    }
+
+    // method to check whether the given document already exists within a collection collection
+    private Document documentGetFields(String collectionName, HashMap<String, String> matchMap, ArrayList<String> returnFields) {
+        System.out.println("running documentGetFields");
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        // Iterate matchMap
+        for (String key : matchMap.keySet()) {
+            System.out.println("key: " + key + " value: " + matchMap.get(key));
+            matchDoc.add(new BasicDBObject(key, matchMap.get(key)));
+        }
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(collectionName).find(query).first();
+        Document returnDoc = new Document();
+        if (respDoc == null) {
+            System.out.println("response doc was null!");
+            return returnDoc;
+        } else {
+            System.out.println(respDoc.toString());
+            System.out.println("queried for: " + returnFields.toString());
+            for (String field : returnFields) {
+                // check if exists in reponse doc
+                if(respDoc.containsKey(field)) {
+                    returnDoc.append(field, respDoc.get(field));
+                }
+            }
+            return returnDoc;
+        }
+    }
+
     public Boolean userIsVerified(String userEmail) {
         System.out.println("Checking if user is verified: " + userEmail);
         BasicDBObject query = new BasicDBObject();

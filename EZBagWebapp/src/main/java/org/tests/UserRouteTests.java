@@ -11,9 +11,13 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 import org.routes.BizLoginRoute;
 import org.routes.BizRegisterRoute;
+import org.services.DatabaseService;
 import org.services.StartupService;
 import org.services.Utils;
 
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -45,8 +49,6 @@ public class UserRouteTests extends JerseyTest {
         assertEquals(payloadObject.get("status").getAsString(), "success");
 
         // TODO write test to query user as admin and ensure all info inserted correctly
-
-
     }
 
     @Test
@@ -75,6 +77,15 @@ public class UserRouteTests extends JerseyTest {
         System.out.println(payloadObject.toString());
         assertEquals(payloadObject.get("status").getAsString(), "success");
         assertEquals(Utils.validToken(payloadObject.get("token").getAsString()), true);
+    }
+
+    @Test
+    public void testUserInfo() {
+        ArrayList<String> params = new ArrayList<>();
+        params.add("businessID");
+        params.add("email");
+        Document doc = DatabaseService.getUserInfoByID("d50d5c026d0d82dcc6b6c6e7f2fa4f6f845665e069923c5bc2e8f8937b237ef8", params);
+        System.out.println(doc.toJson());
     }
 
 

@@ -5,6 +5,7 @@
           <v-tabs fixed-tabs>
               <v-tab to="store">Verification</v-tab>
               <v-tab to="statistics">Sales</v-tab>
+              <v-tab to="products">Products</v-tab>
           </v-tabs>
         </v-app-bar>
         <v-tab v-on:click.stop @click="logout()" class="logout"><v-icon>mdi-logout</v-icon></v-tab>
