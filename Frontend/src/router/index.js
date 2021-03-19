@@ -22,7 +22,8 @@ const routes = [
     component: () => import('@/views/merchant/Merchant.vue'),
     children: [
       {path: 'statistics', component: () => import('@/views/merchant/Stats.vue')},
-      {path: 'store', component: () => import('@/views/merchant/Store.vue')}
+      {path: 'store', component: () => import('@/views/merchant/Store.vue')},
+      {path: 'products', component: () => import('@/views/merchant/Products.vue')}
     ]
   },
   {

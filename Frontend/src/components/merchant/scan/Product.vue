@@ -3,23 +3,23 @@
   <v-card>
 
     <v-card-title>
-       <input v-model="message" :placeholder="this.name">
+       <input v-model="message" :placeholder="getProduct.name">
     </v-card-title>
 
       <v-card-text>
         <div class="my-4 subtitle-1">
           Product Description:<br>
-          <textarea v-model="message" :placeholder="this.description"></textarea>
+          <textarea v-model="message" :placeholder="getProduct.description"></textarea>
         </div>
 
         <div class="my-4 subtitle-1">
           Product Price: 
-          $ <input v-model="message" :placeholder="this.price">
+          $ <input v-model="message" :placeholder="getProduct.price">
         </div>
 
         <div class="my-4 subtitle-1">
           Sales Tax Rate: 
-          <input v-model="message" :placeholder="this.tax">%
+          <input v-model="message" :placeholder="getProduct.tax">%
         </div>
         
       </v-card-text>
@@ -66,6 +66,7 @@ export default {
           price: 0,
           tax: 0,
         }
+
       }
       
     }
