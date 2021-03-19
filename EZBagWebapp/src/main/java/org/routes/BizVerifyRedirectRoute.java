@@ -6,8 +6,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
+import org.bson.Document;
 import org.services.DatabaseService;
+import org.services.EmailService;
+import org.services.QRCodeService;
 import org.services.Utils;
+
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 @Path("/verify/{id}")
 public class BizVerifyRedirectRoute {
@@ -20,7 +26,7 @@ public class BizVerifyRedirectRoute {
         // check if user exists
         boolean exists = DatabaseService.userWithIDExists(userID);
         System.out.println("User exists: " + exists);
-        String message = "User with given userI does not exist";
+        String message = "User with given userID does not exist";
         boolean verified = false;
         if (exists) {
             // mark user verified
@@ -38,6 +44,19 @@ public class BizVerifyRedirectRoute {
 //                        "</html>\n";
             } else {
                 System.out.println("User verified");
+                ArrayList<String> params = new ArrayList<>();
+                params.add("businessID");
+                params.add("email");
+                Document doc = DatabaseService.getUserInfoByID(userID, params);
+                String email = doc.getString("email");
+                String businessID = doc.getString("businessID");
+                BufferedImage qrCode = null;
+                try {
+                    qrCode = QRCodeService.generateQRCodeImage("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                int responseCode = EmailService.sendEmailWithContent(email, "Your EZBag QRCode", "Welcome to EZBag! Below you will find your QR Code that customers can use to reach your business!", qrCode);
                 message = "Cart verified";
 //                returnDoc = "" +
 //                        "<html>\n" +

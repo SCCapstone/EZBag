@@ -86,6 +86,7 @@ public class UserRouteTests extends JerseyTest {
         params.add("email");
         Document doc = DatabaseService.getUserInfoByID("d50d5c026d0d82dcc6b6c6e7f2fa4f6f845665e069923c5bc2e8f8937b237ef8", params);
         System.out.println(doc.toJson());
+        System.out.println(doc.getString("email"));
     }
 
 
