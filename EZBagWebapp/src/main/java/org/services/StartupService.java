@@ -11,6 +11,11 @@ import java.util.Properties;
 
 @WebListener
 public class StartupService implements ServletContextListener {
+    public static boolean debugMode = true;
+
+    public static String developmentDomain = "http://localhost:9000/#/";
+    public static String domain = "https://www.blakeedwards.me:8443/EZBagWebapp/";
+
     public static String propertiesFile = "/usr/local/opt/EZBag/EZBag.properties";
     public static String mediaProperties = "/usr/local/opt/EZBag/emailAndSMS.properties";
 
@@ -31,6 +36,9 @@ public class StartupService implements ServletContextListener {
 
     public static void startup()
     {
+        if(debugMode){
+            domain = developmentDomain;
+        }
         long clock = System.currentTimeMillis();
         System.out.println("[Startup] Loading properties files");
         Properties prop = Utils.getPropertiesFile(propertiesFile);
