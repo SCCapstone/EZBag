@@ -3,23 +3,23 @@
   <v-card>
 
     <v-card-title>
-       <input v-model="message" :placeholder="getProduct.name">
+       <input v-model="myTextarea" :placeholder="getProduct.name">
     </v-card-title>
 
       <v-card-text>
         <div class="my-4 subtitle-1">
           Product Description:<br>
-          <textarea v-model="message" :placeholder="getProduct.description"></textarea>
+          <textarea v-model="myTextarea" :placeholder="getProduct.description"></textarea>
         </div>
 
         <div class="my-4 subtitle-1">
           Product Price: 
-          $ <input v-model="message" :placeholder="getProduct.price">
+          $ <input v-model="myTextarea" :placeholder="getProduct.price">
         </div>
 
         <div class="my-4 subtitle-1">
           Sales Tax Rate: 
-          <input v-model="message" :placeholder="getProduct.tax">%
+          <input v-model="myTextarea" :placeholder="getProduct.tax">%
         </div>
         
       </v-card-text>
@@ -32,13 +32,14 @@
 import {mapGetters} from 'vuex'
     // TODO: change all to editable fields to allow merchant to update
 export default {
-  props: ['barcode'],
+  props: ['barcode', 'clear'],
   data() {
     return {
       name: "Enter Product Name",
       description: "Enter Product Description",
       price: 0,
       tax: 0,
+      myTextarea: [''] 
     }
   },
   computed: {

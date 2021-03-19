@@ -50,6 +50,7 @@
       <v-sheet>
         <v-card>
           <Product 
+          v-bind:clear="clear_product_card_fields"
           v-bind:barcode="scanned_product_barcode"
           v-bind:elevation="0"
           />
@@ -77,6 +78,7 @@ export default {
   },
   data() {
     return {
+      clear_product_card_fields: false,
       show_scanned_product: false, // for displaying scanned product card
       show_popup: false,
       scanned_product_barcode: 0,
@@ -111,9 +113,6 @@ export default {
             // show scanned product card regardless of if found or not
             // if does not exist, card will be populated with place holders
             this.show_scanned_product = true
-            // if camera permissions are off, then barcode picker is null
-            if(this.barcodePicker != null) 
-              this.resetBarcodeScanner()
         }).catch(error => {
           this.$dbg_console_log(error)
           // if camera permissions are off, then barcode picker is null
@@ -121,39 +120,18 @@ export default {
             this.resetBarcodeScanner()
         })
 
-
-      // this.addProductToCart({barcode:barcode, businessID:this.$route.params.id})
-      //   .then((result) => { // no backend errors thrown
-          
-      //     if(result.productIsInCart == true){
-      //       if(result.productWasAlreadyInCart){
-      //         // save the product quantity before allowing user to make changes
-      //         this.product_loaded_from_cart = true
-      //         this.initial_product_quantity = result.initialProductQuantity
-      //       }
-      //       this.show_scanned_product = true
-      //     }
-      //     else {
-      //       this.show_popup = true
-      //       // if camera permissions are off, then barcode picker is null
-      //       if(this.barcodePicker != null) 
-      //         this.resetBarcodeScanner()
-      //     }
-      //   }).catch(error => {
-      //     this.$dbg_console_log(error)
-      //     // if camera permissions are off, then barcode picker is null
-      //     if(this.barcodePicker != null) 
-      //       this.resetBarcodeScanner()
-      //   })
-
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
     // if the product was not originally from the cart, we should remove it from the cart
     cancelScannedProduct() {
       this.hideScannedProductCard()
+      // if camera permissions are off, then barcode picker is null
+      if(this.barcodePicker != null) 
+        this.resetBarcodeScanner()
     },
     hideScannedProductCard() {
+      this.clear_product_card_fields = true
       this.show_scanned_product = false;
       this.scanned_product_barcode = 0;
       // if camera permissions are off, then barcode picker is null
