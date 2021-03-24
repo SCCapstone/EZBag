@@ -14,6 +14,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.services.DatabaseService;
@@ -370,11 +371,19 @@ public class MongoDB {
         // check if product already exists
         Document resp = getProductByBarcodeBusinessID(newProduct.getString("barcode"),
                 newProduct.getString("businessID"));
-        if (resp == null) {
-            collectionsMap.get(productCollectionName).insertOne(newProduct);
-            return true;
+        if (resp != null) {
+            System.out.println("Deleting old product");
+            BasicDBObject query = new BasicDBObject();
+            List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+            matchDoc.add(new BasicDBObject("barcode", newProduct.getString("barcode")));
+            matchDoc.add(new BasicDBObject("businessID", newProduct.getString("businessID")));
+            query.put("$and", matchDoc);
+            DeleteResult result = collectionsMap.get(productCollectionName).deleteOne(query);
+            System.out.println("Deleted: " + result.getDeletedCount());
         }
-        return false;
+        System.out.println("Inserting new product");
+        collectionsMap.get(productCollectionName).insertOne(newProduct);
+        return true;
     }
     public Boolean insertUser(Document newUser) {
         // only insert document if it does not exist

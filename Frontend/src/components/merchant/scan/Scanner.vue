@@ -49,16 +49,32 @@
     >
       <v-sheet>
         <v-card>
-          <Product 
-          v-bind:clear="clear_product_card_fields"
-          v-bind:barcode="scanned_product_barcode"
-          v-bind:elevation="0"
-          />
+
+          <v-card>
+            <v-card-title>
+              <input v-model="name" placeholder="Product name here...">
+            </v-card-title>
+              <v-card-text>
+                <div class="my-4 subtitle-1">
+                  Product Description:<br>
+                  <textarea v-model="description" placeholder="Description here..."></textarea>
+                </div>
+                <div class="my-4 subtitle-1">
+                  Product Price: 
+                  $ <input v-model="price">
+                </div>
+                <div class="my-4 subtitle-1">
+                  Sales Tax Rate: 
+                  <input v-model="tax">%
+                </div>    
+              </v-card-text>
+          </v-card>
+
           <v-card-actions class="justify-center">
             <v-btn @click="cancelScannedProduct">Cancel
               <v-icon right>mdi-close</v-icon>
             </v-btn>
-            <v-btn @click="hideScannedProductCard">Add to store
+            <v-btn @click="addScannedProduct">Add to store
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -68,13 +84,12 @@
 </template>
 
 <script>
-import Product from '@/components/merchant/scan/Product'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: 'Merchant Scanner',
   components: {
-    Product
+    
   },
   data() {
     return {
@@ -83,15 +98,18 @@ export default {
       show_popup: false,
       scanned_product_barcode: 0,
       barcodePicker: null,
-      name: "Doritos",
-      description: "Doritos are the best chips to get your fingers all cheezy",
-      price: 1.99,
-      tax: 6,
+      name: "test",
+      description: "test",
+      price: 0,
+      tax: 0,
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['getProductsInStore']),
+  },
   methods: {
-    ...mapActions(["lookupProduct"]),
+    ...mapActions(["lookupProduct", "addProduct"]),
+    ...mapMutations(["removeFromKnownProducts"]),
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
       barcodePicker.setMirrorImageEnabled(false);
@@ -113,6 +131,7 @@ export default {
             // show scanned product card regardless of if found or not
             // if does not exist, card will be populated with place holders
             this.show_scanned_product = true
+            this.getProduct()
         }).catch(error => {
           this.$dbg_console_log(error)
           // if camera permissions are off, then barcode picker is null
@@ -120,6 +139,52 @@ export default {
             this.resetBarcodeScanner()
         })
 
+    },
+
+    getProduct() {
+      console.log("running getproduct")
+      console.log(this.scanned_product_barcode)
+      const product = this.getProductsInStore.find(product => product.barcode == this.scanned_product_barcode)
+      console.log(product)
+      if (product === undefined) {
+        console.log("product undefined")
+        this.name = "undefined"
+        this.description = "undefined"
+        this.price = 0
+        this.tax = 0
+      } else if (product.exists == true) {
+        console.log("product exists: "+product.name)
+        this.name = product.name
+        this.description = product.description
+        this.price = product.price
+        this.tax = product.tax
+      } else {
+        this.name = ""
+        this.description = ""
+        this.price = 0
+        this.tax = 0
+        console.log("product doesnt exist: "+this.name)
+      }
+    }, 
+
+    addScannedProduct() {
+      console.log("adding scanned product to store")
+      this.tax = this.tax/100
+      // TODO: get actual barcode type from scanner
+      this.addProduct({barcode:this.scanned_product_barcode, barcodeType:"ean", businessID:this.$route.params.id, 
+                        name: this.name, description: this.description, price: this.price, tax: this.tax})
+        .then((result) => {
+            this.$dbg_console_log("backend result", result)
+            console.log(result.status)
+        }).catch(error => {
+          this.$dbg_console_log(error)
+        })
+      // remove product from local store to allow query again
+      this.removeFromKnownProducts(this.scanned_product_barcode)
+      this.hideScannedProductCard()
+      // if camera permissions are off, then barcode picker is null
+      if(this.barcodePicker != null) 
+        this.resetBarcodeScanner()
     },
     // if user cancels adding the scanned product, we need to undo any changes they have made
     // if the product was loaded from the cart, we need to restore the product's quantity
@@ -143,7 +208,10 @@ export default {
       this.barcodePicker.resumeScanning();
       this.barcodePicker.clearSession();
       this.$dbg_console_log('resume scanning', this.barcodePicker)
-    }
+    },
+
+
+      
   },
 }
 </script>

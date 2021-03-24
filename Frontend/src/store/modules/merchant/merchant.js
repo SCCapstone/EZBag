@@ -144,7 +144,7 @@ const actions = {
               barcode: result.data.barcode,
               name:result.data.name,
               price: result.data.price,
-              tax: result.data.tax,
+              tax: Math.round((result.data.tax/result.data.price)*1000)/10,
               description:result.data.description,
               businessID:businessID,
               exists:true
@@ -180,6 +180,35 @@ const actions = {
     })
   },
 
+  async addProduct(context, {barcode, barcodeType, businessID, name, description, price, tax}) {
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/product",
+      JSON.stringify({
+          barcode: barcode,
+          barcodeType: barcodeType, 
+          businessID: businessID,
+          name: name,
+          description: description,
+          price: price,
+          tax: tax,
+        }))
+      .then(function (result) {
+        if(result.data.status != "failure") {
+          resolve({
+            productAdded:true,
+          })
+        }
+        else {
+          resolve({
+            productAdded:false,
+          })
+        }
+      }).catch(function (error) { // failed response from backend
+        reject(error)
+      })
+    })
+  }
+
   // TODO: create get carts api call will token as Authorization parameters
 }
 
@@ -195,6 +224,10 @@ const mutations = {
     else {
       state.knownProducts.push(aProduct)
     }
+  },
+
+  removeFromKnownProducts (state, barcode) {
+    state.knownProducts = state.knownProducts.filter(product => product.barcode !== barcode)
   },
 
 }
