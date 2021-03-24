@@ -4,7 +4,7 @@
             <v-app-bar app elevate-on-scroll color="primary" dark>
                 <p>EZBag</p>
             </v-app-bar>
-                <p>Error: 404 Page Not Found</p>
+                <p>Sorry, you don't have permission to access this page.</p>
         </div>
     </div>
 </template>

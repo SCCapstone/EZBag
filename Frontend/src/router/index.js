@@ -44,6 +44,11 @@ const routes = [
     path: '/404',
     name: '404',
     component: () => import('@/views/customer/404.vue')
+  },
+  {
+    path: '/NotAuthorized',
+    name: 'NotAuthorized',
+    component: () => import('@/views/customer/NotAuth.vue')
   }
 ]
 
