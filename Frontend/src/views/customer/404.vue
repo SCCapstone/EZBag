@@ -4,7 +4,7 @@
             <v-app-bar app elevate-on-scroll color="primary" dark>
                 <p>EZBag</p>
             </v-app-bar>
-                <p>404 Page Not Found</p>
+                <p>Error: 404 Page Not Found</p>
         </div>
     </div>
 </template>
