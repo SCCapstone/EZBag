@@ -25,7 +25,7 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 6. Press the "Checkout" button to mock pay
 7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
 
-## Initial Setup with Docker (recommended):
+## Initial Setup with Docker:
 1. Install docker (if you are on Windows 10, use WSL2 for docker).
 2. Clone the repository and cd into it
 4. Run `docker-compose build`
@@ -33,38 +33,25 @@ Click this link to view our proof of concept application. NOTE: Our website uses
     - Note: We need to use `docker-compose run ...` on the first startup for its interactive mode, without which you could not type in the password.
 4. While the backend appears to be fully running, ports are not properly mapped when running with `docker-compose run ...` . Close the containers with `docker-compose down`.
 
-The webapp is now setup and can be started with `docker-compose up`. When you are finished with it, it can be closed with `docker-compose down`.
+## Usage
+Having completed the inital setup with docker, our project can be started with `docker-compose up`. The frontend will be served in development mode at http://localhost:9000, the backend will be served by tomcat on http://localhost:8080/EZBagWebapp, and our mongodb database will be available on port 27017 of localhost. When you are finished with the project, these three services should be closed with `docker-compose down`. 
 
-## Backend
+## Rebuild and Redeploy the Backend:
+If not already deployed, `docker-compose up` will build the backend with maven and deploy it with tomcat. If you need to rebuild the backend (say, if you change the source code):
+1. Run `docker-compose up` in this repository
+2. In another terminal, run `docker exec -it backend bash` to access the backend container.
+3. In the backend container and at `/backend` run `./build-deploy.sh`
+The backend will be rebuilt and automatically deployed to `/usr/local/tomcat/webapps`. However, through the magic of [docker volumes](https://docs.docker.com/storage/volumes/), it will also be available on your local machine at `this_repository/docker_persist/tomcat/`. 
 
-### Manual Setup (not recommended):
+## Build the Frontend
+The frontend is automatically served at http://localhost:9000 in development mode when you use `docker-compose up`. However, if you need to build the frontend for production, you can:
+1. If the project is not already running in docker, run `docker-compose up`.
+2. Access the running frontend container in another terminal with `docker exec -it backend bash`
+3. In the frontend container and at `/frontend`, run `npm run build`
+The frontend will be built and placed at `/frontend/dist`. However, through the magic of [docker volumes](https://docs.docker.com/storage/volumes/), it will also be available on your local machine at `this_repository/Frontend/dist`. 
 
-1. Install the following requirements:
-* [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
-* [IntelliJ](https://www.jetbrains.com/idea/download/#section=windows)
-* [Tomcat 8](https://tomcat.apache.org/)
-    * Download [Windows Service Installer](https://tomcat.apache.org/download-80.cgi)
-    * Run it and follow the prompts for installation
-* [MongoDB](https://www.mongodb.com/)
-    * [Official Install Instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
-
-2. Download or `git clone` this repository.
-3. Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
-
-### Manual Build and Deploy (not recommended):
-1. Open the EZBagWebapp project in IntelliJ
-2. Open Maven side menu -> Lifecycle menu and run
-    - clean
-    - compile
-    - package
-3. Open "target" folder in project root
-4. Copy "EZBagWebapp.war" to the ```/path-to-tomcat-install/tomcat/webapps``` directory
-5. Start Tomcat and navigate to `/path-to-tomcat-install/tomcat/bin/`
-6. Run `startup.sh`/`startup.bat` if your on (linux/windows)
-
-Tomcat will now auto-deploy the application which can be viewed at http://localhost:8080/EZBagWebapp.
-
-### Unit Testing:
+# Testing
+## Backend Unit Testing:
 Using the [Jersey Test Framework](https://www.baeldung.com/jersey-test), unit tests can be ran in the IDE (IntelliJ). The Jersey Test Framework creates a fast and easy way to quickly test Jersey code. The Test Framework can emulate GET, and POST requests, and verify that the values being returned are correct. Can also be used to test any backend methods without deploying the server via TomCat.
 
 Tests location: `EZBagWebapp/src/main/java/test`
@@ -74,33 +61,14 @@ Running the tests in the Jersey Test Framework:
 2. Right click on the test you want to run and click "run test"
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
-## Frontend:
-Our frontend is built in vue.js, using vuex for storing data and vuetifyjs for material components.
-
-### Setup:
-1. Download or `git clone` this repository if you haven't already.
-2. Install [`npm`](https://www.npmjs.com/get-npm).
-3. Open a terminal in `repository/Frontend/` and run `npm install` to install all dependencies.
-
-### Build:
-1. Open a terminal in `repository/Frontend/`
-2. Run `npm run build`
-
-The build will be placed in `repository/Frontend/dist`.
-
-### Run a local development build:
-1. Open a terminal in `repository/Frontend/`
-2. Run `npm run serve`
-
-The frontend will be available at localhost:9000/.
-
-### Behavioral Testing:
+## Frontend Behavioral Testing:
 We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
 Running end-to-end behavioral tests:
-1. Open a terminal in `repository/Frontend/`
-2. Run `npm run test:e2e`. A window will open displaying our tests. 
-3. Select the test to run, or select 'run all tests'.
+1. If the project is not already running in docker, run `docker-compose up`.
+2. Access the running frontend container in another terminal with `docker exec -it backend bash`
+3. In the frontend container and at `/frontend`, run `npm run test:e2e`. A window will open displaying our tests. 
+5. Select the test to run, or select 'run all tests'.
 
 # Authors
 - [Blake Edwards](mailto:blakete@email.sc.edu)
