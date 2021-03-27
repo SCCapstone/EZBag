@@ -25,10 +25,19 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 6. Press the "Checkout" button to mock pay
 7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
 
+## Initial Setup with Docker (recommended):
+1. Install docker (if you are on Windows 10, use WSL2 for docker).
+2. Clone the repository and cd into it
+4. Run `docker-compose build`
+3. Run `docker-compose run --rm --name backend backend`. You will be prompted for a password, which we will supply.
+    - Note: We need to use `docker-compose run ...` on the first startup for its interactive mode, without which you could not type in the password.
+4. While the backend appears to be fully running, ports are not properly mapped when running with `docker-compose run ...` . Close the containers with `docker-compose down`.
+
+The webapp is now setup and can be started with `docker-compose up`. When you are finished with it, it can be closed with `docker-compose down`.
 
 ## Backend
 
-### Setup:
+### Manual Setup (not recommended):
 
 1. Install the following requirements:
 * [Java 1.8](https://www.oracle.com/java/technologies/javase-downloads.html)
@@ -42,7 +51,7 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 2. Download or `git clone` this repository.
 3. Open the `EZBagWebapp` folder in IntelliJ. The Maven plugin built into IntelliJ will download and auto-configure all of the project dependencies.
 
-### Build and Deploy:
+### Manual Build and Deploy (not recommended):
 1. Open the EZBagWebapp project in IntelliJ
 2. Open Maven side menu -> Lifecycle menu and run
     - clean

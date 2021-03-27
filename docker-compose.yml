@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    build: ./EZBagWebapp
+    ports: 
+      - 8080:8080
+    volumes: 
+      - ./EZBagWebapp:/backend
+      - ./docker_persist/secrets:/usr/local/opt
+      - ./docker_persist/tomcat:/usr/local/tomcat/webapps
+      - ./docker_persist/maven:/root/.m2
+    depends_on:
+      - database
+    links:
+      - database
+  
+  database:
+    container_name: mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker_persist/mongodb:/data/db
+
+  frontend:
+    container_name: frontend
+    image: node
+    ports:
+      - 9000:9000
+    working_dir: /frontend
+    volumes:
+      - ./Frontend:/frontend
+    command: >
+      bash -c "npm install &&
+      npm run serve"
