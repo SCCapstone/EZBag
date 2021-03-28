@@ -15,6 +15,8 @@ import org.services.StartupService;
 import org.junit.Test;
 import org.services.Utils;
 
+import java.util.Random;
+
 import static junit.framework.TestCase.assertEquals;
 
 public class UtilsTests extends JerseyTest {
@@ -31,5 +33,6 @@ public class UtilsTests extends JerseyTest {
         Claims claims = Utils.decodeJWT(jwt);
         System.out.println(claims.toString());
     }
+
 
 }

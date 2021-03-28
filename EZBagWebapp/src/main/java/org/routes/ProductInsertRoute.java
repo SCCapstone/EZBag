@@ -13,6 +13,7 @@ public class ProductInsertRoute {
     //@Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload) {
+        // TODO: validate user token
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         Document insertDoc = new Document();
         if (payloadObject.has("barcode")
@@ -23,7 +24,6 @@ public class ProductInsertRoute {
                 && payloadObject.has("tax")
                 && payloadObject.has("description"))
         {
-
             insertDoc.append("barcode", payloadObject.get("barcode").getAsString())
                     .append("barcodeType", payloadObject.get("barcodeType").getAsString())
                     .append("businessID", payloadObject.get("businessID").getAsString())

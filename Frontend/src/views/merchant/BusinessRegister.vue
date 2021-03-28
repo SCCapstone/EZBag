@@ -149,7 +149,15 @@
   
     }),
     methods: {
-      ...mapActions(["registerUser"]),
+      ...mapActions(["registerUser", "sha256"]),
+      generateNonce(num) {
+        var symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
+        var nonce = ""
+        for (var i=0; i<num; i++) {
+          nonce += symbols[Math.floor(Math.random()*symbols.length)]
+        }
+        return nonce
+      },
       submit() {
         if (!this.name
             || !(this.address)
@@ -172,30 +180,33 @@
           this.$dbg_console_log(!(this.rules.min(this.password))
             || !(this.rules.emailRules(this.email)))
             this.$dbg_console_log("Registering user!")
-            this.registerUser({
-              "businessName":this.name,
-              "streetAddress":this.address,
-              "country": this.country,
-              "city": this.city,
-              "state": this.state,
-              "email": this.email,
-              "phone": this.phone,
-              "password": this.password
-            }).then((result) => { // no backend errors thrown
-              this.$dbg_console_log(result)
-              if(result.success==1) {
-                this.$router.push('/login');
-              }else{
+            var nonce = this.generateNonce(20)
+            this.sha256(nonce+this.password).then( (result) => {
+              this.registerUser({
+                "businessName":this.name,
+                "streetAddress":this.address,
+                "country": this.country,
+                "city": this.city,
+                "state": this.state,
+                "email": this.email,
+                "phone": this.phone,
+                "password": result,
+                "nonce": nonce
+              }).then((result) => { // no backend errors thrown
+                this.$dbg_console_log(result)
+                if(result.success==1) {
+                  this.$router.push('/login');
+                } else {
+                  this.show_popup = true
+                  this.popupText = result.message
+                }
+              }).catch(error => {
                 this.show_popup = true
-                this.popupText = result.message
-              }
-            }).catch(error => {
-              this.show_popup = true
-              this.popupHeader =  "Internal Server Error"
-              this.popupText = "Something went wrong"
-              this.$dbg_console_log(error)
+                this.popupHeader =  "Internal Server Error"
+                this.popupText = "Something went wrong"
+                this.$dbg_console_log(error)
+              })
             })
-          //*/
           return true
         }
 
@@ -239,3 +250,4 @@
     height: 110%;
   }
 </style>
+

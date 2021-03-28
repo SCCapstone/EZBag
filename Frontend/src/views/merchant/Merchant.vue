@@ -15,9 +15,37 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
+import Vue from 'vue'
+import VueCookies from 'vue-cookies';
+Vue.use(VueCookies);
 export default {
+  created() {
+    console.log("Merchant Navigation Created")
+    if (this.$cookies.get("token") !== null) {
+      this.verifyToken(this.$cookies.get("token")).then( (result) => {
+        if (result.status=="success") {
+          this.$dbg_console_log("verified token!")
+        } else {
+          this.$dbg_console_log("Token is not valid, redirecting to login")
+          this.$router.push("/login")
+          this.$cookies.remove("token")
+        }
+      }).catch(error => {    
+          this.$dbg_console_log(error)
+          this.$router.push("/login")
+          this.$cookies.remove("token")
+      })
+    } else {
+      this.$dbg_console_log("Cookie token is null, redirecting to login")
+      this.$router.push("/login")
+    }
+    
+  },
   methods: {
+    ...mapActions(["verifyToken"]),
     logout() {
+      this.$cookies.remove("token")
       this.$router.push('/login');
     }
   },

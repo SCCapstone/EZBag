@@ -1,6 +1,7 @@
 package org.services;
 
 import com.mongodb.BasicDBObject;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.database.MongoDB;
 import org.bson.Document;
 
@@ -99,7 +100,11 @@ public class DatabaseService {
     }
 
     public static Boolean userLoginCredentialsValid(String userEmail, String userPassword) {
-        Document returnedUser = database.getUserByEmailPassword(userEmail, userPassword);
+        String nonce = database.getUserNonceByEmail(userEmail);
+        System.out.println("User nonce: "+nonce);
+        String userHashedPassword = DigestUtils.sha256Hex(nonce+userPassword);
+        System.out.println("User hashed password: "+userHashedPassword);
+        Document returnedUser = database.getUserByEmailPassword(userEmail, userHashedPassword);
         if (returnedUser != null) {
             return true;
         }

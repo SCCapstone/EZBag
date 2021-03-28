@@ -53,7 +53,7 @@ public class StartupService implements ServletContextListener {
         System.out.println("[Startup] Initializing media services");
         EmailService.init(mediaProp);
         SMSService.init(mediaProp);
-        if(!DatabaseService.userLoginCredentialsValid(debugUserName, debugPassword)){
+        if(!DatabaseService.userExists(debugUserName)){
             System.out.println("[Startup] Generating default user...");
             Document insertDoc = new Document();
             insertDoc.append("email", debugBusinessID);
@@ -68,7 +68,9 @@ public class StartupService implements ServletContextListener {
             insertDoc.append("businessID", debugBusinessID);
             insertDoc.append("verified", true);
             insertDoc.append("userID", DigestUtils.sha256Hex(insertDoc.toJson()));
-            insertDoc.append("password", debugPassword);
+            String nonce = Utils.generateNonce(20);
+            insertDoc.append("password", DigestUtils.sha256Hex(nonce+debugPassword));
+            insertDoc.append("nonce", nonce);
             // TODO: change to reply with message of why the addition failed
             String success =  DatabaseService.insertUser(insertDoc);
             System.out.println(success);

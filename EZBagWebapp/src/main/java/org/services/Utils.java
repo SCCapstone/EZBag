@@ -66,6 +66,17 @@ public class Utils {
         return builder.toString();
     }
 
+    public static String generateNonce(int num) {
+        String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        String nonce = "";
+        Random rand = new Random();
+        for (int i = 0; i<num; i++) {
+            int loc = rand.nextInt(symbols.length());
+            nonce += symbols.substring(loc,loc+1);
+        }
+        return nonce;
+    }
+
     // CREDIT TO: https://developer.okta.com/blog/2018/10/31/jwts-with-java
     public static String createJWT(String id, String issuer, String subject, long ttlMillis) {
 
