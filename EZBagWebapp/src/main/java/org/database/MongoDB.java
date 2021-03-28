@@ -173,6 +173,15 @@ public class MongoDB {
         return resp.toString();
     }
 
+    public String getUserNonceByEmail(String userEmail) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("email", userEmail));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(userCollectionName).find(query).first();
+        return respDoc.getString("nonce");
+    }
+
     public Document getUserByEmailPassword(String email, String password) {
         BasicDBObject query = new BasicDBObject();
         List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();

@@ -31,12 +31,13 @@ public class BizLoginRoute {
             String password = payloadObject.get("password").getAsString();
             if (DatabaseService.userExists(email)) {
                 // todo
+                System.out.println("User exists");
                 if (DatabaseService.userLoginCredentialsValid(email, password)) {
                     if (DatabaseService.userIsVerified(email)) {
                         // TODO: get business ID and add to payload to be returned
                         businessID = DatabaseService.getUserBusinessID(email);
-                        token = Utils.createJWT(email, "bearer", "business", 86400000);
-//                    token = Utils.createJWT(email, "bearer", "business", 30000);
+//                        token = Utils.createJWT(email, "bearer", "business", 86400000);
+                        token = Utils.createJWT(email, "bearer", "business", 10000);
                         message = "Logged in!";
                         status = "success";
                     } else {

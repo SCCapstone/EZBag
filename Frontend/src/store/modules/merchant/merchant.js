@@ -25,6 +25,34 @@ const getters = {
 
 // https://vuex.vuejs.org/guide/actions.html#actions 
 const actions = {
+  
+  async sha256(msg) {
+    // encode as UTF-8
+    const msgBuffer = new TextEncoder().encode(msg);                    
+    // hash the message
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    // convert ArrayBuffer to Array
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    // convert bytes to hex string                  
+    const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
+    return hashHex;
+  },
+
+  async verifyToken(context, token) {
+    var data = JSON.stringify({token: token})
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/merchant/token", data)
+        .then(function (result) {
+          resolve({
+            status: result.data.status,
+            message: result.data.message
+          })
+        }).catch(function (error) { // failed response from backend
+          console.log(error)
+          reject(error)
+        })
+      })
+  },
 
   async verifyCart(context, cartData) {
     var data = JSON.stringify(cartData)
