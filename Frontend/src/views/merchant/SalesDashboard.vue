@@ -1,115 +1,123 @@
 <template>
   <v-container>
-    <v-card class='sales'>
+    <v-card class="sales">
+      <v-card-title class="justify-center">Total Sales Over Time</v-card-title>
       <v-card-actions>
         <v-select
           :items="interval"
           v-model="selected"
-          item-value="val"
-          @change="changeInterval($event)"
-          label="Time interval"
-          class='interval'
+          class="interval"
           dense
         ></v-select>
       </v-card-actions>
       <v-card-text>
-        <bar-chart v-if="selected === 'Monthly'"
-          :chartData="datasets.monthlyTotals"
-          :options="chartOptions"
-          :labels="labels.monthInterval"
-          label="Monthly Data"
-        ></bar-chart>
-        <bar-chart v-if="selected === 'Weekly'"
-          :chartData="datasets.weeklyTotals"
-          :options="chartOptions"
-          :labels="labels.weekInterval"
-          label="Weekly Data"
-        ></bar-chart>
-        <bar-chart v-if="selected === 'Daily'"
-          :chartData="datasets.dailyTotals"
-          :options="chartOptions"
-          :labels="labels.dayInterval"
-          label="Daily Data"
-        ></bar-chart>
+        <div class="week" v-if="selected === 'Weekly'">
+          <apexcharts
+            type="bar"
+            :options="chartOptions"
+            :series="weekData"
+          ></apexcharts>
+        </div>
+        <div class="month" v-if="selected === 'Monthly'">
+          <apexcharts
+            type="bar"
+            :options="monthOptions"
+            :series="monthData"
+          ></apexcharts>
+        </div>
+        <div class="day" v-if="selected === 'Daily'">
+          <apexcharts
+            type="bar"
+            :options="dayOptions"
+            :series="dayData"
+          ></apexcharts>
+        </div>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import BarChart from "./barChart1.vue";
+import VueApexCharts from "vue-apexcharts";
 
 export default {
-  name: 'SalesDashboard',
-  //datasets,
-  //options,
+  name: "HelloWorld",
+
   components: {
-    BarChart
+    apexcharts: VueApexCharts,
   },
 
-  data() {
+  data: function () {
     return {
-      selected: "",
-      interval: ['Monthly', 'Weekly', 'Daily'],
-      labels: {
-        monthInterval: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        weekInterval: ['Sun.', 'Mon.', 'Tues.', 'Wed.', 'Thurs.', 'Fri.', 'Sat.'],
-        dayInterval: ['6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
-      },
-      datasets: {
-        monthlyTotals: [4000, 3750, 4850, 3900, 4100, 4010, 3914, 2980, 4890, 5220, 5912, 4511],
-        weeklyTotals: [200, 450, 325, 350, 275, 250, 510, 0, 0, 0, 0, 0],
-        dailyTotals: [40, 20, 30, 35, 50, 60, 25, 75, 54, 32, 70, 65],
-      },
+      selected: 'Weekly',
+      interval: ['Daily', 'Weekly', 'Monthly'],
       chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            xAxes: [{
-                barPercentage: 0.4
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
+        chart: {
+          id: "basic-bar",
         },
-        legend: {
-            display: false
-        },
-        title: {
-          display: true,
-          text: 'Total Sales Over Time'
+        xaxis: {
+          categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
         },
       },
+      monthOptions: {
+        chart: {
+          id: "basic-bar",
+        },
+        xaxis: {
+          categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        },
+      },
+      dayOptions: {
+        chart: {
+          id: "basic-bar",
+        },
+        xaxis: {
+          categories: ['6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
+        },
+      },
+      weekData: [
+        {
+          name: "weekly",
+          data: [200, 450, 325, 350, 275, 250, 510],
+        },
+      ],
+      dayData: [
+        {
+          name: "daily",
+          data: [40, 20, 30, 35, 50, 60, 25, 75, 54],
+        },
+      ],
+      monthData: [
+        {
+          name: "month",
+          data: [4000, 3750, 4850, 3900, 4100, 4010, 3914, 2980, 4890, 5220, 5912, 4511],
+        }
+      ],
     };
   },
-  method: {
-    changeInterval: function changeInterval(event) {
-      this.selected = event.value;
-    }
-  }
-
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .sales {
-    padding:5px;
+    padding: 5px;
+  }
+
+  .v-card__title {
+    padding: 0;
   }
 
   .v-select {
     text-size-adjust: 40%;
   }
 
-  .v-card__text {
-    padding: 0;
-  }
-
   .v-card__actions {
     padding-bottom: 0;
     padding-top: 0;
     width: 35%;
+  }
+
+  .v-card__text {
+    padding: 0;
   }
 </style>
