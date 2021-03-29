@@ -18,6 +18,8 @@
         item-value="Name"
         placeholder="Scan or start typing to search"
         return-object
+        @focus="onFocus"
+        @blur="onBlur"
       ></v-autocomplete>
 
   </v-container>
@@ -64,7 +66,15 @@ export default {
       },
     },
     methods: {
-      ...mapActions(["fetchProducts"])
+      ...mapActions(["fetchProducts"]),
+      onFocus() {
+        this.$dbg_console_log("Search bar in focus!")
+        this.$emit("isSearching", true)
+      },
+      onBlur() {
+        this.$dbg_console_log("Search bar out of focus!")
+        this.$emit("isSearching", false)
+      }
     },
     watch: {
       search (curr) {

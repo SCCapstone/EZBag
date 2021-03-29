@@ -7,7 +7,7 @@
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { findAndLoadProduct(barcode.barcodes[0].data) }" />
-    <ScanSearchBar v-on:showproduct="findAndLoadProduct"/>
+    <ScanSearchBar v-on:showproduct="findAndLoadProduct" v-on:isSearching="toggleScanner($event)"/>
     <ScanButtons v-bind:total=getSubtotal />
 
     
@@ -111,7 +111,7 @@ export default {
       // if camera permissions are off, then barcode picker is null
       if(this.barcodePicker != null) {
         this.barcodePicker.pauseScanning()
-        this.$dbg_console_log("scanning paused", this.barcodePicker)
+        this.$dbg_console_log("Scanning paused for load product", this.barcodePicker)
       }
       this.scanned_product_barcode = barcode
       // attempt to add product to cart
@@ -163,7 +163,20 @@ export default {
       // https://docs.scandit.com/stable/web/classes/barcodepicker.html#clearsession
       this.barcodePicker.resumeScanning();
       this.barcodePicker.clearSession();
-      this.$dbg_console_log('resume scanning', this.barcodePicker)
+      this.$dbg_console_log('Resume scanning', this.barcodePicker)
+    },
+    toggleScanner(bool) {
+      if (bool) {
+        this.$dbg_console_log("Pause scanning for search")
+        this.barcodePicker.pauseScanning();
+      } else {
+        if (!this.show_scanned_product) {
+          this.$dbg_console_log("Product card not showing, resuming scanning for search")
+          this.barcodePicker.resumeScanning();
+        } else {
+          this.$dbg_console_log("Product card showing, will not resume search")
+        }
+      }
     }
   },
 }
