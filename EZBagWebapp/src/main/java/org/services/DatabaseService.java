@@ -1,10 +1,12 @@
 package org.services;
 
 import com.mongodb.BasicDBObject;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.database.MongoDB;
 import org.bson.Document;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseService {
     public static String SECRET_KEY = null;
@@ -86,6 +88,10 @@ public class DatabaseService {
         return database.getUserEmailByUserID(userID, returnParams);
     }
 
+    public static Boolean deleteProductBarcodeBusinessID(String barcode, String businessID) {
+        return database.deleteProductByBarcodeBusinessID(barcode, businessID);
+    }
+
     // used to check if user with email exists
     public static Boolean userExists(String userEmail) {
         return database.userExists(userEmail);
@@ -108,8 +114,13 @@ public class DatabaseService {
         return database.getUserBusinessID(userEmail);
     }
 
+
     public static Boolean userLoginCredentialsValid(String userEmail, String userPassword) {
-        Document returnedUser = database.getUserByEmailPassword(userEmail, userPassword);
+        String nonce = database.getUserNonceByEmail(userEmail);
+        System.out.println("User nonce: "+nonce);
+        String userHashedPassword = DigestUtils.sha256Hex(nonce+userPassword);
+        System.out.println("User hashed password: "+userHashedPassword);
+        Document returnedUser = database.getUserByEmailPassword(userEmail, userHashedPassword);
         if (returnedUser != null) {
             return true;
         }

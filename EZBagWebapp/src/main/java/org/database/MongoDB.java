@@ -14,6 +14,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.services.DatabaseService;
@@ -84,6 +85,17 @@ public class MongoDB {
     }
 
 
+
+    public Boolean deleteProductByBarcodeBusinessID(String barcode, String businessID) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("barcode", barcode));
+        matchDoc.add(new BasicDBObject("businessID", businessID));
+        query.put("$and", matchDoc);
+        DeleteResult result = collectionsMap.get(productCollectionName).deleteMany(query);
+        System.out.println("Deleted count: "+result.getDeletedCount());
+        return true;
+    }
 
 
     public Document getProductByBarcodeBusinessID(String barcode, String businessID) {
@@ -245,6 +257,15 @@ public class MongoDB {
         resp.add("carts", jsArray);
         resp.addProperty("status", "success");
         return resp.toString();
+    }
+
+    public String getUserNonceByEmail(String userEmail) {
+        BasicDBObject query = new BasicDBObject();
+        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+        matchDoc.add(new BasicDBObject("email", userEmail));
+        query.put("$and", matchDoc);
+        Document respDoc = collectionsMap.get(userCollectionName).find(query).first();
+        return respDoc.getString("nonce");
     }
 
     public Document getUserByEmailPassword(String email, String password) {

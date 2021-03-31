@@ -71,6 +71,11 @@
           </v-card>
 
           <v-card-actions class="justify-center">
+            <v-btn 
+              v-model="show_delete" 
+              @click="deleteScannedProduct">Delete
+              <v-icon right>mdi-delete</v-icon>
+            </v-btn>
             <v-btn @click="cancelScannedProduct">Cancel
               <v-icon right>mdi-close</v-icon>
             </v-btn>
@@ -96,6 +101,7 @@ export default {
       clear_product_card_fields: false,
       show_scanned_product: false, // for displaying scanned product card
       show_popup: false,
+      show_delete: false,
       scanned_product_barcode: 0,
       barcodePicker: null,
       name: "test",
@@ -127,13 +133,15 @@ export default {
       this.lookupProduct({barcode:barcode, businessID:this.$route.params.id})
         .then((result) => {
             if (result.product === null) {
+              console.log("product doesnt exist: "+this.name)
+              this.show_delete = false
               this.name = ""
               this.description = ""
               this.price = 0
               this.tax = 0
-              console.log("product doesnt exist: "+this.name)
             } else {
               console.log("product exists: "+result.product.name)
+              this.show_delete = true
               this.name = result.product.name
               this.description = result.product.description
               this.price = result.product.price
@@ -174,6 +182,14 @@ export default {
     // if the product was not originally from the cart, we should remove it from the cart
     cancelScannedProduct() {
       this.hideScannedProductCard()
+      // if camera permissions are off, then barcode picker is null
+      if(this.barcodePicker != null) 
+        this.resetBarcodeScanner()
+    },
+    deleteScannedProduct() {
+      this.hideScannedProductCard()
+      // TODO: create merchant method and backend route to delete product
+      
       // if camera permissions are off, then barcode picker is null
       if(this.barcodePicker != null) 
         this.resetBarcodeScanner()
