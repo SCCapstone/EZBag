@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   name: 'Merchant Scanner',
@@ -109,7 +109,6 @@ export default {
   },
   methods: {
     ...mapActions(["lookupProduct", "addProduct"]),
-    ...mapMutations(["removeFromKnownProducts"]),
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
       barcodePicker.setMirrorImageEnabled(false);
@@ -127,11 +126,21 @@ export default {
       // TODO: query database with merchant id and JWT to get product
       this.lookupProduct({barcode:barcode, businessID:this.$route.params.id})
         .then((result) => {
-            this.$dbg_console_log("backend result", result)
-            // show scanned product card regardless of if found or not
-            // if does not exist, card will be populated with place holders
+            if (result.product === null) {
+              this.name = ""
+              this.description = ""
+              this.price = 0
+              this.tax = 0
+              console.log("product doesnt exist: "+this.name)
+            } else {
+              console.log("product exists: "+result.product.name)
+              this.name = result.product.name
+              this.description = result.product.description
+              this.price = result.product.price
+              this.tax = result.product.tax
+            }
             this.show_scanned_product = true
-            this.getProduct()
+
         }).catch(error => {
           this.$dbg_console_log(error)
           // if camera permissions are off, then barcode picker is null
@@ -141,31 +150,6 @@ export default {
 
     },
 
-    getProduct() {
-      console.log("running getproduct")
-      console.log(this.scanned_product_barcode)
-      const product = this.getProductsInStore.find(product => product.barcode == this.scanned_product_barcode)
-      console.log(product)
-      if (product === undefined) {
-        console.log("product undefined")
-        this.name = "undefined"
-        this.description = "undefined"
-        this.price = 0
-        this.tax = 0
-      } else if (product.exists == true) {
-        console.log("product exists: "+product.name)
-        this.name = product.name
-        this.description = product.description
-        this.price = product.price
-        this.tax = product.tax
-      } else {
-        this.name = ""
-        this.description = ""
-        this.price = 0
-        this.tax = 0
-        console.log("product doesnt exist: "+this.name)
-      }
-    }, 
 
     addScannedProduct() {
       console.log("adding scanned product to store")
@@ -180,7 +164,6 @@ export default {
           this.$dbg_console_log(error)
         })
       // remove product from local store to allow query again
-      this.removeFromKnownProducts(this.scanned_product_barcode)
       this.hideScannedProductCard()
       // if camera permissions are off, then barcode picker is null
       if(this.barcodePicker != null) 
