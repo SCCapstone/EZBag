@@ -7,10 +7,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import org.bson.Document;
-import org.services.DatabaseService;
-import org.services.EmailService;
-import org.services.QRCodeService;
-import org.services.Utils;
+import org.services.*;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -52,7 +49,7 @@ public class BizVerifyRedirectRoute {
                 String businessID = doc.getString("businessID");
                 BufferedImage qrCode = null;
                 try {
-                    qrCode = QRCodeService.generateQRCodeImage("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+                    qrCode = QRCodeService.generateQRCodeImage(StartupService.domain + "/customer/" + businessID + "/scan");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

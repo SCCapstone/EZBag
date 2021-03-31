@@ -1,7 +1,6 @@
 package org.services;
 
 import com.mongodb.BasicDBObject;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.database.MongoDB;
 import org.bson.Document;
 
@@ -40,6 +39,16 @@ public class DatabaseService {
 
     public static String getLast24HourCartsByBusinessID(String businessID) {
         String resp = database.getLast24HourCartsByBusinessID(businessID);
+        return resp;
+    }
+
+    public static String getLast7DaysCartsByBusinessID(String businessID) {
+        String resp = database.getLast7DaysCartsByBusinessID(businessID);
+        return resp;
+    }
+
+    public static String getLast30DaysCartsByBusinessID(String businessID) {
+        String resp = database.getLast30DaysCartsByBusinessID(businessID);
         return resp;
     }
 
@@ -100,11 +109,7 @@ public class DatabaseService {
     }
 
     public static Boolean userLoginCredentialsValid(String userEmail, String userPassword) {
-        String nonce = database.getUserNonceByEmail(userEmail);
-        System.out.println("User nonce: "+nonce);
-        String userHashedPassword = DigestUtils.sha256Hex(nonce+userPassword);
-        System.out.println("User hashed password: "+userHashedPassword);
-        Document returnedUser = database.getUserByEmailPassword(userEmail, userHashedPassword);
+        Document returnedUser = database.getUserByEmailPassword(userEmail, userPassword);
         if (returnedUser != null) {
             return true;
         }

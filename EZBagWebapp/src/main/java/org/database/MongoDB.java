@@ -14,7 +14,6 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Indexes;
 import com.mongodb.client.model.Projections;
 import com.mongodb.client.model.Sorts;
-import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 import org.services.DatabaseService;
@@ -118,7 +117,6 @@ public class MongoDB {
     }
 
     public String searchProductsByBusinessIDQuery(String businessID, String queryString) {
-        // TODO: test this query method
         FindIterable<Document> results = collectionsMap.get(productCollectionName)
                 .find(and(eq("businessID", businessID), Filters.text(queryString)))
                 .projection(Projections.metaTextScore("score"))
@@ -131,6 +129,82 @@ public class MongoDB {
         }
         JsonObject resp = new JsonObject();
         resp.add("results", searchResults);
+        resp.addProperty("status", "success");
+        return resp.toString();
+    }
+
+    public String getLast30DaysCartsByBusinessID(String businessID) {
+        long dayMillis = System.currentTimeMillis() - 86400000*30;
+        FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
+                .find(new Document().append("businessID", businessID)
+                        .append("time", new Document().append("$gt" , dayMillis)));
+        JsonArray jsArray = new JsonArray();
+        HashMap<String, String> productCache = new HashMap<>();
+        for (Document doc : result) {
+            doc.remove("_id");
+            // TODO: get product names
+            ArrayList<String> barcodes = (ArrayList<String>) doc.get("barcodes");
+            ArrayList<String> productNames = new ArrayList<>(barcodes.size());
+            for (int i = 0; i < barcodes.size(); i++) {
+                if (productCache.containsKey(barcodes.get(i))) {
+                    productNames.add(i, productCache.get(barcodes.get(i)));
+                } else {
+                    Document resp = getProductByBarcodeBusinessID(barcodes.get(i), businessID);
+                    if (resp != null)
+                    {
+                        productNames.add(i, resp.getString("name"));
+                        productCache.put(barcodes.get(i), resp.getString("name"));
+                    } else {
+                        // TODO: product doesnt exists do something else to handle this
+                        productNames.add(i, "UNKNOWN PRODUCT ERROR");
+                        productCache.put(barcodes.get(i), "UNKNOWN PRODUCT ERROR");
+                    }
+                }
+            }
+            doc.append("names", productNames);
+            JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
+            jsArray.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.add("carts", jsArray);
+        resp.addProperty("status", "success");
+        return resp.toString();
+    }
+
+    public String getLast7DaysCartsByBusinessID(String businessID) {
+        long dayMillis = System.currentTimeMillis() - 86400000*7;
+        FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
+                .find(new Document().append("businessID", businessID)
+                        .append("time", new Document().append("$gt" , dayMillis)));
+        JsonArray jsArray = new JsonArray();
+        HashMap<String, String> productCache = new HashMap<>();
+        for (Document doc : result) {
+            doc.remove("_id");
+            // TODO: get product names
+            ArrayList<String> barcodes = (ArrayList<String>) doc.get("barcodes");
+            ArrayList<String> productNames = new ArrayList<>(barcodes.size());
+            for (int i = 0; i < barcodes.size(); i++) {
+                if (productCache.containsKey(barcodes.get(i))) {
+                    productNames.add(i, productCache.get(barcodes.get(i)));
+                } else {
+                    Document resp = getProductByBarcodeBusinessID(barcodes.get(i), businessID);
+                    if (resp != null)
+                    {
+                        productNames.add(i, resp.getString("name"));
+                        productCache.put(barcodes.get(i), resp.getString("name"));
+                    } else {
+                        // TODO: product doesnt exists do something else to handle this
+                        productNames.add(i, "UNKNOWN PRODUCT ERROR");
+                        productCache.put(barcodes.get(i), "UNKNOWN PRODUCT ERROR");
+                    }
+                }
+            }
+            doc.append("names", productNames);
+            JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
+            jsArray.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.add("carts", jsArray);
         resp.addProperty("status", "success");
         return resp.toString();
     }
@@ -171,15 +245,6 @@ public class MongoDB {
         resp.add("carts", jsArray);
         resp.addProperty("status", "success");
         return resp.toString();
-    }
-
-    public String getUserNonceByEmail(String userEmail) {
-        BasicDBObject query = new BasicDBObject();
-        List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
-        matchDoc.add(new BasicDBObject("email", userEmail));
-        query.put("$and", matchDoc);
-        Document respDoc = collectionsMap.get(userCollectionName).find(query).first();
-        return respDoc.getString("nonce");
     }
 
     public Document getUserByEmailPassword(String email, String password) {
@@ -380,19 +445,11 @@ public class MongoDB {
         // check if product already exists
         Document resp = getProductByBarcodeBusinessID(newProduct.getString("barcode"),
                 newProduct.getString("businessID"));
-        if (resp != null) {
-            System.out.println("Deleting old product");
-            BasicDBObject query = new BasicDBObject();
-            List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
-            matchDoc.add(new BasicDBObject("barcode", newProduct.getString("barcode")));
-            matchDoc.add(new BasicDBObject("businessID", newProduct.getString("businessID")));
-            query.put("$and", matchDoc);
-            DeleteResult result = collectionsMap.get(productCollectionName).deleteOne(query);
-            System.out.println("Deleted: " + result.getDeletedCount());
+        if (resp == null) {
+            collectionsMap.get(productCollectionName).insertOne(newProduct);
+            return true;
         }
-        System.out.println("Inserting new product");
-        collectionsMap.get(productCollectionName).insertOne(newProduct);
-        return true;
+        return false;
     }
     public Boolean insertUser(Document newUser) {
         // only insert document if it does not exist
