@@ -70,6 +70,20 @@ Running end-to-end behavioral tests:
 3. In the frontend container and at `/frontend`, run `npm run test:e2e`. A window will open displaying our tests. 
 5. Select the test to run, or select 'run all tests'.
 
+# User Flow
+## Merchant Flow
+- On the login page, you can login to an existing account or if you are new to EZBag you can create an account by clicking "Sign up".
+- The "Sign up" button will redirect you to the registration page where you will enter in business information. Once you submit the information, you get a link sent to your email to verify the account. After you verify your account, you will be redirected back to the login page and a QR code for customer use will be sent to your email.
+- Upon login, you will be able to see recently checked out carts and their contents as well as click "Verify" to confirm that the cart is valid and paid for.
+- Merchant can also scan items, enter in their product information, and add them to the database if it is not in the database. You can also scan existing products and edit or delete them.
+- The Sale Dashboard will show a chart of the sales broken down by different time periods.
+
+## Customer Flow
+- To get to the customer flow, you must scan the QR code that was sent to the merchant email address.
+- Once you reach the homepage of the EZBag webapp, you can scan and search items. When you scan or search an item, a menu will popup where you can edit the quantity of this item and add it to your cart, or cancel out of menu to scan a different item.
+- The cart will display all the items the customer has added to their cart as well as the total. To checkout, you can click the "$" button at the bottom of the page.
+- You will be redirected to the receipt page which will show your cart number and allow you to enter you email address or phone number. Once you press the "Confirm" button, you will receive a email and/or text receipt.
+
 # Authors
 - [Blake Edwards](mailto:blakete@email.sc.edu)
 - [Brendan Reidy](mailto:bcreidy@email.sc.edu)
