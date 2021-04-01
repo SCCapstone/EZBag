@@ -23,7 +23,7 @@
               <v-card-title class="headline">
                 Item not found!
               </v-card-title>
-              <v-card-text>The item you have scanned could not be found in our database!</v-card-text>
+              <v-card-text>This item could not be found in our database.</v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
@@ -72,7 +72,7 @@
 
           <v-card-actions class="justify-center">
             <v-btn 
-              v-model="show_delete" 
+              v-show="show_delete" 
               @click="deleteScannedProduct">Delete
               <v-icon right>mdi-delete</v-icon>
             </v-btn>
@@ -114,7 +114,7 @@ export default {
     ...mapGetters(['getProductsInStore']),
   },
   methods: {
-    ...mapActions(["lookupProduct", "addProduct"]),
+    ...mapActions(["lookupProduct", "addProduct", "deleteProduct"]),
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
       barcodePicker.setMirrorImageEnabled(false);
@@ -187,9 +187,20 @@ export default {
         this.resetBarcodeScanner()
     },
     deleteScannedProduct() {
-      this.hideScannedProductCard()
-      // TODO: create merchant method and backend route to delete product
-      
+      this.$dbg_console_log("Deleting product...")
+      this.deleteProduct({barcode:this.scanned_product_barcode, businessID:this.$route.params.id})
+        .then((result) => {
+            if (!result.productDeleted) {
+              this.show_popup = true
+              this.$dbg_console_log("Failed to delete product!")
+            } else {
+              this.$dbg_console_log("Successfully deleted product")
+            }
+            this.hideScannedProductCard()
+        }).catch(error => {
+          this.$dbg_console_log(error)
+          this.hideScannedProductCard()
+        })      
       // if camera permissions are off, then barcode picker is null
       if(this.barcodePicker != null) 
         this.resetBarcodeScanner()

@@ -93,8 +93,8 @@ public class MongoDB {
         matchDoc.add(new BasicDBObject("businessID", businessID));
         query.put("$and", matchDoc);
         DeleteResult result = collectionsMap.get(productCollectionName).deleteMany(query);
-        System.out.println("Deleted count: "+result.getDeletedCount());
-        return true;
+        System.out.println("Deleted "+result.getDeletedCount()+" products");
+        return result.getDeletedCount()>=1;
     }
 
 

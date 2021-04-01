@@ -221,6 +221,30 @@ const actions = {
     })
   },
 
+  async deleteProduct(context, {barcode, businessID}) {
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/delete",
+      JSON.stringify({
+          barcode: barcode,
+          businessID: businessID,   
+        }))
+      .then(function (result) {
+        if(result.data.status != "failure") {
+          resolve({
+            productDeleted:true,
+          })
+        }
+        else {
+          resolve({
+            productDeleted:false,
+          })
+        }
+      }).catch(function (error) { // failed response from backend
+        reject(error)
+      })
+    })
+  },
+
   async fetchCartsInterval(context, data) {
     data = JSON.stringify(data)
     //var authToken = Cookie.get('token')
