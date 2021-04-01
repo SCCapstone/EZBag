@@ -5,6 +5,8 @@ import store from './store'
 import router from './router'
 import debug from './mixins/debug'
 import VScandit from 'vue-scandit';
+import VueCookies from 'vue-cookies';
+Vue.use(VueCookies);
 
 Vue.config.productionTip = false
 
@@ -15,6 +17,7 @@ Vue.config.productionTip = false
 // the component’s own options.
 Vue.mixin(debug)
 Vue.use(VScandit);
+
 
 new Vue({
   store,

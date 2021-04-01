@@ -112,6 +112,7 @@
           }).then((result) => { // no backend errors thrown
           this.$dbg_console_log(result)
           if(result.success==1) {
+              this.$dbg_console_log("TOKEN: "+result.token)
               this.$cookies.set("token", result.token, {secure: true, expires: 99983090})
               this.$router.push('merchant/'+result.businessID+'/store')
               this.$dbg_console_log("Successful login")

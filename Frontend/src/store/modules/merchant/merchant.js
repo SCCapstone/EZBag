@@ -55,29 +55,6 @@ const actions = {
       })
   },
 
-  async verifyCart(context, cartData) {
-    var data = JSON.stringify(cartData)
-    return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/merchant/verify", data)
-        .then(function (result) {
-          if(result.data.status != "failure") {
-            resolve({
-              success: 1,
-            })
-          }
-          else {
-            resolve({
-              success: 0,
-              message: result.data.message,
-            })
-          }
-            // product was not found by backend, so add only to known products
-        }).catch(function (error) { // failed response from backend
-          reject(error)
-        })
-      })
-  },
-
   async fetchCarts(context, businessID) {
     var data = JSON.stringify({businessID:businessID})
     //var authToken = Cookie.get('token')
