@@ -14,7 +14,8 @@ export default {
   },
   data() {
     return {
-      carts: []
+      carts: [],
+      timer: null
     };
   },
   methods: {
@@ -67,11 +68,13 @@ export default {
       this.cart = [...this.carts, newCart];
     }
   },
-  mounted() {
+  created() {
     this.fetchNewCarts()
-    window.setInterval(() => {
-      this.fetchNewCarts()
-    }, 5000)
+    this.timer = setInterval(this.fetchNewCarts, 5000)
   },
+  destroyed() {
+    // stop fetching carts when navigate away
+    clearInterval(this.timer)
+  }
 };
 </script>
