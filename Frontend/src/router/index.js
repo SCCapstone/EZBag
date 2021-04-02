@@ -27,7 +27,7 @@ const routes = [
     children: [
       {
         path: 'statistics', 
-        component: () => import('@/views/merchant/Stats.vue'),
+        component: () => import('@/views/merchant/SalesDashboard.vue'),
       },
       {
         path: 'store', 

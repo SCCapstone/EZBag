@@ -3,6 +3,10 @@
     <div id="wrapper">
         <div id="headerText" class="center">
             Successfully submitted application<br>
+            <br>
+        </div>
+        <div id="subHeaderText" class="center">
+            A verification link has been sent to your email<br>
         </div>
         <div class="center">
             <br>
@@ -33,6 +37,9 @@
   }
   #headerText {
     font-size: 24px;
+  }
+  #subHeaderText {
+    font-size: 18px;
   }
   .v-text-field {
     margin: 0px;

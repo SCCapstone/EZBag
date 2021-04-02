@@ -48,21 +48,22 @@ public class BizVerifyRedirectRoute {
                 String email = doc.getString("email");
                 String businessID = doc.getString("businessID");
                 BufferedImage qrCode = null;
+                String url = StartupService.domain + "customer/" + businessID + "/scan";
                 try {
-                    qrCode = QRCodeService.generateQRCodeImage(StartupService.domain + "customer/" + businessID + "/scan");
+                    qrCode = QRCodeService.generateQRCodeImage(url);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                int responseCode = EmailService.sendEmailWithContent(email, "Your EZBag QRCode", "Welcome to EZBag! Below you will find your QR Code that customers can use to reach your business!", qrCode);
+                int responseCode = EmailService.sendEmailWithContent(email, "Your EZBag QRCode", "Welcome to EZBag! Below you will find your QR Code that customers can use to reach your business!\nYour url is: " + url, qrCode);
                 message = "Cart verified";
-//                returnDoc = "" +
-//                        "<html>\n" +
-//                        "<script>\n" +
-//                        // TODO: test this
-//                        "window.location.href = '/EZBagWebapp/#/login';\n" +
-//                        "</script>\n" +
-//                        "</html>\n";
-                returnDoc = "User verified";
+                returnDoc = "" +
+                        "<html>\n" +
+                        "<script>\n" +
+                        // TODO: test this
+                        "window.location.href = '/EZBagWebapp/#/login';\n" +
+                        "</script>\n" +
+                        "</html>\n";
+                //returnDoc = "User verified";
             }
         } else {
             System.out.println("User with ID does not exist");

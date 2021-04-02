@@ -44,13 +44,8 @@ public class DatabaseService {
         return resp;
     }
 
-    public static String getLast7DaysCartsByBusinessID(String businessID) {
-        String resp = database.getLast7DaysCartsByBusinessID(businessID);
-        return resp;
-    }
-
-    public static String getLast30DaysCartsByBusinessID(String businessID) {
-        String resp = database.getLast30DaysCartsByBusinessID(businessID);
+    public static String getLastDaysCartsByBusinessID(String businessID, int days) {
+        String resp = database.getLastDaysCartsByBusinessID(businessID, days);
         return resp;
     }
 
