@@ -55,7 +55,6 @@ const routes = [
             // this.$router.push("/login")
             next({ name: 'login' });
           }
-    
           next();
         },
       },

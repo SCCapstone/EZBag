@@ -16,7 +16,7 @@ import VueCookies from 'vue-cookies';
 Vue.use(VueCookies);
 /////////////////////////////////////////////////
 const state = {
-
+  knownProducts: [],
 }
 
 const getters = {
@@ -50,6 +50,29 @@ const actions = {
           })
         }).catch(function (error) { // failed response from backend
           console.log(error)
+          reject(error)
+        })
+      })
+  },
+
+  async verifyCart(context, cartData) {
+    var data = JSON.stringify(cartData)
+    return new Promise((resolve, reject) => {
+      axios.post("EZBagWebapp/webapi/merchant/verify", data)
+        .then(function (result) {
+          if(result.data.status != "failure") {
+            resolve({
+              success: 1,
+            })
+          }
+          else {
+            resolve({
+              success: 0,
+              message: result.data.message,
+            })
+          }
+            // product was not found by backend, so add only to known products
+        }).catch(function (error) { // failed response from backend
           reject(error)
         })
       })

@@ -16,12 +16,16 @@
 
 <script>
 import {mapActions} from 'vuex';
+import Vue from 'vue'
+import VueCookies from 'vue-cookies';
+Vue.use(VueCookies);
 export default {
-  created() {
-    console.log("Merchant Navigation Created")
-  },
   methods: {
     ...mapActions(["verifyToken"]),
+    logout() {
+      this.$cookies.remove("token")
+      this.$router.push('/login');
+    }
   },
 }
 </script>
