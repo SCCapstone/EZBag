@@ -56,14 +56,14 @@ public class BizVerifyRedirectRoute {
                 }
                 int responseCode = EmailService.sendEmailWithContent(email, "Your EZBag QRCode", "Welcome to EZBag! Below you will find your QR Code that customers can use to reach your business!\nYour url is: " + url, qrCode);
                 message = "Cart verified";
-//                returnDoc = "" +
-//                        "<html>\n" +
-//                        "<script>\n" +
-//                        // TODO: test this
-//                        "window.location.href = '/EZBagWebapp/#/login';\n" +
-//                        "</script>\n" +
-//                        "</html>\n";
-                returnDoc = "User verified";
+                returnDoc = "" +
+                        "<html>\n" +
+                        "<script>\n" +
+                        // TODO: test this
+                        "window.location.href = '/EZBagWebapp/#/login';\n" +
+                        "</script>\n" +
+                        "</html>\n";
+                //returnDoc = "User verified";
             }
         } else {
             System.out.println("User with ID does not exist");
