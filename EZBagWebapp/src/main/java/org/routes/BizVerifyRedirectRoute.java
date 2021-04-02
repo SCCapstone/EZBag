@@ -49,7 +49,7 @@ public class BizVerifyRedirectRoute {
                 String businessID = doc.getString("businessID");
                 BufferedImage qrCode = null;
                 try {
-                    qrCode = QRCodeService.generateQRCodeImage(StartupService.domain + "/customer/" + businessID + "/scan");
+                    qrCode = QRCodeService.generateQRCodeImage(StartupService.domain + "customer/" + businessID + "/scan");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

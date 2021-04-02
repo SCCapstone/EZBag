@@ -18,9 +18,8 @@ public class BizSalesRoute {
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
         // validate user token
-//        if (Utils.validToken(authToken)) {
-        if (true) {
-            JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
+        JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
+        if (payloadObject.has("token") && Utils.validToken(payloadObject.get("token").getAsString())) {
             if (payloadObject.has("businessID") && payloadObject.has("interval")) {
                 String businessID = payloadObject.get("businessID").getAsString();
                 String interval = payloadObject.get("interval").getAsString().toLowerCase();

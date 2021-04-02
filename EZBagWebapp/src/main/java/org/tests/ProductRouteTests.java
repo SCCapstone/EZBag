@@ -2,30 +2,19 @@ package org.tests;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
-import jakarta.ws.rs.core.MediaType;
 
 import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
-import org.routes.ProductInsertRoute;
+import org.routes.BizProductInsertRoute;
 import org.routes.ProductQueryRoute;
 import org.routes.ProductSearchRoute;
 import org.routes.ProductsRoute;
 import org.services.DatabaseService;
 import org.services.StartupService;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-
-import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -33,7 +22,7 @@ public class ProductRouteTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(ProductQueryRoute.class, ProductInsertRoute.class,
+        return new ResourceConfig(ProductQueryRoute.class, BizProductInsertRoute.class,
                 ProductSearchRoute.class, ProductsRoute.class);
     }
 

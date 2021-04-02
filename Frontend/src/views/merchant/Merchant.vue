@@ -15,13 +15,11 @@
 </template>
 
 <script>
-import {mapActions} from 'vuex';
 import Vue from 'vue'
 import VueCookies from 'vue-cookies';
 Vue.use(VueCookies);
 export default {
   methods: {
-    ...mapActions(["verifyToken"]),
     logout() {
       this.$cookies.remove("token")
       this.$router.push('/login');

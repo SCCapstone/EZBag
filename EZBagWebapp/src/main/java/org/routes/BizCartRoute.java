@@ -17,10 +17,9 @@ public class BizCartRoute {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
+        JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         // validate user token
-//        if (Utils.validToken(authToken)) {
-        if (true) {
-            JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
+        if (payloadObject.has("token") && Utils.validToken(payloadObject.get("token").getAsString())) {
             if (payloadObject.has("cartHash") && payloadObject.has("businessID")) {
                 String businessID = payloadObject.get("businessID").getAsString();
                 String cartHash = payloadObject.get("cartHash").getAsString();

@@ -114,7 +114,7 @@ export default {
     ...mapGetters(['getProductsInStore']),
   },
   methods: {
-    ...mapActions(["lookupProduct", "addProduct", "deleteProduct"]),
+    ...mapActions(["lookupProduct", "addProduct", "deleteProduct", "verifyToken"]),
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
       barcodePicker.setMirrorImageEnabled(false);
@@ -128,33 +128,49 @@ export default {
         this.barcodePicker.pauseScanning()
         this.$dbg_console_log("scanning paused", this.barcodePicker)
       }
-      this.scanned_product_barcode = barcode
-      // TODO: query database with merchant id and JWT to get product
-      this.lookupProduct({barcode:barcode, businessID:this.$route.params.id})
-        .then((result) => {
-            if (result.product === null) {
-              console.log("product doesnt exist: "+this.name)
-              this.show_delete = false
-              this.name = ""
-              this.description = ""
-              this.price = 0
-              this.tax = 0
-            } else {
-              console.log("product exists: "+result.product.name)
-              this.show_delete = true
-              this.name = result.product.name
-              this.description = result.product.description
-              this.price = result.product.price
-              this.tax = result.product.tax
-            }
-            this.show_scanned_product = true
+      // verify token valid before allowing user to edit product
+      this.verifyToken().then( (result) => {
+        if (result.status !== "failure") {
+          this.$dbg_console_log("USER HAS VALID TOKEN")
 
-        }).catch(error => {
-          this.$dbg_console_log(error)
-          // if camera permissions are off, then barcode picker is null
-          if(this.barcodePicker != null) 
-            this.resetBarcodeScanner()
-        })
+          this.scanned_product_barcode = barcode
+
+          this.lookupProduct({barcode:barcode, businessID:this.$route.params.id})
+          .then((result) => {
+              if (result.product === null) {
+                console.log("product doesnt exist: "+this.name)
+                this.show_delete = false
+                this.name = ""
+                this.description = ""
+                this.price = 0
+                this.tax = 0
+              } else {
+                console.log("product exists: "+result.product.name)
+                this.show_delete = true
+                this.name = result.product.name
+                this.description = result.product.description
+                this.price = result.product.price
+                this.tax = result.product.tax
+              }
+              this.show_scanned_product = true
+
+          }).catch(error => {
+            this.$dbg_console_log(error)
+            // if camera permissions are off, then barcode picker is null
+            if(this.barcodePicker != null) 
+              this.resetBarcodeScanner()
+          })
+
+        } else {
+          this.$cookies.remove("token")
+          this.$router.push("/login")
+        }
+      }).catch(error => {
+        this.$dbg_console_log(error)
+        // if camera permissions are off, then barcode picker is null
+        if(this.barcodePicker != null) 
+          this.resetBarcodeScanner()
+      })
 
     },
 
