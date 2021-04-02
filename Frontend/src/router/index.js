@@ -28,106 +28,45 @@ const routes = [
       {
         path: 'statistics', 
         component: () => import('@/views/merchant/Stats.vue'),
-        beforeEnter: (to, from, next) => {
-          $dbg_console_log(`ROUTER MESSAGE: ${from.path} to ${to.path}?`);
-          $dbg_console_log(`Cookie set to: ${window.$cookies.get("token")}`);
-          // TODO: authentication user
-          if (window.$cookies.get("token") !== null) {
-            store.dispatch("verifyToken", window.$cookies.get("token")).then( (result) => {
-              $dbg_console_log("verifyToken result: ")
-              $dbg_console_log(result)
-              if (result.status=="success") {
-                $dbg_console_log("verified token!")
-              } else {
-                $dbg_console_log("Token is not valid, redirecting to login")
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-              }
-            }).catch(error => {    
-                $dbg_console_log(error)
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-            })
-          } else {
-            $dbg_console_log("Cookie token is null, redirecting to login")
-            // this.$router.push("/login")
-            next({ name: 'login' });
-          }
-          next();
-        },
       },
       {
         path: 'store', 
         component: () => import('@/views/merchant/Store.vue'),
-        beforeEnter: (to, from, next) => {
-          $dbg_console_log(`ROUTER MESSAGE: ${from.path} to ${to.path}?`);
-          $dbg_console_log(`Cookie set to: ${window.$cookies.get("token")}`);
-          // TODO: authentication user
-          if (window.$cookies.get("token") !== null) {
-            store.dispatch("verifyToken", window.$cookies.get("token")).then( (result) => {
-              $dbg_console_log("verifyToken result: ")
-              $dbg_console_log(result)
-              if (result.status=="success") {
-                $dbg_console_log("verified token!")
-              } else {
-                $dbg_console_log("Token is not valid, redirecting to login")
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-              }
-            }).catch(error => {    
-                $dbg_console_log(error)
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-            })
-          } else {
-            $dbg_console_log("Cookie token is null, redirecting to login")
-            // this.$router.push("/login")
-            next({ name: 'login' });
-          }
-    
-          next();
-        },
-      
       },
       {
         path: 'products', 
         component: () => import('@/views/merchant/Products.vue'),
-        beforeEnter: (to, from, next) => {
-          $dbg_console_log(`ROUTER MESSAGE: ${from.path} to ${to.path}?`);
-          $dbg_console_log(`Cookie set to: ${window.$cookies.get("token")}`);
-          // TODO: authentication user
-          if (window.$cookies.get("token") !== null) {
-            store.dispatch("verifyToken", window.$cookies.get("token")).then( (result) => {
-              $dbg_console_log("verifyToken result: ")
-              $dbg_console_log(result)
-              if (result.status=="success") {
-                $dbg_console_log("verified token!")
-              } else {
-                $dbg_console_log("Token is not valid, redirecting to login")
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-              }
-            }).catch(error => {    
-                $dbg_console_log(error)
-                // this.$router.push("/login")
-                next({ name: 'login' });
-                window.$cookies.remove("token")
-            })
+      }
+    ],
+    beforeEnter: (to, from, next) => {
+      $dbg_console_log(`ROUTER MESSAGE: ${from.path} to ${to.path}?`);
+      $dbg_console_log(`Cookie set to: ${window.$cookies.get("token")}`);
+      // TODO: authentication user
+      if (window.$cookies.get("token") !== null) {
+        store.dispatch("verifyToken").then( (result) => {
+          $dbg_console_log("verifyToken result: ")
+          $dbg_console_log(result)
+          if (result.status=="success") {
+            $dbg_console_log("verified token!")
+            next();
           } else {
-            $dbg_console_log("Cookie token is null, redirecting to login")
+            $dbg_console_log("Token is not valid, redirecting to login")
             // this.$router.push("/login")
             next({ name: 'login' });
+            window.$cookies.remove("token")
           }
-    
-          next();
-        },
+        }).catch(error => {    
+            $dbg_console_log(error)
+            // this.$router.push("/login")
+            next({ name: 'login' });
+            window.$cookies.remove("token")
+        })
+      } else {
+        $dbg_console_log("Cookie token is null, redirecting to login")
+        // this.$router.push("/login")
+        next({ name: 'login' });
       }
-    ]
+    },
   },
   {
     path: '/login', 

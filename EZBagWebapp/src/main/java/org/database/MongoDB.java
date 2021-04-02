@@ -393,7 +393,7 @@ public class MongoDB {
             return myDoc.toJson();
         }
         JsonObject resp = new JsonObject();
-        resp.addProperty("message", "ProductInsertRoute not found");
+        resp.addProperty("message", "BizProductInsertRoute not found");
         return resp.toString();
     }
 

@@ -12,6 +12,7 @@ import axios from 'axios'
 
 import Vue from 'vue'
 import VueCookies from 'vue-cookies';
+import router from '../../../router/index.js'
 //import Cookie from 'js-cookie'
 Vue.use(VueCookies);
 /////////////////////////////////////////////////
@@ -21,6 +22,11 @@ const state = {
 
 const getters = {
 
+}
+
+var logout = function () {
+  Vue.$cookies.remove("token")
+  router.push('/login');
 }
 
 // https://vuex.vuejs.org/guide/actions.html#actions 
@@ -39,8 +45,8 @@ const actions = {
     return hashHex;
   },
 
-  async verifyToken(context, token) {
-    var data = JSON.stringify({token: token})
+  async verifyToken() {
+    var data = JSON.stringify({token: Vue.$cookies.get("token")})
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/merchant/token", data)
         .then(function (result) {
@@ -56,6 +62,7 @@ const actions = {
   },
 
   async verifyCart(context, cartData) {
+    cartData["token"] = Vue.$cookies.get("token")
     var data = JSON.stringify(cartData)
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/merchant/verify", data)
@@ -66,6 +73,10 @@ const actions = {
             })
           }
           else {
+            var msg = result.data.message.toLowerCase();
+            if (msg === "not authorized") {
+              logout();
+            }
             resolve({
               success: 0,
               message: result.data.message,
@@ -79,7 +90,7 @@ const actions = {
   },
 
   async fetchCarts(context, businessID) {
-    var data = JSON.stringify({businessID:businessID})
+    var data = JSON.stringify({businessID: businessID, token: Vue.$cookies.get("token")})
     //var authToken = Cookie.get('token')
     /*
     {headers: {
@@ -97,6 +108,10 @@ const actions = {
             })
           }
           else {
+            var msg = result.data.message.toLowerCase();
+            if (msg === "not authorized") {
+              logout();
+            }
             resolve({
               success: 0,
               message: result.data.message,
@@ -203,6 +218,7 @@ const actions = {
           description: description,
           price: price,
           tax: tax,
+          token: Vue.$cookies.get("token")
         }))
       .then(function (result) {
         if(result.data.status != "failure") {
@@ -211,6 +227,10 @@ const actions = {
           })
         }
         else {
+          var msg = result.data.message.toLowerCase();
+          if (msg === "not authorized") {
+            logout();
+          }
           resolve({
             productAdded:false,
           })
@@ -226,7 +246,8 @@ const actions = {
       axios.post("EZBagWebapp/webapi/delete",
       JSON.stringify({
           barcode: barcode,
-          businessID: businessID,   
+          businessID: businessID,  
+          token: Vue.$cookies.get("token") 
         }))
       .then(function (result) {
         if(result.data.status != "failure") {
@@ -235,6 +256,10 @@ const actions = {
           })
         }
         else {
+          var msg = result.data.message.toLowerCase();
+          if (msg === "not authorized") {
+            logout();
+          }
           resolve({
             productDeleted:false,
           })
@@ -246,6 +271,7 @@ const actions = {
   },
 
   async fetchCartsInterval(context, data) {
+    data["token"] = Vue.$cookies.get("token")
     data = JSON.stringify(data)
     //var authToken = Cookie.get('token')
     /*
@@ -264,6 +290,10 @@ const actions = {
             })
           }
           else {
+            var msg = result.data.message.toLowerCase();
+            if (msg === "not authorized") {
+              logout();
+            }
             resolve({
               success: 0,
               message: result.data.message,
