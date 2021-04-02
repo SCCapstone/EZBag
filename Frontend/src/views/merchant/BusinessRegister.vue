@@ -195,7 +195,7 @@
               }).then((result) => { // no backend errors thrown
                 this.$dbg_console_log(result)
                 if(result.success==1) {
-                  this.$router.push('/login');
+                  this.$router.push('/registrationSuccess');
                 } else {
                   this.show_popup = true
                   this.popupText = result.message
