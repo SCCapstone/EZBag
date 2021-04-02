@@ -4,6 +4,7 @@
       <v-card-title class="justify-center">Total Sales Over Time</v-card-title>
       <v-card-actions>
         <v-select
+          @change="getSelected($event)"
           :items="interval"
           v-model="selected"
           class="interval"
@@ -11,27 +12,12 @@
         ></v-select>
       </v-card-actions>
       <v-card-text>
-        <div class="week" v-if="selected === 'Weekly'">
-          <apexcharts
-            type="bar"
-            :options="chartOptions"
-            :series="weekData"
-          ></apexcharts>
-        </div>
-        <div class="month" v-if="selected === 'Monthly'">
-          <apexcharts
-            type="bar"
-            :options="monthOptions"
-            :series="monthData"
-          ></apexcharts>
-        </div>
-        <div class="day" v-if="selected === 'Daily'">
-          <apexcharts
-            type="bar"
-            :options="dayOptions"
-            :series="dayData"
-          ></apexcharts>
-        </div>
+        <apexcharts
+          type="bar"
+          ref="barChart"
+          :options="barChartOptions"
+          :series="barChartData"
+        ></apexcharts>
       </v-card-text>
     </v-card>
   </v-container>
@@ -39,6 +25,7 @@
 
 <script>
 import VueApexCharts from "vue-apexcharts";
+import {mapActions} from 'vuex';
 
 export default {
   name: "HelloWorld",
@@ -47,54 +34,156 @@ export default {
     apexcharts: VueApexCharts,
   },
 
-  data: function () {
+  data() {
     return {
       selected: 'Weekly',
+      currentSelection: "Weekly",
       interval: ['Daily', 'Weekly', 'Monthly'],
-      chartOptions: {
+      barChartOptions: {
         chart: {
           id: "basic-bar",
         },
         xaxis: {
-          categories: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          categories: ['12am', '3am', '6am', '9am', "12pm", '3pm', '6pm', '9pm'],
         },
       },
-      monthOptions: {
+
+      barChartOptions2: {
         chart: {
           id: "basic-bar",
         },
         xaxis: {
-          categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          categories: ['10am', '3am', '6am', '9am', "12pm", '3pm', '6pm', '9pm'],
         },
       },
-      dayOptions: {
-        chart: {
-          id: "basic-bar",
-        },
-        xaxis: {
-          categories: ['6am', '8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm', '10pm'],
-        },
-      },
-      weekData: [
-        {
-          name: "weekly",
-          data: [200, 450, 325, 350, 275, 250, 510],
-        },
-      ],
-      dayData: [
+      barChartData: [
         {
           name: "daily",
-          data: [40, 20, 30, 35, 50, 60, 25, 75, 54],
+          data: [200, 450, 325, 350, 275, 250, 510, 0],
         },
       ],
-      monthData: [
-        {
-          name: "month",
-          data: [4000, 3750, 4850, 3900, 4100, 4010, 3914, 2980, 4890, 5220, 5912, 4511],
-        }
-      ],
+      dayData: [200, 450, 325, 350, 275, 250, 510, 0],
+      dayAxis: ['12am', '3am', '6am', '9am', "12pm", '3pm', '6pm', '9pm'],
+      weekAxis: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', "Thursday", 'Friday', 'Saturday'],
+      monthAxis: ['January', 'Febraury', 'March', 'April', "May", 'June', 'July', 'August', 'September', 'October', 'November', 'Decembet'],
     };
   },
+  methods: {
+    ...mapActions(["fetchCartsInterval"]),
+    roundHours(date){
+      date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
+      date.setMinutes(0, 0, 0); // Resets also seconds and milliseconds
+      return date
+    },
+    updateChart(updateData, xaxis){
+      this.$refs.barChart.updateSeries([{
+        data: updateData,
+      }], false, true);
+      this.chartOptions = {...this.chartOptions, ...{
+        xaxis: {
+            categories: xaxis
+        }
+      }};
+      this.$refs.barChart.updateOptions(
+        this.chartOptions, true, true, true)
+    },
+    getSelected(value) {
+      
+      this.fetchCartsInterval({businessID:this.$route.params.id, interval:value})
+      .then((result) => { // no backend errors thrown
+      this.$dbg_console_log(result)
+      var plotData = {}
+      if(result.success==1) {
+          for(var i=0; i<result.carts.length; i++)
+          {  
+            var date = new Date(parseInt(result.carts[i].time.$numberLong));
+            var timeKey
+            if(value=="Daily"){
+              date = this.roundHours(date)
+              var hours = date.getHours()
+              var time = "am"
+              hours = Math.round((hours-2)/3)*3
+              if(date.getHours()>12){
+                time = "pm"
+              }
+              timeKey = hours + time
+              if(timeKey in plotData){
+                plotData[timeKey] = plotData[timeKey] + 1
+              }else{
+                plotData[timeKey] = 1
+              }
+            }else if(value=="Weekly"){
+              timeKey = this.weekAxis[date.getDay()]
+              if(timeKey in plotData){
+                plotData[timeKey] = plotData[timeKey] + 1
+              }else{
+                plotData[timeKey] = 1
+              }
+            }else if(value=="Monthly"){
+              timeKey = this.monthAxis[date.getMonth()]
+              if(timeKey in plotData){
+                plotData[timeKey] = plotData[timeKey] + 1
+              }else{
+                plotData[timeKey] = 1
+              }
+            }
+          }
+          var val
+          if(value=="Daily"){
+            var dayData = []
+            for(i=0; i<this.dayAxis.length; i++)
+            {
+              dayData.push(0)
+            } 
+            for(i=0; i<this.dayAxis.length; i++)
+            {
+              val = this.dayAxis[i]
+              if(val in plotData)
+              {
+                dayData[i] = plotData[val]
+              }
+            }
+            this.updateChart(dayData, this.dayAxis)
+          }else if(value=="Weekly"){
+            var weekData = []
+            for(i=0; i<this.weekAxis.length; i++)
+            {
+              weekData.push(0)
+            } 
+            for(i=0; i<this.weekAxis.length; i++)
+            {
+              val = this.weekAxis[i]
+              if(val in plotData)
+              {
+                weekData[i] = plotData[val]
+              }
+            }
+            this.updateChart(weekData, this.weekAxis)
+          }else if(value=="Monthly"){
+            var monthData = []
+            for(i=0; i<this.monthAxis.length; i++)
+            {
+              monthData.push(0)
+            } 
+            for(i=0; i<this.monthAxis.length; i++)
+            {
+              val = this.monthAxis[i]
+              if(val in plotData)
+              {
+                monthData[i] = plotData[val]
+              }
+            }
+            this.updateChart(monthData, this.monthAxis)
+          }
+      } else {
+          this.$dbg_console_log("Failed to fetch carts")
+      }
+      }).catch(error => {
+          this.$dbg_console_log(error)
+      })
+      console.log(value)
+    },
+  }
 };
 </script>
 
