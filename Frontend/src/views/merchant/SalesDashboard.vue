@@ -36,8 +36,7 @@ export default {
 
   data() {
     return {
-      selected: 'Weekly',
-      currentSelection: "Weekly",
+      selected: 'Daily',
       interval: ['Daily', 'Weekly', 'Monthly'],
       barChartOptions: {
         chart: {
@@ -105,6 +104,9 @@ export default {
               hours = Math.round((hours-2)/3)*3
               if(date.getHours()>12){
                 time = "pm"
+                hours = hours - 12
+                if(hours==0)
+                  hours=12
               }
               timeKey = hours + time
               if(timeKey in plotData){
@@ -143,6 +145,8 @@ export default {
                 dayData[i] = plotData[val]
               }
             }
+            console.log(plotData)
+            console.log(dayData)
             this.updateChart(dayData, this.dayAxis)
           }else if(value=="Weekly"){
             var weekData = []
@@ -183,7 +187,10 @@ export default {
       })
       console.log(value)
     },
-  }
+  },
+  mounted(){
+    this.getSelected("Daily")
+  },
 };
 </script>
 
