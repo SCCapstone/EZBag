@@ -117,14 +117,17 @@ public class Utils {
         return claims;
     }
 
-    public static boolean validToken(String token) {
-        // TODO: check if token malformed
+    public static boolean validToken(String token, String businessID) {
+        // TODO: get token claims, get email, get businessID of user, make sure matches requested
         // if token decode fails with expired exception then return false
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DatatypeConverter.parseBase64Binary(DatabaseService.SECRET_KEY))
                     .parseClaimsJws(token).getBody();
-            return true;
+            System.out.println("User Token Claims: " + claims.toString());
+            // check if claims business ID matches ask
+            String claimsBusinessID = claims.getSubject();
+            return claimsBusinessID.equals(businessID);
         } catch (ExpiredJwtException e) {
             System.out.println("JWT token expired");
         } catch (SignatureException e) {

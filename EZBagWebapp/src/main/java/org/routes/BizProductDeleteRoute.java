@@ -17,7 +17,8 @@ public class BizProductDeleteRoute {
     public String doPost(String payload) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         // validate user token
-        if (payloadObject.has("token") && Utils.validToken(payloadObject.get("token").getAsString())) {
+        if (payloadObject.has("token") && payloadObject.has("businessID")
+                && Utils.validToken(payloadObject.get("token").getAsString(), payloadObject.get("businessID").getAsString())) {
 
             Document insertDoc = new Document();
             if (payloadObject.has("barcode")

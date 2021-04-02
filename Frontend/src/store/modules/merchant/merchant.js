@@ -18,10 +18,11 @@ Vue.use(VueCookies);
 /////////////////////////////////////////////////
 const state = {
   knownProducts: [],
+  businessID: null,
 }
 
 const getters = {
-
+  getBusinessID: (state) => state.businessID,
 }
 
 var logout = function () {
@@ -45,8 +46,9 @@ const actions = {
     return hashHex;
   },
 
-  async verifyToken() {
-    var data = JSON.stringify({token: Vue.$cookies.get("token")})
+  async verifyToken({state }) {
+    console.log("VERIFYING TOKEN W/ BIZID: "+ state.businessID)
+    var data = JSON.stringify({"token": Vue.$cookies.get("token"), "businessID": state.businessID})
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/merchant/token", data)
         .then(function (result) {
@@ -61,7 +63,7 @@ const actions = {
       })
   },
 
-  async verifyCart(context, cartData) {
+  async verifyCart({commit}, cartData) {
     cartData["token"] = Vue.$cookies.get("token")
     var data = JSON.stringify(cartData)
     return new Promise((resolve, reject) => {
@@ -75,6 +77,7 @@ const actions = {
           else {
             var msg = result.data.message.toLowerCase();
             if (msg === "not authorized") {
+              commit('setBusinessID', null);
               logout();
             }
             resolve({
@@ -89,7 +92,7 @@ const actions = {
       })
   },
 
-  async fetchCarts(context, businessID) {
+  async fetchCarts({commit}, businessID) {
     var data = JSON.stringify({businessID: businessID, token: Vue.$cookies.get("token")})
     //var authToken = Cookie.get('token')
     /*
@@ -110,6 +113,7 @@ const actions = {
           else {
             var msg = result.data.message.toLowerCase();
             if (msg === "not authorized") {
+              commit('setBusinessID', null);
               logout();
             }
             resolve({
@@ -207,7 +211,7 @@ const actions = {
     })
   },
 
-  async addProduct(context, {barcode, barcodeType, businessID, name, description, price, tax}) {
+  async addProduct({commit}, {barcode, barcodeType, businessID, name, description, price, tax}) {
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/product",
       JSON.stringify({
@@ -229,6 +233,7 @@ const actions = {
         else {
           var msg = result.data.message.toLowerCase();
           if (msg === "not authorized") {
+            commit('setBusinessID', null);
             logout();
           }
           resolve({
@@ -241,7 +246,7 @@ const actions = {
     })
   },
 
-  async deleteProduct(context, {barcode, businessID}) {
+  async deleteProduct({commit}, {barcode, businessID}) {
     return new Promise((resolve, reject) => {
       axios.post("EZBagWebapp/webapi/delete",
       JSON.stringify({
@@ -258,6 +263,7 @@ const actions = {
         else {
           var msg = result.data.message.toLowerCase();
           if (msg === "not authorized") {
+            commit('setBusinessID', null);
             logout();
           }
           resolve({
@@ -270,7 +276,7 @@ const actions = {
     })
   },
 
-  async fetchCartsInterval(context, data) {
+  async fetchCartsInterval({commit}, data) {
     data["token"] = Vue.$cookies.get("token")
     data = JSON.stringify(data)
     //var authToken = Cookie.get('token')
@@ -292,6 +298,7 @@ const actions = {
           else {
             var msg = result.data.message.toLowerCase();
             if (msg === "not authorized") {
+              commit('setBusinessID', null);
               logout();
             }
             resolve({
@@ -313,7 +320,9 @@ const actions = {
 // https://vuex.vuejs.org/guide/mutations.html#mutations-must-be-synchronous
 // mutations are synchronous functions that modify client state
 const mutations = {
-
+  setBusinessID (state, businessID) {
+    state.businessID = businessID
+  },
 }
 
 export default {

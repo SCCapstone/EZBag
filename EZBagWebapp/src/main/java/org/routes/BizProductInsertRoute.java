@@ -17,10 +17,10 @@ public class BizProductInsertRoute {
         // TODO: validate user token
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         // validate user token
-        if (payloadObject.has("token") && Utils.validToken(payloadObject.get("token").getAsString())) {
+        if (payloadObject.has("token") && payloadObject.has("barcode")
+                && Utils.validToken(payloadObject.get("token").getAsString(), payloadObject.get("businessID").getAsString())) {
             Document insertDoc = new Document();
-            if (payloadObject.has("barcode")
-                    && payloadObject.has("barcodeType")
+            if (payloadObject.has("barcodeType")
                     && payloadObject.has("businessID")
                     && payloadObject.has("name")
                     && payloadObject.has("price")

@@ -18,16 +18,17 @@ public class BizVerifyToken {
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
-        if (payloadObject.has("token")){
+        if (payloadObject.has("token") && payloadObject.has("businessID")){
             String token = payloadObject.get("token").getAsString();
+            String businessID = payloadObject.get("businessID").getAsString();
             System.out.println("Verifying token: "+token);
-            if(Utils.validToken(token)) {
+            if(Utils.validToken(token, businessID)) {
                 return Utils.generateResponse(true, "Valid token");
             } else {
                 return Utils.generateResponse(false, "Invalid token");
             }
         } else {
-            return Utils.generateResponse(false, "No token provided");
+            return Utils.generateResponse(false, "Must provide token and businessID");
         }
     }
 }

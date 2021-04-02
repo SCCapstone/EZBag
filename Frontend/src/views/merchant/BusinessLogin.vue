@@ -67,7 +67,7 @@
 </template>
 
 <script>
-  import {mapActions} from 'vuex';
+  import {mapActions, mapMutations} from 'vuex';
   import Vue from 'vue'
   import VueCookies from 'vue-cookies';
   Vue.use(VueCookies);
@@ -97,6 +97,7 @@
     }),
     methods: {
       ...mapActions(["loginUser"]),
+      ...mapMutations(["setBusinessID"]),
       submit(){
         if (this.password.length < 8
             || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email)))
@@ -113,6 +114,7 @@
           this.$dbg_console_log(result)
           if(result.success==1) {
               this.$dbg_console_log("TOKEN: "+result.token)
+              this.setBusinessID(result.businessID)
               this.$cookies.set("token", result.token, {secure: true, expires: 99983090})
               this.$router.push('merchant/'+result.businessID+'/store')
               this.$dbg_console_log("Successful login")

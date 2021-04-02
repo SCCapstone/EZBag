@@ -16,13 +16,16 @@
 
 <script>
 import Vue from 'vue'
+import {mapMutations} from "vuex"
 import VueCookies from 'vue-cookies';
 Vue.use(VueCookies);
 export default {
   methods: {
+    ...mapMutations(["setBusinessID"]),
     logout() {
+      this.setBusinessID(null)
       this.$cookies.remove("token")
-      this.$router.push('/login');
+      this.$router.push('/login')
     }
   },
 }

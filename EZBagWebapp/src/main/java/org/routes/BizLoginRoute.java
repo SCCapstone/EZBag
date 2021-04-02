@@ -37,7 +37,7 @@ public class BizLoginRoute {
                         // TODO: get business ID and add to payload to be returned
                         businessID = DatabaseService.getUserBusinessID(email);
 //                        token = Utils.createJWT(email, "bearer", "business", 86400000);
-                        token = Utils.createJWT(email, "bearer", "business", 10000);
+                        token = Utils.createJWT(email, "bearer", businessID, 10000);
                         message = "Logged in!";
                         status = "success";
                     } else {
