@@ -48,6 +48,9 @@ public class BizVerifyRedirectRoute {
                 String email = doc.getString("email");
                 String businessID = doc.getString("businessID");
                 BufferedImage qrCode = null;
+                if(StartupService.debugMode){
+                    StartupService.domain = StartupService.developmentDomain;
+                }
                 String url = StartupService.domain + "customer/" + businessID + "/scan";
                 try {
                     qrCode = QRCodeService.generateQRCodeImage(url);
