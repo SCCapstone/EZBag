@@ -101,7 +101,7 @@ export default {
               date = this.roundHours(date)
               var hours = date.getHours()
               var time = "am"
-              hours = Math.round((hours-2)/3)*3
+              hours = Math.floor(hours/3)*3
               if(date.getHours()>12){
                 time = "pm"
                 hours = hours - 12
