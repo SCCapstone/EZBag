@@ -54,7 +54,8 @@ const actions = {
         .then(function (result) {
           resolve({
             status: result.data.status,
-            message: result.data.message
+            message: result.data.message,
+            businessID: state.businessID,
           })
         }).catch(function (error) { // failed response from backend
           console.log(error)

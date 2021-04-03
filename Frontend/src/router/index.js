@@ -31,6 +31,7 @@ const routes = [
       },
       {
         path: 'store', 
+        name: 'store',
         component: () => import('@/views/merchant/Store.vue'),
       },
       {
@@ -71,7 +72,26 @@ const routes = [
   {
     path: '/login', 
     name: 'login',
-    component: () => import('@/views/merchant/BusinessLogin.vue')
+    component: () => import('@/views/merchant/BusinessLogin.vue'),
+    beforeEnter: (to, from, next) => {
+      console.log("Checking if merchant already logged in...")
+      store.dispatch("verifyToken").then( (result) => {
+        $dbg_console_log("verifyToken result: ")
+        $dbg_console_log(result)
+        if (result.status=="success") {
+          $dbg_console_log("verified token!");
+          next({ name: 'store' });
+        } else {
+          $dbg_console_log("Token is not valid, redirecting to login")
+          window.$cookies.remove("token")
+          next();
+        }
+      }).catch(error => {
+          $dbg_console_log(error)
+          window.$cookies.remove("token")
+          next();       
+      })
+    }
   },
   {
     path: '/registrationSuccess',
@@ -81,7 +101,26 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/views/merchant/BusinessRegister.vue')
+    component: () => import('@/views/merchant/BusinessRegister.vue'),
+    beforeEnter: (to, from, next) => {
+      console.log("Checking if merchant already logged in...")
+      store.dispatch("verifyToken").then( (result) => {
+        $dbg_console_log("verifyToken result: ")
+        $dbg_console_log(result)
+        if (result.status=="success") {
+          $dbg_console_log("verified token!");
+          next({ name: 'store' });
+        } else {
+          $dbg_console_log("Token is not valid, redirecting to login")
+          window.$cookies.remove("token")
+          next();
+        }
+      }).catch(error => {
+          $dbg_console_log(error)
+          window.$cookies.remove("token")
+          next();       
+      })
+    }
   },
   {
     path: '/404',
