@@ -28,6 +28,9 @@ export default {
             //TODO: redirect to business dashboard
             this.$dbg_console_log("Successful fetch of carts")
             
+            if(result.carts.length <= this.carts.length)
+              return
+
             var count = result.carts.length;
             for(var i=0; i<count; i++)
             {
@@ -39,6 +42,9 @@ export default {
             for(i=0; i<count; i++)
             {
               newCarts[i] = result.carts[count-i-1]
+              if(i > 0 && i < this.carts.length && this.carts[i-1].expanded){
+                newCarts[i]["expanded"]=true
+              }
             }
             this.carts = newCarts
             //this.carts = this.debugCarts   
