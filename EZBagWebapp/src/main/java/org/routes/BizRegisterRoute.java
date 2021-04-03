@@ -60,8 +60,10 @@ public class BizRegisterRoute {
                 insertDoc.append("role", 1);
                 insertDoc.append("verified", false);
                 insertDoc.append("userID", DigestUtils.sha256Hex(insertDoc.toJson()));
-                insertDoc.append("password", payloadObject.get("password").getAsString());
-//                insertDoc.append("nonce", payloadObject.get("nonce").getAsString());
+                String nonce = Utils.generateNonce(20);
+                String hashedPassword = DigestUtils.sha256Hex(nonce+payloadObject.get("password").getAsString());
+                insertDoc.append("password", hashedPassword);
+                insertDoc.append("nonce", nonce);
 
                 String responseMessage = successfulSignupMessage.replace("<business>", payloadObject.get("businessName").getAsString());
                 responseMessage = responseMessage.replace("<userid>", insertDoc.getString("userID"));

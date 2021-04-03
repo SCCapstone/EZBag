@@ -50,17 +50,24 @@ const actions = {
     console.log("VERIFYING TOKEN W/ BIZID: "+ state.businessID)
     var data = JSON.stringify({"token": Vue.$cookies.get("token"), "businessID": state.businessID})
     return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/merchant/token", data)
-        .then(function (result) {
-          resolve({
-            status: result.data.status,
-            message: result.data.message,
-            businessID: state.businessID,
-          })
-        }).catch(function (error) { // failed response from backend
-          console.log(error)
-          reject(error)
+      if (state.businessID === null || Vue.$cookies.get("token") === null){
+        resolve({
+          status: "failure",
+          message: "Token or business ID are null!",
         })
+      } else {
+          axios.post("EZBagWebapp/webapi/merchant/token", data)
+          .then(function (result) {
+            resolve({
+              status: result.data.status,
+              message: result.data.message,
+              businessID: state.businessID,
+            })
+          }).catch(function (error) { // failed response from backend
+            console.log(error)
+            reject(error)
+          })
+        }
       })
   },
 

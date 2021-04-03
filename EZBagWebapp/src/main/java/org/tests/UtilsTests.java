@@ -4,6 +4,7 @@ package org.tests;
 import io.jsonwebtoken.Claims;
 import jakarta.ws.rs.core.Application;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
@@ -32,6 +33,9 @@ public class UtilsTests extends JerseyTest {
         System.out.println(jwt);
         Claims claims = Utils.decodeJWT(jwt);
         System.out.println(claims.toString());
+
+        System.out.println(DigestUtils.sha256Hex("ryoogfj4lpSi1lhaknOA"+"password"));
+
     }
 
 
