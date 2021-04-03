@@ -99,6 +99,11 @@ const routes = [
     component: () => import('@/views/merchant/SignupSuccess.vue')
   },
   {
+    path: '/verified',
+    name: 'emailVerifiedSuccess',
+    component: () => import('@/views/merchant/VerifiedSuccess.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     component: () => import('@/views/merchant/BusinessRegister.vue'),
