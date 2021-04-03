@@ -46,6 +46,7 @@
       @mousedown="mousedown"
       @touchend="mobileup"
       @mouseup="mouseup"
+      @click="mouseup"
       class="ovalButton button text"
       id="confirmButton">
           Confirm
