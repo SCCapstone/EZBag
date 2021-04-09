@@ -2,6 +2,7 @@
   <v-container>
 
     <v-autocomplete
+        class="searchbar"
         clearable
         rounded
         dark
@@ -74,48 +75,60 @@ export default {
       onBlur() {
         this.$dbg_console_log("Search bar out of focus!")
         this.$emit("isSearching", false)
-      }
+      },
+      searchProducts(curr){
+
+        console.log("Current sub: "+curr);
+
+          // if you select product in drop down, show product card
+          if (this.model) {
+            this.$emit("showproduct", this.model.barcode)   
+            this.model = null
+          }
+
+          // Items have already been loaded
+          if (this.items.length > 0) return
+
+          // Items have already been requested
+          if (this.isLoading) return
+
+          this.isLoading = true
+
+          // TODO: front load products and store in vuex
+          this.fetchProducts(this.$route.params.id, )
+            .then((result) => { // no backend errors thrown
+              if(result.success==1) {
+                  this.$dbg_console_log('ScanSearchBar: Succesfully received products from backend', result.products)
+                  this.count = result.count
+                  this.products = result.products
+              } else {
+                  this.$dbg_console_log('ScanSearchBar: Could not get products')
+              }
+            }).catch(error => {
+                this.show_popup = true
+                this.popupHeader =  "Internal Server Error"
+                this.popupText = "Something went wrong"
+                this.carts = this.debugCarts   
+                this.$dbg_console_log(error)
+            })
+            .finally(() => (this.isLoading = false))
+        }
+    },
+    mounted: function() {
+      this.searchProducts("")
     },
     watch: {
       search (curr) {
-        // TODO: call substring search for products here
-        console.log("Current sub: "+curr);
-
-        // if you select product in drop down, show product card
-        if (this.model) {
-          this.$emit("showproduct", this.model.barcode)   
-          this.model = null
-        }
-
-        // Items have already been loaded
-        if (this.items.length > 0) return
-
-        // Items have already been requested
-        if (this.isLoading) return
-
-        this.isLoading = true
-
-        // TODO: front load products and store in vuex
-        this.fetchProducts(this.$route.params.id, )
-          .then((result) => { // no backend errors thrown
-            if(result.success==1) {
-                this.$dbg_console_log('ScanSearchBar: Succesfully received products from backend', result.products)
-                this.count = result.count
-                this.products = result.products
-            } else {
-                this.$dbg_console_log('ScanSearchBar: Could not get products')
-            }
-          }).catch(error => {
-              this.show_popup = true
-              this.popupHeader =  "Internal Server Error"
-              this.popupText = "Something went wrong"
-              this.carts = this.debugCarts   
-              this.$dbg_console_log(error)
-          })
-          .finally(() => (this.isLoading = false))
+        this.searchProducts(curr)
       },
     },
     
     
 };
 </script>
+
+<style scoped>
+  .searchbar {
+    z-index: 10;
+  }
+</style>
