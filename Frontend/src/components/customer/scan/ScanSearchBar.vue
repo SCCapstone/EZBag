@@ -2,6 +2,7 @@
   <v-container>
 
     <v-autocomplete
+        class="searchbar"
         clearable
         rounded
         dark
@@ -125,3 +126,9 @@ export default {
     
 };
 </script>
+
+<style scoped>
+  .searchbar {
+    z-index: 10;
+  }
+</style>
