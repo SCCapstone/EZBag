@@ -63,7 +63,7 @@ public class BizVerifyRedirectRoute {
                         "<html>\n" +
                         "<script>\n" +
                         // TODO: test this
-                        "window.location.href = '/EZBagWebapp/#/';\n" +
+                        "window.location.href = '/EZBagWebapp/#/verified';\n" +
                         "</script>\n" +
                         "</html>\n";
                 //returnDoc = "User verified";

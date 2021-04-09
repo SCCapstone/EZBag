@@ -432,8 +432,17 @@ public class MongoDB {
         if (resp == null) {
             collectionsMap.get(productCollectionName).insertOne(newProduct);
             return true;
+        } else {
+            BasicDBObject query = new BasicDBObject();
+            List<BasicDBObject> matchDoc = new ArrayList<BasicDBObject>();
+            matchDoc.add(new BasicDBObject("barcode", newProduct.getString("barcode")));
+            matchDoc.add(new BasicDBObject("businessID", newProduct.getString("businessID")));
+            query.put("$and", matchDoc);
+            DeleteResult result = collectionsMap.get(productCollectionName).deleteMany(query);
+            System.out.println("Deleted "+result.getDeletedCount()+" products");
+            collectionsMap.get(productCollectionName).insertOne(newProduct);
+            return true;
         }
-        return false;
     }
     public Boolean insertUser(Document newUser) {
         // only insert document if it does not exist
