@@ -14,7 +14,7 @@ public class StartupService implements ServletContextListener {
     public static boolean debugMode = false;
 
     public static String developmentDomain = "http://localhost:9000/#/";
-    public static String domain = "https://www.blakeedwards.me:8443/EZBagWebapp/#/";
+    public static String domain = "https://www.blakeedwards.me/EZBagWebapp/#/";
 
     public static String propertiesFile = "/usr/local/opt/EZBag/EZBag.properties";
     public static String mediaProperties = "/usr/local/opt/EZBag/emailAndSMS.properties";

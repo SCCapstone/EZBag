@@ -16,7 +16,7 @@ import java.util.*;
 @Path("/register")
 public class BizRegisterRoute {
     static final String successfulSignupMessage = "Hello <business>,\n\n" +
-            "Thank you for registering with EZBag! Please confirm your email address here:\nhttps://www.blakeedwards.me:8443/EZBagWebapp/webapi/verify/<userid>\n"
+            "Thank you for registering with EZBag! Please confirm your email address here:\nhttps://www.blakeedwards.me/EZBagWebapp/webapi/verify/<userid>\n"
             + "\nYour application is currently under review. Upon approval, you will get full access to the EZBag merchant platform. \n\nThanks,\nEZBag Team";
 
     @POST
