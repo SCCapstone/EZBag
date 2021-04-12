@@ -33,7 +33,7 @@
         <h5> {{cart.dt}} </h5>
         <small>
             <p> 
-              <v-btn v-on:click.stop @click="markPaid(cart)">Verify</v-btn>
+              <v-btn v-on:click.stop @click="markPaid(cart)" v-if="!cart.verified">Verify</v-btn>
               <u v-if="cart.expanded==true">
                 <v-icon class="chevron" size=50>mdi-chevron-up</v-icon>
               </u>
