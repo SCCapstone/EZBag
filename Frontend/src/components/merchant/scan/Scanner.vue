@@ -7,8 +7,7 @@
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { findAndLoadProduct(barcode.barcodes[0].data) }" />
-
-    
+    <ScanSearchBar v-on:showproduct="showItem" v-on:isSearching="toggleScanner($event)"/>
     <!--
       Pop up
     !-->
@@ -90,11 +89,12 @@
 
 <script>
 import {mapActions, mapGetters} from 'vuex'
+import ScanSearchBar from '@/components/customer/scan/ScanSearchBar'
 
 export default {
   name: 'Merchant Scanner',
   components: {
-    
+    ScanSearchBar,
   },
   data() {
     return {
@@ -115,6 +115,10 @@ export default {
   },
   methods: {
     ...mapActions(["lookupProduct", "addProduct", "deleteProduct", "verifyToken"]),
+    showItem (barcode) {
+      console.log("Showing product: "+barcode)
+      this.findAndLoadProduct(barcode)
+    },
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
       barcodePicker.setMirrorImageEnabled(false);
@@ -234,6 +238,22 @@ export default {
       this.barcodePicker.resumeScanning();
       this.barcodePicker.clearSession();
       this.$dbg_console_log('resume scanning', this.barcodePicker)
+    },
+    toggleScanner(bool) {
+      if (bool) {
+        this.$dbg_console_log("Pause scanning for search")
+        if(this.barcodePicker != null) {
+          this.barcodePicker.pauseScanning();
+          this.$dbg_console_log("scanning paused", this.barcodePicker);
+        }
+      } else {
+        if (!this.show_scanned_product) {
+          this.$dbg_console_log("Product card not showing, resuming scanning for search")
+          this.barcodePicker.resumeScanning();
+        } else {
+          this.$dbg_console_log("Product card showing, will not resume search")
+        }
+      }
     },
 
 

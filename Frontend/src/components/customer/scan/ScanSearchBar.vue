@@ -70,35 +70,37 @@ export default {
       ...mapActions(["fetchProducts"]),
       onFocus() {
         this.$dbg_console_log("Search bar in focus!")
+        this.updateProducts()
         this.$emit("isSearching", true)
       },
       onBlur() {
         this.$dbg_console_log("Search bar out of focus!")
         this.$emit("isSearching", false)
       },
-      searchProducts(curr){
+      searchProducts(curr) {
 
-        console.log("Current sub: "+curr);
+        // console.log("Current sub: "+curr);
 
-          // if you select product in drop down, show product card
-          if (this.model) {
-            this.$emit("showproduct", this.model.barcode)   
-            this.model = null
-          }
+        // if you select product in drop down, show product card
+        if (this.model) {
+          this.$emit("showproduct", this.model.barcode)   
+          this.model = null
+        }
 
-          // Items have already been loaded
-          if (this.items.length > 0) return
+        // // Items have already been loaded
+        // if (this.items.length > 0) return
 
-          // Items have already been requested
-          if (this.isLoading) return
+        // // Items have already been requested
+        // if (this.isLoading) return
 
-          this.isLoading = true
-
-          // TODO: front load products and store in vuex
+          this.updateProducts()
+        },
+        updateProducts() {
+          // load products and store in vuex
           this.fetchProducts(this.$route.params.id, )
             .then((result) => { // no backend errors thrown
               if(result.success==1) {
-                  this.$dbg_console_log('ScanSearchBar: Succesfully received products from backend', result.products)
+                  this.$dbg_console_log('ScanSearchBar: Successfully received products from backend', result.products)
                   this.count = result.count
                   this.products = result.products
               } else {
@@ -119,6 +121,7 @@ export default {
     },
     watch: {
       search (curr) {
+        this.isLoading = false;
         this.searchProducts(curr)
       },
     },
