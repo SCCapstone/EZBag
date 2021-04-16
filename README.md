@@ -34,7 +34,7 @@ Click this link to view our proof of concept application. NOTE: Our website uses
 4. While the backend appears to be fully running, ports are not properly mapped when running with `docker-compose run ...` . Close the containers with `docker-compose down`.
 
 ## Usage
-Having completed the inital setup with docker, our project can be started with `docker-compose up`. The frontend will be served in development mode at http://localhost:9000, the backend will be served by tomcat on http://localhost:8080/EZBagWebapp, and our mongodb database will be available on port 27017 of localhost. When you are finished with the project, these three services should be closed with `docker-compose down`. 
+Having completed the inital setup with docker, our project can be started with `docker-compose up`. The frontend will be served in development mode at http://localhost:9000, the backend will be served by tomcat on http://localhost:8080/EZBagWebapp, and our mongodb database will be available on port 27017 of localhost. Cypress will run behavioral tests once http://localhost:9000 becomes available, and it will exit after either the tests finish or if a test fails. When you are finished with the project, these three services should be closed with `docker-compose down`. 
 
 ## Rebuild and Redeploy the Backend:
 If not already deployed, `docker-compose up` will build the backend with maven and deploy it with tomcat. If you need to rebuild the backend (say, if you change the source code):
@@ -62,13 +62,18 @@ Running the tests in the Jersey Test Framework:
 3. To run the multiple tests in the test package you can simply right click on the containing package and click "run all tests".
 
 ## Frontend Behavioral Testing:
-We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /Frontend/tests/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
+We use [Cypress](https://www.cypress.io/) for end-to-end behavioral testing. Tests are located in /e2e/cypress/integration/, with a folder structure similar to the [what is described here](https://docs.cypress.io/guides/core-concepts/writing-and-organizing-tests.html#Folder-Structure).
 
-Running end-to-end behavioral tests:
-1. If the project is not already running in docker, run `docker-compose up`.
-2. Access the running frontend container in another terminal with `docker exec -it backend bash`
-3. In the frontend container and at `/frontend`, run `npm run test:e2e`. A window will open displaying our tests. 
-5. Select the test to run, or select 'run all tests'.
+Tests are automatically run in the background with `docker-compose up`. Screenshots and videos of failed tests will be placed in e2e/cypress/.
+
+### Run tests interactively (GUI):
+0. You'll need to setup an xserver on your host machine (google it, you're on your own for this one).
+1. Get the IP address of your host machine and allow X11 to accept incoming connections from that IP address (if you are using VcXsrv, you can _disable access control_ to allow all incoming connections).
+2. Set the environment variable DISPLAY using `export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0`
+    - I added this to my .bashrc
+    - If you have trouble with this command, try `IP=$(ipconfig getifaddr en0)` then `DISPLAY=$IP:0`
+3. Having completed the preceding steps, you can start interactive tests at any time using `docker-compose -f docker-compose.yml -f e2e/cy-open.yml up --exit-code-from cypress`.
+    - You can even run this after `docker-compose up`. There is NO need to `docker-compose down` - it would just take longer to get running.
 
 # User Flow
 ## Merchant Flow

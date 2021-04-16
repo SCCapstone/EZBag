@@ -35,3 +35,21 @@ services:
     command: >
       bash -c "npm install &&
       npm run serve"
+    depends_on:
+      - backend
+
+  cypress:
+    container_name: cypress
+    image: cypress/included:7.1.0
+    volumes:
+      - ./e2e:/e2e
+    working_dir: /e2e
+    depends_on: 
+      - frontend
+    links:
+      - frontend
+    environment: 
+      - CYPRESS_baseUrl=http://frontend:9000/#/
+    entrypoint: ''
+    command: >
+      bash -c 'npx wait-on http://frontend:9000 && cypress run'
