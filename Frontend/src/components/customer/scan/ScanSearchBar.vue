@@ -79,7 +79,7 @@ export default {
       },
       searchProducts(curr) {
 
-        // console.log("Current sub: "+curr);
+        this.$dbg_console_log("Current sub: "+curr);
 
         // if you select product in drop down, show product card
         if (this.model) {
