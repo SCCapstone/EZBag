@@ -145,6 +145,44 @@ public class MongoDB {
         return resp.toString();
     }
 
+    public String getSalesByBarcode(String businessID, String barcode)
+    {
+        FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
+                .find(new Document().append("businessID", businessID)
+                        .append("barcode", barcode));
+        JsonArray jsArray = new JsonArray();
+        HashMap<String, String> productCache = new HashMap<>();
+        for (Document doc : result) {
+            doc.remove("_id");
+            // TODO: get product names
+            ArrayList<String> barcodes = (ArrayList<String>) doc.get("barcodes");
+            ArrayList<String> productNames = new ArrayList<>(barcodes.size());
+            for (int i = 0; i < barcodes.size(); i++) {
+                if (productCache.containsKey(barcodes.get(i))) {
+                    productNames.add(i, productCache.get(barcodes.get(i)));
+                } else {
+                    Document resp = getProductByBarcodeBusinessID(barcodes.get(i), businessID);
+                    if (resp != null)
+                    {
+                        productNames.add(i, resp.getString("name"));
+                        productCache.put(barcodes.get(i), resp.getString("name"));
+                    } else {
+                        // TODO: product doesnt exists do something else to handle this
+                        productNames.add(i, "UNKNOWN PRODUCT ERROR");
+                        productCache.put(barcodes.get(i), "UNKNOWN PRODUCT ERROR");
+                    }
+                }
+            }
+            doc.append("names", productNames);
+            JsonObject payloadObject = new JsonParser().parse(doc.toJson()).getAsJsonObject();
+            jsArray.add(payloadObject);
+        }
+        JsonObject resp = new JsonObject();
+        resp.add("carts", jsArray);
+        resp.addProperty("status", "success");
+        return resp.toString();
+    }
+
     public String getLastDaysCartsByBusinessID(String businessID, int days) {
         long longDays = days;
         long dayMillis = System.currentTimeMillis() - 86400000*longDays;

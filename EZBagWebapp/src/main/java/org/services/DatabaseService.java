@@ -39,6 +39,11 @@ public class DatabaseService {
         return resp;
     }
 
+    public static String getSalesByBarcode(String businessID, String barcode) {
+        String resp = database.getSalesByBarcode(businessID, barcode);
+        return null;
+    }
+
     public static String getLast24HourCartsByBusinessID(String businessID) {
         String resp = database.getLast24HourCartsByBusinessID(businessID);
         return resp;
