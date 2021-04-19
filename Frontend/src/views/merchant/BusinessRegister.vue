@@ -28,6 +28,7 @@
         v-model="name"
         :rules="[rules.required]"
         label="Business Name"
+        :counter="100"
         required
         id="businessName"
       ></v-text-field>
@@ -35,6 +36,7 @@
         v-model="address"
         :rules="[rules.required]"
         label="Street Address"
+        :counter="100"
         required
         id="address"
       ></v-text-field>
@@ -42,22 +44,23 @@
         v-model="city"
         :rules="[rules.required]"
         label="City"
+        :counter="50"
         required
         id="city"
       ></v-text-field>
       <v-select
-            v-model="state"
-            :items="states"
-            :rules="[rules.required]"
-            label="State"
-            id="state"
+        v-model="state"
+        :items="states"
+        :rules="[rules.required]"
+        label="State"
+        id="state"
       ></v-select>
       <v-select
-            v-model="country"
-            :items="countries"
-            :rules="[rules.required]"
-            label="Country"
-            id="country"
+        v-model="country"
+        :items="countries"
+        :rules="[rules.required]"
+        label="Country"
+        id="country"
       ></v-select>
       <v-text-field
         v-model="email"
@@ -68,7 +71,7 @@
       ></v-text-field>
       <v-text-field
         v-model="phone"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.equals]"
         label="Phone Number"
         :counter="10"
         required
@@ -87,7 +90,7 @@
       <v-checkbox
         class="check"
         v-model="checkbox"
-        label="Do you agree?"
+        label="Do you agree to the Terms and Conditions?"
         id="check"
         required
       ></v-checkbox>
@@ -143,6 +146,7 @@
         required: value => !!value || 'Required.',
         min: v => v.length >= 8 || 'Min 8 characters',
         // emailRules credit to user @ https://stackoverflow.com/questions/50039793/email-validation-n-vuetify-js
+        equals: v => v.length == 10 || '10 digits required',
         emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid',
         //equal: ,
       },
