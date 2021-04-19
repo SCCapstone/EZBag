@@ -69,12 +69,12 @@ export default {
     methods: {
       ...mapActions(["fetchProducts"]),
       onFocus() {
-        this.$dbg_console_log("Search bar in focus!")
+        // this.$dbg_console_log("Search bar in focus!")
         this.updateProducts()
         this.$emit("isSearching", true)
       },
       onBlur() {
-        this.$dbg_console_log("Search bar out of focus!")
+        // this.$dbg_console_log("Search bar out of focus!")
         this.$emit("isSearching", false)
       },
       searchProducts(curr) {
@@ -100,7 +100,7 @@ export default {
           this.fetchProducts(this.$route.params.id, )
             .then((result) => { // no backend errors thrown
               if(result.success==1) {
-                  this.$dbg_console_log('ScanSearchBar: Successfully received products from backend', result.products)
+                  // this.$dbg_console_log('ScanSearchBar: Successfully received products from backend', result.products)
                   this.count = result.count
                   this.products = result.products
               } else {

@@ -13,11 +13,11 @@ axios.defaults.timeout = 2000
 // if in development, then all axios requests and responses will be logged
 if(process.env.VUE_APP_SHOW_DEBUG=='true') {
   axios.interceptors.request.use(request => {
-    $dbg_console_log('Starting Request', request)
+    // $dbg_console_log('Starting Request', request)
     return request
   })
   axios.interceptors.response.use(response => {
-    $dbg_console_log('Response', response)
+    // $dbg_console_log('Response', response)
     return response
   })
 }

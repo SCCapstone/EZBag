@@ -2,20 +2,26 @@
   <v-container>
     <ScanSearchBar v-on:showproduct="getProductSalesInfo" ></ScanSearchBar>
     <v-card class="sales">
-      <v-card-title class="justify-center">Total Sales Over Time</v-card-title>
+      <!-- <v-card-title class="justify-center">Total Sales Over Time</v-card-title> -->
       <v-card-actions>
         <v-select
-          @change="getSelected($event)"
+          @change="getSelected()"
           :items="interval"
           v-model="selected"
           class="interval"
         ></v-select>
         <v-select
-          @change="getSelected($event)"
+          @change="getSelected()"
           :items="interval2"
           v-model="selected2"
           class="interval"
         ></v-select>
+        <v-btn 
+          v-show="showingProductSales"
+          v-on:click="returnToAllSales"
+        >
+          Reset
+        </v-btn>
       </v-card-actions>
 
       <SalesChart
@@ -23,6 +29,8 @@
         :height="400"
         :labels="['Jan', 'Feb', 'Mar', 'Apr', 'May']"
         :datasets="dataset"
+        :options="option"
+        :key="option.title.text"
       ></SalesChart>
 
     </v-card>
@@ -45,17 +53,28 @@ export default {
 
   data() {
     return {
+      showingProductSales: false,
       dataset: [
         {
           label: '2018 Sales',
           data: [300, 700, 450, 750, 450]
         }
       ], 
+      option: {
+          title: {
+              display: true,
+              text: "Total Sales Over Time",
+              fontSize: 20,
+          },
+          legend: {
+                  position: 'bottom',
+          },
+      },
       selected: 'Last 24 hours',
       interval: ['Last 24 hours', 'Last 7 days', 'Last 30 days', 'Last 365 days'],
       selected2: 'Net Profit',
       interval2: ['Net Profit', 'Transactions'],
-      setofdatasets: [
+      allSalesDatasets: [
         [ 
           [
             {
@@ -112,12 +131,74 @@ export default {
             }
           ],
         ],
-      ]
-
+      ],
+      productSalesDatasets: [
+        [ 
+          [
+            {
+              label: 'Transactions last 24 hours',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+          [
+            {
+              label: 'Net Profit last 24 hours',
+              data: [1, 1, 1, 1, 1]
+            }
+          ]
+        ],
+        [
+          [
+            {
+              label: 'Transactions last 7 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+          [
+            {
+              label: 'Net Profit last 7 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ]
+        ],
+        [
+          [
+            {
+              label: 'Transactions last 30 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+          [
+            {
+              label: 'Net Profit last 30 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+        ],
+        [
+          [
+            {
+              label: 'Transactions last 365 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+          [
+            {
+              label: 'Net Profit last 365 days',
+              data: [1, 1, 1, 1, 1]
+            }
+          ],
+        ],
+      ],
+      productName: "",
     };
   },
   methods: {
     ...mapActions(["fetchCartsInterval"]),
+    returnToAllSales() {
+      this.showingProductSales = false
+      this.getSelected()
+    },
     roundHours(date){
       date.setHours(date.getHours() + Math.round(date.getMinutes()/60));
       date.setMinutes(0, 0, 0); // Resets also seconds and milliseconds
@@ -135,40 +216,72 @@ export default {
       this.$refs.barChart.updateOptions(
         this.chartOptions, true, true, true)
     },
-    getSelected(value) {
+    getSelected() {
+      // TODO: factor in showingProductSales boolean to revert back to all sales
       // can ignore value passed in because selected and selected2 updated
-      console.log(value)
       if (this.selected === "Last 24 hours") {
         if (this.selected2 === "Transactions") {
-          this.dataset = this.setofdatasets[0][0]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[0][0] : this.allSalesDatasets[0][0]
+          this.option.title.text = this.showingProductSales ? this.productName + " Transactions Over Time" : "Total Transactions Over Time"
         } else {
-          this.dataset = this.setofdatasets[0][1]
+          console.log(this.dataset)
+          console.log(this.option.title.text)
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[0][1] : this.allSalesDatasets[0][1]
+          this.option.title.text = this.showingProductSales ? this.productName + " Sales Over Time" : "Total Sales Over Time"
+          console.log(this.dataset)
+          console.log(this.option.title.text)
         }  
       } else if (this.selected === "Last 7 days") {
         if (this.selected2 === "Transactions") {
-          this.dataset = this.setofdatasets[1][0]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[1][0] : this.allSalesDatasets[1][0]
+          this.option.title.text = this.showingProductSales ? this.productName + " Transactions Over Time" : "Total Transactions Over Time"
         } else {
-          this.dataset = this.setofdatasets[1][1]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[1][1] : this.allSalesDatasets[1][1]
+          this.option.title.text = this.showingProductSales ? this.productName + " Sales Over Time" : "Total Sales Over Time"
         }  
       } else if (this.selected === "Last 30 days") {
         if (this.selected2 === "Transactions") {
-          this.dataset = this.setofdatasets[2][0]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[2][0] : this.allSalesDatasets[2][0]
+          this.option.title.text = this.showingProductSales ? this.productName + " Transactions Over Time" : "Total Transactions Over Time"
         } else {
-          this.dataset = this.setofdatasets[2][1]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[2][1] : this.allSalesDatasets[2][1]
+          this.option.title.text = this.showingProductSales ? this.productName + " Sales Over Time" : "Total Sales Over Time"
         }  
       } else { // last 365 days
         if (this.selected2 === "Transactions") {
-          this.dataset = this.setofdatasets[3][0]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[3][0] : this.allSalesDatasets[3][0]
+          this.option.title.text = this.showingProductSales ? this.productName + " Transactions Over Time" : "Total Transactions Over Time"
         } else {
-          this.dataset = this.setofdatasets[3][1]
+          this.dataset = this.showingProductSales ? this.productSalesDatasets[3][1] : this.allSalesDatasets[3][1]
+          this.option.title.text = this.showingProductSales ? this.productName + " Sales Over Time" : "Total Sales Over Time"
         }  
       }
     },
     getProductSalesInfo(barcode) {
+      
       // TODO: get product sales info for given barcode and display it on chart
-      var loadProductSalesInfo = {businessID:this.$route.params.id, barcode:barcode}
+      var loadProductSalesInfo = {
+          businessID:this.$route.params.id, 
+          barcode:barcode,
+        }
+
       console.log("Loading sales information for: ")
       console.log(loadProductSalesInfo)
+
+      // TODO: compute productSalesDatasets
+      // TODO: set productName
+      this.productName = barcode
+      this.showingProductSales = true
+      console.log("display new product: "+barcode)
+      this.getSelected()
+
+
+      // this.$store.dispatch("getProductTransactionInfo")
+      // TODO: call backend to get list of carts matching bizID, has barcode, 
+
+      // TODO: /productsales: { barcode, businessID, millTimeInPast } 
+      // TODO: /allsales: { businessID }
+      
     }
     //   this.fetchCartsInterval({businessID:this.$route.params.id, interval:value})
     //   .then((result) => { // no backend errors thrown
@@ -272,7 +385,8 @@ export default {
 
   },
   mounted(){
-    this.getSelected("Last 24 hours")
+    this.getSelected()
+    // TODO: get all store sales and store in this.datasets
   },
 };
 </script>
