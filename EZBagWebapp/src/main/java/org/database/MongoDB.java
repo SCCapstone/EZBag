@@ -145,11 +145,14 @@ public class MongoDB {
         return resp.toString();
     }
 
-    public String getSalesByBarcode(String businessID, String barcode)
+    public String getSalesByBarcode(String businessID, String barcode, int days)
     {
+        long longDays = days;
+        long dayMillis = System.currentTimeMillis() - 86400000*longDays;
         FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
                 .find(new Document().append("businessID", businessID)
-                        .append("barcode", barcode));
+                        .append("barcode", barcode)
+                        .append("time", new Document().append("$gt" , dayMillis)));
         JsonArray jsArray = new JsonArray();
         HashMap<String, String> productCache = new HashMap<>();
         for (Document doc : result) {

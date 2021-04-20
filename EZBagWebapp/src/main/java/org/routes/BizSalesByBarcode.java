@@ -18,12 +18,16 @@ public class BizSalesByBarcode {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
+        System.out.println("Hello world");
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
-        if (payloadObject.has("token") && payloadObject.has("businessID") && payloadObject.has("barcode")){
+        if (payloadObject.has("token") && payloadObject.has("businessID")
+                && payloadObject.has("barcode") && payloadObject.has("days")){
             if(Utils.validToken(payloadObject.get("token").getAsString(), payloadObject.get("businessID").getAsString())){
                 String businessID = payloadObject.get("businessID").getAsString();
                 String barcode = payloadObject.get("barcode").getAsString();
-                return DatabaseService.getSalesByBarcode(businessID, barcode);
+                int days = Integer.parseInt(payloadObject.get("days").getAsString());
+                String resp = DatabaseService.getSalesByBarcode(businessID, barcode, days);
+                return resp;
             }
         }
         System.out.println("Malformed request");
