@@ -12,7 +12,7 @@ export default {
     console.log("chart options:")
     console.log(this.options)
     new Chart(this.$refs.myChart, {
-      type: 'line',
+      type: 'bar',
       data: {
         labels: this.labels,
         datasets: this.datasets
@@ -24,7 +24,7 @@ export default {
     datasets: function() {
       console.log('Updating sales chart with new data')
       new Chart(this.$refs.myChart, {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: this.labels,
           datasets: this.datasets
@@ -35,7 +35,7 @@ export default {
     options: function() {
       console.log('Updating sales chart with new options')
       new Chart(this.$refs.myChart, {
-        type: 'line',
+        type: 'bar',
         data: {
           labels: this.labels,
           datasets: this.datasets
