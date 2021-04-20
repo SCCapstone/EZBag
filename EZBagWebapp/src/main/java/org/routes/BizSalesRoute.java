@@ -23,19 +23,10 @@ public class BizSalesRoute {
                 && Utils.validToken(payloadObject.get("token").getAsString(), payloadObject.get("businessID").getAsString())) {
             if (payloadObject.has("businessID") && payloadObject.has("interval")) {
                 String businessID = payloadObject.get("businessID").getAsString();
-                String interval = payloadObject.get("interval").getAsString().toLowerCase();
+                int interval = Integer.parseInt(payloadObject.get("interval").getAsString());
                 System.out.println("Searching for carts");
                 // TODO: change returned carts to include item names array
-                if(interval.equals("daily")) {
-                    return DatabaseService.getLast24HourCartsByBusinessID(businessID);
-                }else if(interval.equals("weekly")) {
-                    return DatabaseService.getLastDaysCartsByBusinessID(businessID, 7);
-                }else if(interval.equals("monthly")){
-                    return DatabaseService.getLastDaysCartsByBusinessID(businessID, 30);
-                }else{
-                    System.out.println("[ERROR] Unknown interval: " + interval);
-                    return Utils.generateResponse(false, "[ERROR] Unknown interval: " + interval);
-                }
+                return DatabaseService.getLastDaysCartsByBusinessID(businessID, interval);
             } else {
                 return Utils.generateResponse(false, "Barcode product lookup requires: businessID");
             }
