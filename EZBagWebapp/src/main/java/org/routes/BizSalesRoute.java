@@ -21,12 +21,12 @@ public class BizSalesRoute {
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         if (payloadObject.has("token") && payloadObject.has("businessID")
                 && Utils.validToken(payloadObject.get("token").getAsString(), payloadObject.get("businessID").getAsString())) {
-            if (payloadObject.has("businessID") && payloadObject.has("interval")) {
+            if (payloadObject.has("businessID") && payloadObject.has("days")) {
                 String businessID = payloadObject.get("businessID").getAsString();
-                int interval = Integer.parseInt(payloadObject.get("interval").getAsString());
+                int days = Integer.parseInt(payloadObject.get("days").getAsString());
                 System.out.println("Searching for carts");
                 // TODO: change returned carts to include item names array
-                return DatabaseService.getLastDaysCartsByBusinessID(businessID, interval);
+                return DatabaseService.getLastDaysCartsByBusinessID(businessID, days);
             } else {
                 return Utils.generateResponse(false, "Barcode product lookup requires: businessID");
             }
