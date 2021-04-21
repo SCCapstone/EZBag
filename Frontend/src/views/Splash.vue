@@ -1,6 +1,5 @@
 <template>
   <div class="splash">
-    <SplashNavigation></SplashNavigation>
     <div id="wrapper">
       <div class="center">
         <h1>Welcome to EZBag</h1>
@@ -28,36 +27,22 @@
           via email and/or text.
         </p>
       </div>
-      <div class="center">
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        Go to
-      </div>
-      <div class="center">
-        <router-link to="/login"> Merchant Login</router-link>
-      </div>
+      
     </div>
   </div>
 </template>
 
 <script>
-import SplashNavigation from '@/components/SplashNavigation.vue'
 
 export default {
   name: "Splash",
   components: {
-    SplashNavigation,
   },
 };
 </script>
 
 <style>
 #wrapper {
-  margin-top: 13%;
   margin-left: 10%;
   margin-right: 10%;
 }

@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/Splash.vue')
+    component: () => import('@/views/SplashNavigation.vue')
   },
   {
     path: '/customer/:id/',
