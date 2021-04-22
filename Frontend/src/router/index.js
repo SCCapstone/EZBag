@@ -14,6 +14,27 @@ const routes = [
     children: [
       {path: '/', component: () => import('@/views/Splash.vue')},
       {path: 'about', component: () => import('@/views/About.vue')},
+      {path: '/login', component: () => import('@/views/merchant/BusinessLogin.vue'),
+        beforeEnter: (to, from, next) => {
+          console.log("Checking if merchant already logged in...")
+          store.dispatch("verifyToken").then( (result) => {
+            $dbg_console_log("verifyToken result: ")
+            $dbg_console_log(result)
+            if (result.status=="success") {
+              $dbg_console_log("verified token!");
+              next({ name: 'store' });
+            } else {
+              $dbg_console_log("Token is not valid, redirecting to login")
+              window.$cookies.remove("token")
+              next();
+            }
+          }).catch(error => {
+              $dbg_console_log(error)
+              window.$cookies.remove("token")
+              next();       
+          })
+        }
+      },
     ]
   },
   {
@@ -72,30 +93,6 @@ const routes = [
         next({ name: 'login' });
       }
     },
-  },
-  {
-    path: '/login', 
-    name: 'login',
-    component: () => import('@/views/merchant/BusinessLogin.vue'),
-    beforeEnter: (to, from, next) => {
-      console.log("Checking if merchant already logged in...")
-      store.dispatch("verifyToken").then( (result) => {
-        $dbg_console_log("verifyToken result: ")
-        $dbg_console_log(result)
-        if (result.status=="success") {
-          $dbg_console_log("verified token!");
-          next({ name: 'store' });
-        } else {
-          $dbg_console_log("Token is not valid, redirecting to login")
-          window.$cookies.remove("token")
-          next();
-        }
-      }).catch(error => {
-          $dbg_console_log(error)
-          window.$cookies.remove("token")
-          next();       
-      })
-    }
   },
   {
     path: '/registrationSuccess',

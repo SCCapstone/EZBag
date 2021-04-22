@@ -1,95 +1,103 @@
 <template>
-  <div class="splash">
-    <div id="wrapper">
-      <div class="center">
-        <h1>Welcome to EZBag</h1>
-      </div>
-      <div class="center">
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/KkPlkvzmflU"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-      <div>
-        <br />
-        <p>
-          EZBag is a free scan-and-go web application. Businesses will be
-          provided with QR codes for customers to access the EZBag web
-          application. Users can scan any product’s barcode with their mobile
-          camera as well as search for specific products and add them to their
-          cart. Customers can then review their cart and checkout via the web
-          application, and they will have the option of receiving their receipt
-          via email and/or text.
-        </p>
-      </div>
-
-      <div>
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/scanner.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/cart.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/receipt.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-      </div>
-
-      <div>
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/verification.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/sales.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/edit-product.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-        <img
-          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/add-product.png"
-          alt="Receipt"
-          style="width: 30%; height: 30%"
-        />
-      </div>
+  <v-container>
+    <h1
+      class='text-center mt-2 font-weight-regular'>
+      What is EZBag?
+    </h1>
+    <div
+      class='text-center text-subtitle-1'>
+      EZBag is a free point-of-sale (POS) service that reduces checkout
+      expenses and enables a fast, touchless customer experience.  
     </div>
-  </div>
+    <h1
+      class='text-center mt-2 font-weight-regular pb-0'>
+      Why EZBag?
+    </h1>
+    <div
+      class='text-center font-italic font-weight-light mt-2'>
+      your customers will thank you
+    </div>
+    <div
+      class='text-center text-subtitle-1 mt-2'>
+      Shopping with EZBag is fast and convenient. No downloads, no pesky
+      notifications - just point, scan, and go.
+    </div>
+    <div
+      class='text-center font-italic font-weight-light mt-4'>
+      your employees will thank you
+    </div>
+    <div
+      class='text-center text-subtitle-1 mt-2'>
+      Verifying purchases is fast and easy. No more mindlessly scanning
+      products while the line grows longer -  
+      Covid-19 has demonstrated a need to reduce physical interaction.
+    </div>
+    <div
+      class='text-center font-italic font-weight-light mt-4'>
+      your wallet will thank you
+    </div>
+    <div
+      class='text-center text-subtitle-1 mt-2'>
+      Did we mention it's free?
+    </div>
+    <div class='mt-6'>
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/scanner.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/cart.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/receipt.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+    </div>
+
+    <div>
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/verification.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/sales.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/edit-product.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+      <img
+        src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/add-product.png"
+        alt="Receipt"
+        style="width: 30%; height: 30%"
+      />
+    </div>
+  </v-container>
 </template>
 
 <script>
 export default {
   name: "Splash",
   components: {},
+  data() {
+    return {
+      absolute: true,
+      opacity: 1,
+      overlay: false,
+    }
+  }
 };
 </script>
 
 <style>
-#wrapper {
-  margin-left: 10%;
-  margin-right: 10%;
-}
-#headerText {
-  font-size: 24px;
-}
-#subHeaderText {
-  font-size: 18px;
-}
 .v-text-field {
   margin: 0px;
 }

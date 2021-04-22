@@ -1,27 +1,29 @@
 <template>
-    <v-card
-        class="mx-auto overflow-hidden"
-    >
-    <v-app-bar
-      color="primary"
-      dark
-    >
-      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Welcome to EZBag</v-toolbar-title>
+  <div>
+    <v-app-bar color="primary" dark>
+      <v-app-bar-nav-icon
+        @click="drawer = true">
+      </v-app-bar-nav-icon>
+      <v-toolbar-title
+        class="text-no-wrap"
+        style='text-overflow:visible; overflow:visible;'>
+        EZBag
+      </v-toolbar-title>
+      <v-divider class='mx-4' vertical inset></v-divider>
+      <div
+        class="text-subtitle-2">
+        Enterprise Solutions for the Small-Box Store
+      </div>
     </v-app-bar>
 
     <v-navigation-drawer
       v-model="drawer"
       absolute
-      temporary
-    >
+      temporary>
       <v-list
         nav
-        dense
-      >
-        <v-list-item-group
-        >
+        dense>
+        <v-list-item-group>
           <v-list-item v-on:click="push('/')">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
@@ -53,10 +55,8 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-
     <router-view/>
-
-  </v-card>
+  </div>
 </template>
 
 <script>
@@ -85,7 +85,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-
-</style>
