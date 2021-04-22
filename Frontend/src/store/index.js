@@ -6,9 +6,11 @@ import VuexPersist from 'vuex-persist';
 import cart from '@/store/modules/customer/cart';
 import Cookie from 'js-cookie';
 import merchant from '@/store/modules/merchant/merchant'
+import VueSilentbox from 'vue-silentbox'
 
 // Load Vuex
 Vue.use(Vuex);
+Vue.use(VueSilentbox)
 
 // TODO: remove this and get from login
 // Setting cookies tut: https://sandulat.com/safely-persisting-vuex-store-in-local-storage/
