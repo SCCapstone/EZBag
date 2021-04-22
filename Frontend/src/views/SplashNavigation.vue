@@ -22,7 +22,7 @@
       >
         <v-list-item-group
         >
-          <v-list-item v-on:click="push('/login')">
+          <v-list-item v-on:click="push('/')">
             <v-list-item-icon>
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
