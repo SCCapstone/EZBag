@@ -13,6 +13,10 @@ const routes = [
     component: () => import('@/views/Splash.vue')
   },
   {
+    path: '/about',
+    component: () => import('@/views/About.vue')
+  },
+  {
     path: '/customer/:id/',
     component: () => import('@/views/customer/Customer.vue'),
     children: [
