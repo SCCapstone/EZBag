@@ -12,9 +12,9 @@ const routes = [
     path: '/',
     component: () => import('@/views/SplashNavigation.vue'),
     children: [
-      {path: '/', component: () => import('@/views/Splash.vue')},
-      {path: 'about', component: () => import('@/views/About.vue')},
-      {path: '/login', component: () => import('@/views/merchant/BusinessLogin.vue'),
+      {path: '', component: () => import('@/views/Splash.vue')},
+      {path: 'about', component: () => import('@/views/OurTeam.vue')},
+      {path: 'login', component: () => import('@/views/merchant/BusinessLogin.vue'),
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
           store.dispatch("verifyToken").then( (result) => {
@@ -36,7 +36,7 @@ const routes = [
         }
       },
       {
-        path: '/register', component: () => import('@/views/merchant/BusinessRegister.vue'),
+        path: 'register', component: () => import('@/views/merchant/BusinessRegister.vue'),
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
           store.dispatch("verifyToken").then( (result) => {
