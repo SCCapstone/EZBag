@@ -4,54 +4,50 @@
       class='text-center mt-2 font-weight-regular'>
       What is EZBag?
     </h1>
-    <div
-      class='text-center text-subtitle-1'>
-      EZBag is a free point-of-sale (POS) service that reduces checkout
-      expenses and enables a fast, touchless customer experience.  
-    </div>
-    <silent-box 
-      :gallery="youtube_video"
-      class='text-center'>
-    </silent-box>
+    <v-card class='mt-4'>
+      <silent-box 
+        :gallery="youtube_video"
+        class='text-center'>
+      </silent-box>
+      <v-card-text
+        class='text-center text-subtitle-1'>
+        EZBag is a free point-of-sale (POS) service that reduces checkout
+        expenses and enables a fast, touchless customer experience.  
+      </v-card-text>
+    </v-card>
+
     <h1
-      class='text-center mt-2 font-weight-regular pb-0'>
+      class='text-center mt-4 font-weight-regular'>
       Why EZBag?
     </h1>
-    <div
-      class='text-center font-italic font-weight-light mt-2'>
-      your customers will thank you
-    </div>
-    <div
-      class='text-center text-subtitle-1 mt-2'>
-      Shopping with EZBag is fast and convenient. No downloads, no pesky
-      notifications - just point, scan, and go.
-    </div>
-    <silent-box
-      :gallery="customer_gallery"
-      class='text-center'>
-    </silent-box>
-    <div
-      class='text-center font-italic font-weight-light mt-4'>
-      your employees will thank you
-    </div>
-    <div
-      class='text-center text-subtitle-1 mt-2'>
-      Verifying purchases is fast and easy. No more mindlessly scanning
-      products while the line grows longer -  
-      Covid-19 has demonstrated a need to reduce physical interaction.
-    </div>
-    <silent-box
-      :gallery="merchant_gallery"
-      class='text-center'>
-    </silent-box>
-    <div
-      class='text-center font-italic font-weight-light mt-4'>
-      your wallet will thank you
-    </div>
-    <div
-      class='text-center text-subtitle-1 mt-2'>
-      Did we mention it's free?
-    </div>
+    <v-card class='mt-4'>
+      <v-card-title
+        class='font-weight-regular'>
+        Your customers will thank you.
+      </v-card-title>
+      <silent-box
+        :gallery="customer_gallery"
+        class='text-center'>
+      </silent-box>
+      <v-card-text>
+        Shopping with EZBag is fast and convenient. No downloads, no pesky
+        notifications - just point, scan, and go.
+      </v-card-text>
+    </v-card>
+    <v-card class='mt-4'>
+      <v-card-title
+        class='font-weight-regular'>
+        Your employees will thank you.
+      </v-card-title>
+      <silent-box
+        :gallery="merchant_gallery"
+        class='text-center'>
+      </silent-box>
+      <v-card-text>
+        Verifying purchases is fast and easy. No more mindlessly scanning
+        products while the line grows longer.
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -75,7 +71,7 @@ export default {
         src:"https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/scanner.png",
         alt:"Scanner",
         thumbnailWidth: '100px',
-        desc:''
+        desc:'this is a test'
       },
       {
         src:"https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/cart.png",
