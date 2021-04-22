@@ -72,7 +72,6 @@
                 class="grey--text text-truncate hidden-sm-and-down"
               >
                 &mdash;
-                {{ message.excerpt }}
               </v-col>
             </v-row>
           </v-expansion-panel-header>
