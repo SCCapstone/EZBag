@@ -23,7 +23,7 @@
     </v-dialog>
     <h2
       class="text-center font-weight-regular mt-16 mb-8">
-      Welcome to EZBag
+      Welcome Back
     </h2>
     <v-form 
       v-model="isLoginFormValid"
