@@ -3,8 +3,7 @@
     <v-dialog
       v-model="show_popup"
       persistent
-      max-width="290"
-    >
+      max-width="290">
       <v-card>
         <v-card-title class="headline">
           {{popupHeader}}
@@ -16,94 +15,118 @@
             justify="center"
             color="green darken-1"
             text
-            @click="show_popup = false"
-          >
+            @click="show_popup = false">
             OK
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <form>
+    <h2
+      class="text-center font-weight-regular mb-6">
+      Welcome to EZBag
+    </h2>
+    <v-form 
+      v-model="isRegisterFormValid"
+      @submit.prevent="submit">
       <v-text-field
         v-model="name"
-        :rules="[rules.required]"
+        :rules="nameRules"
         label="Business Name"
-        :counter="100"
-        required
-        id="businessName"
-      ></v-text-field>
+        :counter="60"
+        id="businessName">
+        </v-text-field>
       <v-text-field
         v-model="address"
-        :rules="[rules.required]"
+        :rules="addressRules"
         label="Street Address"
-        :counter="100"
-        required
-        id="address"
-      ></v-text-field>
+        :counter="60"
+        id="address">
+      </v-text-field>
       <v-text-field
         v-model="city"
-        :rules="[rules.required]"
+        :rules="cityRules"
         label="City"
-        :counter="50"
-        required
-        id="city"
-      ></v-text-field>
+        :counter="60"
+        id="city">
+      </v-text-field>
       <v-select
         v-model="state"
         :items="states"
-        :rules="[rules.required]"
+        :rules="stateRules"
         label="State"
-        id="state"
-      ></v-select>
+        id="state">
+      </v-select>
       <v-select
         v-model="country"
         :items="countries"
-        :rules="[rules.required]"
+        :rules="countryRules"
         label="Country"
-        id="country"
-      ></v-select>
-      <v-text-field
-        v-model="email"
-        :rules="[rules.required, rules.emailRules]"
-        label="E-mail"
-        required
-        id="email"
-      ></v-text-field>
+        id="country">
+      </v-select>
       <v-text-field
         v-model="phone"
-        :rules="[rules.required, rules.equals]"
+        :rules="phoneRules"
         label="Phone Number"
-        :counter="10"
-        required
-        id="phone"
-      ></v-text-field>
+        id="phone">
+      </v-text-field>
+      <v-text-field
+        v-model="email"
+        :rules="emailRules"
+        label="E-mail"
+        id="email">
+      </v-text-field>
       <v-text-field
         v-model="password"
-        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-        :rules="[rules.required, rules.min]"
-        :type="show1 ? 'text' : 'password'"
+        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+        :rules="passwordRules"
+        :type="showPassword ? 'text' : 'password'"
         label="Password"
-        hint="At least 8 characters required"
         id="password"
-        @click:append="show1 = !show1"
-      ></v-text-field>
+        @click:append="showPassword = !showPassword">
+      </v-text-field>
       <v-checkbox
-        class="check"
         v-model="checkbox"
-        label="Do you agree to the Terms and Conditions?"
-        id="check"
-        required
-      ></v-checkbox>
-      <div class="center">
-        <v-btn
-          class="mr-4"
-          @click="submit"
-          id="submit"
-        >
-          submit
-        </v-btn>
-      </div>
-    </form>
+        :true-value="1"
+        :false-value="0"
+        :rules="[v => v == 1 || 'You must agree to continue!']">
+        <template v-slot:label>
+          <div @click.stop="">
+            Do you accept the
+            <a
+              href="#"
+              @click.prevent="terms = true">
+              terms
+            </a>
+            and
+            <a
+              href="#"
+              @click.prevent="conditions = true">
+              conditions?
+            </a>
+          </div>
+        </template>
+      </v-checkbox>
+      <v-row>
+        <v-col>
+          <v-btn
+            rounded
+            block
+            to="/login">
+            Login
+          </v-btn>
+        </v-col>
+        <v-col>
+          <v-btn
+            rounded
+            block
+            color="primary"
+            :disabled="!isRegisterFormValid"
+            type="submit">
+            Register
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-container>
 </template>
 
@@ -114,18 +137,51 @@
 
     data: () => ({
       name: "",
+      nameRules:[
+        v => !!v || 'Business name is required',
+        v => v.length <= 60 || 'Business name too long'
+      ],
       address: "",
+      addressRules: [
+        v => !!v || 'Address is required',
+        v => v.length <= 60 || 'Address too long'
+      ],
       city: "",
-      password: "",
-      phone: "",
-      email: "",
+      cityRules: [
+        v => !!v || 'City is required',
+        v => v.length <= 60 || 'City name too long'
+      ],
       state: "",
+      stateRules: [
+        v => !!v || 'State is required'
+      ],
       country: "",
+      countryRules: [
+        v => !!v || 'Country is required'
+      ],
+      phone: "",
+      phoneRules: [
+        v => !!v || 'Phone Number is required',
+        v => /^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(v) || "Invalid Phone Number"
+      ],
+      email: "",
+      // credit to https://blog.logrocket.com/how-to-implement-form-validation-with-vuetify-in-a-vue-js-app/
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v) || 'E-mail must be valid',
+      ],
+      password: "",
+      passwordRules: [
+        v => !!v || 'Password is required',
+        v => v.length >= 8 || 'Password must be at least 8 characters long',
+      ],
       checkbox: false,
 
       popupHeader: "Internal Error",
       popupText: "Something went wrong",
       show_popup: false,
+      showPassword: false,
+      isRegisterFormValid: false,
 
       states: ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 
           'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 
@@ -137,110 +193,40 @@
           'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 
           'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 
           'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'],
-        
       countries: ['United States'],
-
-      show1: false,
-      show2: false,
-      rules: {
-        required: value => !!value || 'Required.',
-        min: v => v.length >= 8 || 'Min 8 characters',
-        // emailRules credit to user @ https://stackoverflow.com/questions/50039793/email-validation-n-vuetify-js
-        equals: v => v.length == 10 || '10 digits required',
-        emailRules: v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid',
-        //equal: ,
-      },
-  
     }),
     methods: {
       ...mapActions(["registerUser"]),
       submit() {
-        if (!this.name
-            || !(this.address)
-            || !(this.city)
-            || !(this.state)
-            || !(this.country)
-            || !(this.email)
-            || !(this.phone)
-            || !(this.password)
-            || this.password.length < 8
-            || !(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(this.email))
-            || !(this.checkbox))
-        {
-          this.$dbg_console_log("ERROR: Register field requirements have not been met.")
+        this.$dbg_console_log("Registering user!")
+        // remove formatting from phone number
+        let phoneNumber = this.phone.replaceAll(/[().\s-]/ig, '')
+        this.$dbg_console_log(phoneNumber)
+        this.registerUser({
+          "businessName":this.name,
+          "streetAddress":this.address,
+          "country": this.country,
+          "city": this.city,
+          "state": this.state,
+          "email": this.email,
+          "phone": this.phone,
+          "password": this.password,
+        }).then((result) => { // no backend errors thrown
+          this.$dbg_console_log(result)
+          if(result.success==1) {
+            this.$router.push('/registrationSuccess');
+          } else {
+            this.show_popup = true
+            this.popupText = result.message
+          }
+        }).catch(error => {
           this.show_popup = true
-          this.popupHeader =  "Oops!"
-          this.popupText = "Field requirements have not been met."
-          return false
-        } else {
-          this.$dbg_console_log(!(this.rules.min(this.password))
-            || !(this.rules.emailRules(this.email)))
-            this.$dbg_console_log("Registering user!")
-            this.registerUser({
-              "businessName":this.name,
-              "streetAddress":this.address,
-              "country": this.country,
-              "city": this.city,
-              "state": this.state,
-              "email": this.email,
-              "phone": this.phone,
-              "password": this.password,
-            }).then((result) => { // no backend errors thrown
-              this.$dbg_console_log(result)
-              if(result.success==1) {
-                this.$router.push('/registrationSuccess');
-              } else {
-                this.show_popup = true
-                this.popupText = result.message
-              }
-            }).catch(error => {
-              this.show_popup = true
-              this.popupHeader =  "Internal Server Error"
-              this.popupText = "Something went wrong"
-              this.$dbg_console_log(error)
-            })
-            
-          return true
-        }
-
+          this.popupHeader =  "Internal Server Error"
+          this.popupText = "Something went wrong"
+          this.$dbg_console_log(error)
+        })   
+        return true
       }
     }
   }
-  /*
-  let businessName = document.getElementById("businessName").value;
-  let address = document.getElementById("address").value;
-  let city = document.getElementById("city").value;
-  let state = document.getElementById("state").value;
-  let zip = document.getElementById("zip").value;
-  let email = document.getElementById("email").value;
-  let phone = document.getElementById("phone").value;
-  let check = document.getElementById("check").value;
-  let button = document.getElementbyId("submit");
-  */
-
 </script>
-<style scoped>
-  .v-text-field {
-    margin: 0px;
-  }
-
-  .v-select {
-    margin: 0px;
-  }
-
-  .check {
-    margin: 10px;
-  }
-
-  .center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .v-btn {
-    border-radius: 30px;
-    height: 110%;
-  }
-</style>
-

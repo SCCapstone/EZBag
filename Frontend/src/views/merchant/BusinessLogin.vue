@@ -1,5 +1,5 @@
 <template>
-  <v-container id="wrapper">
+  <v-container>
     <v-dialog
       v-model="show_popup"
       persistent
@@ -22,7 +22,7 @@
       </v-card>
     </v-dialog>
     <h2
-      class="text-center font-weight-regular my-5">
+      class="text-center font-weight-regular mt-16 mb-8">
       Welcome to EZBag
     </h2>
     <v-form 
@@ -32,7 +32,6 @@
         v-model="email"
         :rules="emailRules"
         label="E-mail"
-        required
         id="email">
       </v-text-field>
       <v-text-field
@@ -125,31 +124,4 @@
       }
     }
   }
-
 </script>
-<style scoped>
-  #wrapper {
-      margin-top: 10%;
-  }
-  #headerText {
-    font-size: 24px;
-  }
-  .v-text-field {
-    margin: 0px;
-  }
-
-  .v-select {
-    margin: 0px;
-  }
-
-  .check {
-    margin: 10px;
-  }
-
-  .center {
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-</style>
