@@ -29,9 +29,16 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-on:click="push('/about')">
+          <v-list-item v-on:click="push('/login')">
             <v-list-item-icon>
               <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Login / Register</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item v-on:click="push('/about')">
+            <v-list-item-icon>
+              <v-icon>mdi-information-outline</v-icon>
             </v-list-item-icon>
             <v-list-item-title>About</v-list-item-title>
           </v-list-item>
@@ -46,16 +53,18 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <Splash></Splash>
+
+    <router-view/>
+
   </v-card>
 </template>
 
 <script>
-import Splash from '../views/Splash.vue';
+// import Splash from '../views/Splash.vue';
 export default {
     name: 'SplashNavigation',
     components: {
-        Splash
+        
     },
     data: () => ({
       drawer: false,
@@ -66,7 +75,11 @@ export default {
         if (link === 'github') {
           window.location.href = "https://github.com/SCCapstone/EZBag";
         } else {
-          this.$router.push(link)
+          console.log(this.$router.currentRoute.path)
+          if (this.$router.currentRoute.path !== link) {
+            this.$router.push(link)
+          }
+          
         }
       }
     }

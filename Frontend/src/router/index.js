@@ -10,11 +10,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/SplashNavigation.vue')
-  },
-  {
-    path: '/about',
-    component: () => import('@/views/About.vue')
+    component: () => import('@/views/SplashNavigation.vue'),
+    children: [
+      {path: '/', component: () => import('@/views/Splash.vue')},
+      {path: 'about', component: () => import('@/views/About.vue')},
+    ]
   },
   {
     path: '/customer/:id/',
@@ -140,7 +140,7 @@ const routes = [
     path: '/NotAuthorized',
     name: 'NotAuthorized',
     component: () => import('@/views/customer/NotAuth.vue')
-  }
+  },
 ]
 
 const router = new VueRouter({

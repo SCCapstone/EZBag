@@ -27,17 +27,55 @@
           via email and/or text.
         </p>
       </div>
-      
+
+      <div>
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/scanner.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/cart.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/customer/receipt.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+      </div>
+
+      <div>
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/verification.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/sales.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/edit-product.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+        <img
+          src="https://raw.githubusercontent.com/wiki/SCCapstone/EZBag/images/splash/merchant/add-product.png"
+          alt="Receipt"
+          style="width: 30%; height: 30%"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   name: "Splash",
-  components: {
-  },
+  components: {},
 };
 </script>
 
