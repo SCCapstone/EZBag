@@ -20,7 +20,6 @@
           Reset
         </v-btn>
       </v-card-actions>
-
       <SalesChart
         :width="500"
         :height="400"

@@ -17,12 +17,13 @@
       <v-app-bar-nav-icon
         @click="drawer = true">
       </v-app-bar-nav-icon>
+      <div class="app" id="app">
+        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Minimal.svg')"/>
+      </div>
       <v-toolbar-title
         class="text-no-wrap"
         style='text-overflow:visible; overflow:visible;'>
-        EZBag
       </v-toolbar-title>
-      <v-divider class='mx-4' vertical inset></v-divider>
       <div
         class="text-subtitle-2">
       </div>
@@ -128,5 +129,10 @@ export default {
     width: 50px;
     height: 100%;
     right: -22px;
+  }
+  .app{
+    position: relative;
+    top: 3px;
+    left: -5px;
   }
 </style>

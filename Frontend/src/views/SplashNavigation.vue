@@ -1,17 +1,19 @@
 <template>
   <div>
-    <v-app-bar color="primary" dark>
+    <v-app-bar height="60" color="primary" dark>
       <v-app-bar-nav-icon
         @click="drawer = true">
       </v-app-bar-nav-icon>
       <v-toolbar-title
         class="text-no-wrap"
         style='text-overflow:visible; overflow:visible;'>
-        EZBag
+        <div class="app" id="app">
+          <img id="app" width="52" height="52" :src="require('@/assets/EZ_Minimal.svg')"/>
+        </div>
       </v-toolbar-title>
-      <v-divider class='mx-4' vertical inset></v-divider>
+      <v-divider class='app2 mx-4' vertical inset></v-divider>
       <div
-        class="text-subtitle-2">
+        class="app2 text-subtitle-2">
         Enterprise Solutions for the Small-Box Store
       </div>
     </v-app-bar>
@@ -92,3 +94,17 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.app2{
+    position: relative;
+    vertical-align: middle;
+    left: -20px;
+  }
+  .app{
+    position: relative;
+    vertical-align: middle;
+    left: -17px;
+    top: 5px;
+  }
+</style>
