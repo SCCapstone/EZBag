@@ -7,17 +7,29 @@
       <v-toolbar-title
         class="text-no-wrap"
         style='text-overflow:visible; overflow:visible;'>
-        <div class="app" id="app">
-          <img id="app" width="52" height="52" :src="require('@/assets/EZ_Minimal.svg')"/>
-        </div>
       </v-toolbar-title>
-      <v-divider class='app2 mx-4' vertical inset></v-divider>
       <div
         class="app2 text-subtitle-2">
-        Enterprise Solutions for the Small-Box Store
       </div>
-    </v-app-bar>
+      <v-col class="text-right">
+      <div class="icon" id="app"
+        >
+        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Drop.svg')"/>
 
+      </div>
+      <v-divider>
+      </v-divider>
+      </v-col>
+      <div class="iconText">
+      EZBag
+      </div>
+
+    </v-app-bar>
+    <v-app-bar height="45" color="gray" dark>
+    <div class="center">
+    Enterprise Solutions for the Small-Box Store
+    </div>
+    </v-app-bar>
     <v-navigation-drawer
       v-model="drawer"
       absolute
@@ -96,15 +108,18 @@ export default {
 </script>
 
 <style scoped>
-.app2{
-    position: relative;
-    vertical-align: middle;
-    left: -20px;
+  .center {
+    margin: auto;
+    font-weight: 300;
+    
+
   }
-  .app{
+  .iconText{
+      font-size: 18px;
+      font-weight: bolder;
+  }
+  .icon{
     position: relative;
-    vertical-align: middle;
-    left: -17px;
-    top: 5px;
+    top: 2px
   }
 </style>

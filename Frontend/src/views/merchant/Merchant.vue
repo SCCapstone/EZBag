@@ -17,15 +17,17 @@
       <v-app-bar-nav-icon
         @click="drawer = true">
       </v-app-bar-nav-icon>
-      <div class="app" id="app">
-        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Minimal.svg')"/>
+      <v-col class="text-right">
+      <div class="icon" id="app"
+        >
+        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Drop.svg')"/>
+
       </div>
-      <v-toolbar-title
-        class="text-no-wrap"
-        style='text-overflow:visible; overflow:visible;'>
-      </v-toolbar-title>
-      <div
-        class="text-subtitle-2">
+      <v-divider>
+      </v-divider>
+      </v-col>
+      <div class="iconText">
+      EZBag
       </div>
     </v-app-bar>
     <v-navigation-drawer
@@ -130,9 +132,12 @@ export default {
     height: 100%;
     right: -22px;
   }
-  .app{
+  .iconText{
+    font-size: 18px;
+    font-weight: bolder;
+  }
+  .icon{
     position: relative;
-    top: 3px;
-    left: -5px;
+    top: 2px
   }
 </style>
