@@ -15,30 +15,41 @@
         </v-btn>
     </v-btn-toggle>
     </v-app-bar>
-    <div v-bind:key="cart.cartHash" v-for="cart in carts.slice().reverse()" class="carts">
-      <div v-if="cart.verified==(currentView=='Verified')" @click="expandCart(cart)" class="cart" v-bind:class="{'is-paid':cart.verified}
-      ">
-        <h4><v-icon>mdi-cart</v-icon>{{cart.cartHash.substring(cart.cartHash.length - 3)}}</h4>
-        <h5> {{cart.dt}} </h5>
-        <small>
-            <p> 
-              <v-btn v-on:click.stop @click="markPaid(cart)" v-if="!cart.verified" class="verify">Verify</v-btn>
-              <u v-if="cart.expanded==true">
-                <v-icon class="chevron" size=50>mdi-chevron-up</v-icon>
-              </u>
-              <u v-else>
-                <v-icon class="chevron" size=50>mdi-chevron-down</v-icon>
-              </u>
-              <b>Total: ${{showTwoDecimal(cart.total)}}</b>
-            </p>
-        </small>
-        <div v-if="cart.expanded==true">
-          <div class="cartItem" v-for="(name, index) in cart.names" :key=name>
-            ({{cart.quantities[index]}}) {{name}}
-          </div>
-        </div>
-      </div>
-    </div>
+    <v-expansion-panels>
+    <v-expansion-panel v-bind:key="cart.cartHash" v-for="cart in carts.slice().reverse()" class="carts">
+      <v-expansion-panel-header v-if="cart.verified==(currentView=='Verified')">
+        <v-row>
+        <v-col>
+        <v-icon>mdi-cart</v-icon>
+        {{cart.cartHash.substring(cart.cartHash.length - 3)}}
+        <br/>
+        </v-col>
+        <v-row>
+        </v-row>
+        </v-row>
+        <v-col>
+        ${{showTwoDecimal(cart.total)}}
+        </v-col>
+        <v-col>
+          {{cart.dt}}
+        
+        </v-col>
+        <v-col v-if="!cart.verified">
+        <v-btn small @click="markPaid(cart)">
+          Verify
+        </v-btn>
+        </v-col>
+      </v-expansion-panel-header>
+      <v-expansion-panel-content v-if="cart.verified==(currentView=='Verified')">
+        <v-row>
+        <v-col>Name</v-col><v-col>Quantity</v-col>
+        </v-row>
+        <v-row class="cartItem" v-for="(name, index) in cart.names" :key=name>
+            <v-col>{{name}}</v-col> <v-col>({{cart.quantities[index]}})</v-col>
+        </v-row>
+      </v-expansion-panel-content>
+    </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 <script>
@@ -54,6 +65,7 @@ export default {
         { title: 'Verified' },
         { title: 'Unverified' },
       ],
+      headers: [""],
       currentView: "Verified",
       toggle_exclusive: true,
     }),
@@ -98,41 +110,10 @@ export default {
   .text-center{
     text-align: center;
   }
-  .carts {
-      background: #f4cccc;
-      border-bottom: 1px #FFFFFF dotted;
-      text-indent: 5px;
-  }
 
   .is-paid {
     background: #d9ead3;
     border-bottom: 1px #FFFFFF dotted;
-  }
-
-  .button-active
-  {
-    
-    color: black;
-  }
-
-  .cartItem {
-    width: 100%;
-    height: 40px;
-    border-top: 1px #FFFFFF double;
-  }
-
-  .chevron
-  {
-    position: absolute;
-    right: 5px;
-    margin-top: -21px;
-  }
-  .verify {
-    height: 30%;
-    position: absolute;
-    right: 0px;
-    margin-top: -13px;
-    margin-right: 55px;
   }
   .toggle {
     left: 0px;

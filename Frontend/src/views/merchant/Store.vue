@@ -36,7 +36,7 @@ export default {
             {
               result.carts[i]["expanded"]=false
               var milliTime = Number(result.carts[i]["time"]["$numberLong"])
-              result.carts[i]["dt"]= new Date(milliTime).toLocaleString();
+              result.carts[i]["dt"]= new Date(milliTime).toLocaleTimeString().replace(/:\d+ /, ' ');
             }
             var newCarts = []
             for(i=0; i<count; i++)
