@@ -13,7 +13,7 @@
     </v-app-bar>
     <router-view/>
     -->
-    <v-app-bar app elevate-on-scroll color="primary" dark>
+    <v-app-bar height="45" app elevate-on-scroll color="primary" dark>
       <v-app-bar-nav-icon
         @click="drawer = true">
       </v-app-bar-nav-icon>
@@ -57,6 +57,13 @@
             <v-list-item-title>Scanner</v-list-item-title>
           </v-list-item>
 
+          <v-list-item v-on:click="customer">
+            <v-list-item-icon>
+              <v-icon>mdi-store</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Customer View</v-list-item-title>
+          </v-list-item>
+
           <v-list-item v-on:click="logout">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
@@ -93,6 +100,10 @@ export default {
         }
         
       }
+    },
+    customer() {
+      var businessID = this.$route.params.id
+      this.$router.push('/customer/' +  businessID + '/scan')
     },
     logout() {
       this.setBusinessID(null)

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar height="34" color="primary" dark absolute class="menu">
+    <v-app-bar height="40" color="primary" dark absolute class="menu">
       <v-btn-toggle
           v-model="toggle_exclusive"
           mandatory
