@@ -1,31 +1,20 @@
 <template>
   <div>
-    <div class="menu text-center">
-      <div class="vmenu"> 
-      <v-menu offset-y class="vmenu">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="secondary"
-          v-bind="attrs"
-          v-on="on"
+    <v-app-bar height="34" color="primary" dark absolute class="menu">
+      <v-btn-toggle
+          v-model="toggle_exclusive"
+          mandatory
+          class = "toggle"
+          light
         >
-          Filter
-          <v-icon>
-            mdi-chevron-down
-          </v-icon>
+        <v-btn ripple small light @click="selectionChanged('Verified')" active-class="button-active">
+          Verified
         </v-btn>
-      </template>
-      <v-list>
-        <v-list-item v-on:click="selectionChanged(item)"
-          v-for="(item, index) in items"
-          :key="index"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
-    </div>
-    </div>
+        <v-btn ripple small light @click="selectionChanged('Unverified')" active-class="button-active">
+          Unverified
+        </v-btn>
+    </v-btn-toggle>
+    </v-app-bar>
     <div v-bind:key="cart.cartHash" v-for="cart in carts.slice().reverse()" class="carts">
       <div v-if="cart.verified==(currentView=='Verified')" @click="expandCart(cart)" class="cart" v-bind:class="{'is-paid':cart.verified}
       ">
@@ -33,7 +22,7 @@
         <h5> {{cart.dt}} </h5>
         <small>
             <p> 
-              <v-btn v-on:click.stop @click="markPaid(cart)" v-if="!cart.verified">Verify</v-btn>
+              <v-btn v-on:click.stop @click="markPaid(cart)" v-if="!cart.verified" class="verify">Verify</v-btn>
               <u v-if="cart.expanded==true">
                 <v-icon class="chevron" size=50>mdi-chevron-up</v-icon>
               </u>
@@ -65,12 +54,14 @@ export default {
         { title: 'Verified' },
         { title: 'Unverified' },
       ],
-      currentView: "Unverified",
+      currentView: "Verified",
+      toggle_exclusive: true,
     }),
     methods: {
       ...mapActions(["verifyCart"]),
       selectionChanged(btn) {
-        this.currentView = btn.title
+        console.log(btn)
+        this.currentView = btn
       },
       showTwoDecimal(num) {		
         return (num).toFixed(2);
@@ -96,15 +87,12 @@ export default {
 }
 </script>
 <style scoped>
-  .vmenu {
-    position: absolute;
-    top: 10px;
-    left: 165px;
-  }
   .menu {
-    background-color: rgb(66, 66, 66);
+    position: relative;
+    top: 0px;
+    background-color: rgb(53, 118, 203);
     right: 0px;
-    height: 35px;
+    height: 20px;
     width: 100%;
   }
   .text-center{
@@ -121,6 +109,12 @@ export default {
     border-bottom: 1px #FFFFFF dotted;
   }
 
+  .button-active
+  {
+    
+    color: black;
+  }
+
   .cartItem {
     width: 100%;
     height: 40px;
@@ -133,13 +127,16 @@ export default {
     right: 5px;
     margin-top: -21px;
   }
-
-
-  .v-btn {
+  .verify {
     height: 30%;
     position: absolute;
     right: 0px;
     margin-top: -13px;
     margin-right: 55px;
   }
+  .toggle {
+    left: 0px;
+    top: -3px;
+  }
+  
 </style>
