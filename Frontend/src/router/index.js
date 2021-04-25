@@ -86,6 +86,7 @@ const routes = [
     children: [
       {
         path: 'scan',
+        name: 'scan',
         components: {
           navigation: () => import('@/components/CustomerNavigation.vue'),
           default: () => import('@/views/customer/Scan.vue')
@@ -100,7 +101,16 @@ const routes = [
       },
       {
         path: 'receipt',
-        component: () => import('@/views/customer/ReceiptPage.vue')
+        component: () => import('@/views/customer/ReceiptPage.vue'),
+        beforeEnter: (to, from, next) => { 
+          // check if customer just logged out via carthash present
+          if (store.getters["getCartHash"] !== null) {
+            next();
+          } else {
+            next( { path: '/' } );
+          }
+
+        }
       }
     ]
   },

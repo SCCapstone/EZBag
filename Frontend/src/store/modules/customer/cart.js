@@ -176,7 +176,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       if(context.state.productsInCart.length == 0) 
         resolve({ // cart is empty
-          checkoutSuccesful:false,
+          checkoutSuccessful:false,
           cartEmpty:true
         }) 
       else  // cart is not empty
@@ -192,13 +192,13 @@ const actions = {
               context.commit('setCartHash', result.data.hash)
               context.commit('emptyCart')
               resolve({
-                checkoutSuccesful: true,
+                checkoutSuccessful: true,
                 cartEmpty:true
               }) 
             }
             else { // backend could not submit cart
               resolve({
-                checkoutSuccesful: false,
+                checkoutSuccessful: false,
                 cartEmpty: false
               })
             }

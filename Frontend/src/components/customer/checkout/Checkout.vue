@@ -24,11 +24,11 @@ export default {
       this.checkoutCart(this.$route.params.id)
         .then((result) => { // backend succesfully responded
           this.$dbg_console_log('Attempted to checkout', result)
-          if(result.checkoutSuccesful && result.cartEmpty)
+          if(result.checkoutSuccessful && result.cartEmpty)
             this.$router.push('receipt') // succesful checkout
-          else if(!result.checkoutSuccesful && result.cartEmpty)
+          else if(!result.checkoutSuccessful && result.cartEmpty)
             this.$emit("show-popup") // cannot checkout empty cart
-          else if(!result.checkoutSuccesful && !result.cartEmpty)
+          else if(!result.checkoutSuccessful && !result.cartEmpty)
             this.$dbg_console_log('Backend could not checkout cart for some reason')
         }).catch(error => { // backend could not be reached
           this.$dbg_console_log('Failed to checkout', error)
