@@ -1,56 +1,74 @@
 <template>
-  <div>
-    <v-app-bar height="40" color="primary" dark absolute class="menu">
+  <v-container class="pt-0 mt-n3">
+    <v-card
+      color="primary"
+      class="rounded-t-0 elevation-0">
       <v-btn-toggle
-          v-model="toggle_exclusive"
-          mandatory
-          class = "toggle"
-          light
-        >
-        <v-btn ripple small light @click="selectionChanged('Verified')" active-class="button-active">
+        v-model="toggle_exclusive"
+        mandatory
+        class="ml-2 mb-2"
+        light>
+        <v-btn
+          ripple 
+          small 
+          light 
+          @click="selectionChanged('Verified')" active-class="button-active">
           Verified
         </v-btn>
-        <v-btn ripple small light @click="selectionChanged('Unverified')" active-class="button-active">
+        <v-btn 
+          ripple
+          small
+          light
+          @click="selectionChanged('Unverified')" active-class="button-active">
           Unverified
         </v-btn>
-    </v-btn-toggle>
-    </v-app-bar>
+      </v-btn-toggle>
+    </v-card>
     <v-expansion-panels>
-    <v-expansion-panel v-bind:key="cart.cartHash" v-for="cart in carts.slice().reverse()" class="carts">
-      <v-expansion-panel-header v-if="cart.verified==(currentView=='Verified')">
-        <v-row>
-        <v-col>
-        <v-icon>mdi-cart</v-icon>
-        {{cart.cartHash.substring(cart.cartHash.length - 3)}}
-        <br/>
-        </v-col>
-        <v-row>
-        </v-row>
-        </v-row>
-        <v-col>
-        ${{showTwoDecimal(cart.total)}}
-        </v-col>
-        <v-col>
-          {{cart.dt}}
-        
-        </v-col>
-        <v-col v-if="!cart.verified">
-        <v-btn small @click="markPaid(cart)">
-          Verify
-        </v-btn>
-        </v-col>
-      </v-expansion-panel-header>
-      <v-expansion-panel-content v-if="cart.verified==(currentView=='Verified')">
-        <v-row>
-        <v-col>Name</v-col><v-col>Quantity</v-col>
-        </v-row>
-        <v-row class="cartItem" v-for="(name, index) in cart.names" :key=name>
-            <v-col>{{name}}</v-col> <v-col>({{cart.quantities[index]}})</v-col>
-        </v-row>
-      </v-expansion-panel-content>
-    </v-expansion-panel>
+      <v-expansion-panel
+        v-bind:key="cart.cartHash"
+        v-for="cart in carts.slice().reverse()"
+        class="carts">
+        <v-expansion-panel-header
+          v-if="cart.verified==(currentView=='Verified')">
+          <v-row>
+            <v-col>
+              <v-icon>mdi-cart</v-icon>
+              {{cart.cartHash.substring(cart.cartHash.length - 3)}}
+              <br/>
+            </v-col>
+            <v-row>
+            </v-row>
+          </v-row>
+          <v-col>
+            ${{showTwoDecimal(cart.total)}}
+          </v-col>
+          <v-col>{{cart.dt}}</v-col>
+          <v-col 
+            v-if="!cart.verified">
+            <v-btn
+              small
+              @click="markPaid(cart)">
+              Verify
+            </v-btn>
+          </v-col>
+        </v-expansion-panel-header>
+        <v-expansion-panel-content
+          v-if="cart.verified==(currentView=='Verified')">
+          <v-row>
+            <v-col>Name</v-col>
+            <v-col>Quantity</v-col>
+          </v-row>
+          <v-row
+            v-for="(name, index) in cart.names"
+            :key=name>
+              <v-col>{{name}}</v-col>
+              <v-col>({{cart.quantities[index]}})</v-col>
+          </v-row>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panels>
-  </div>
+  </v-container>
 </template>
 <script>
 import {mapActions} from 'vuex';
@@ -98,26 +116,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-  .menu {
-    position: relative;
-    top: 0px;
-    background-color: rgb(53, 118, 203);
-    right: 0px;
-    height: 20px;
-    width: 100%;
-  }
-  .text-center{
-    text-align: center;
-  }
-
-  .is-paid {
-    background: #d9ead3;
-    border-bottom: 1px #FFFFFF dotted;
-  }
-  .toggle {
-    left: 0px;
-    top: -3px;
-  }
-  
-</style>
