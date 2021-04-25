@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <Carts height='max' v-bind:carts="carts" v-on:verify="markPaid" />
+    <Carts v-bind:carts="carts" v-on:verify="markPaid" />
   </v-container>
 </template>
 

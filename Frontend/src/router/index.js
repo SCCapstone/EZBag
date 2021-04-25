@@ -27,6 +27,7 @@ const routes = [
       },
       {
         path: 'login',
+        name: 'login',
         components: {
           navigation: () => import('@/components/SplashNavigation.vue'),
           default: () => import('@/views/merchant/BusinessLogin.vue')
@@ -116,6 +117,7 @@ const routes = [
       },
       {
         path: 'store',
+        name: 'store',
         components: {
           navigation: () => import('@/components/MerchantNavigation.vue'),
           default: () => import('@/views/merchant/Store.vue')
