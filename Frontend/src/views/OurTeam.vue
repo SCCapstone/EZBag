@@ -1,8 +1,6 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row justify="center">
-      <v-subheader>About Us</v-subheader>
-
       <v-expansion-panels popout>
         <v-expansion-panel
           v-for="(message, i) in messages"

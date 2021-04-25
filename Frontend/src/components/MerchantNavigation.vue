@@ -1,40 +1,11 @@
 <template>
-  <div>
-    <!--
-    <v-app-bar app elevate-on-scroll color="primary" dark>
-        <v-app-bar class="tabs" app elevate-on-scroll color="primary" dark>
-          <v-tabs fixed-tabs>
-              <v-tab to="store">Verification</v-tab>
-              <v-tab to="statistics">Sales</v-tab>
-              <v-tab to="products">Products</v-tab>
-          </v-tabs>
-        </v-app-bar>
-        <v-tab v-on:click.stop @click="logout()" class="logout"><v-icon>mdi-logout</v-icon></v-tab>
-    </v-app-bar>
-    <router-view/>
-    -->
-    <v-app-bar height="45" app elevate-on-scroll color="primary" dark>
-      <v-app-bar-nav-icon
-        @click="drawer = true">
-      </v-app-bar-nav-icon>
-      <v-col class="text-right">
-      <div class="icon" id="app"
-        >
-        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Drop.svg')"/>
-
-      </div>
-      <v-divider>
-      </v-divider>
-      </v-col>
-      <div class="iconText">
-      EZBag
-      </div>
-    </v-app-bar>
+  <v-container class="mx-auto overflow-hidden" style="z-index:100">
     <v-navigation-drawer
-      class="top"
+      app
       v-model="drawer"
-      absolute
-      temporary>
+      bottom
+      right
+      hide-overlay>
       <v-list
         nav
         dense>
@@ -77,8 +48,22 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <router-view/>
-  </div>
+    <v-app-bar color="primary" dark>
+      <v-app-bar-nav-icon
+        @click="drawer = true">
+      </v-app-bar-nav-icon>
+      <v-toolbar-title
+        class="text-no-wrap"
+        style='text-overflow:visible; overflow:visible;'>
+        <v-img width="35" height="35" src="@/assets/EZ_Drop.svg"> </v-img>
+      </v-toolbar-title>
+      <v-divider class='mx-4' vertical inset></v-divider>
+      <div
+        class="text-subtitle-2">
+        Enterprise Solutions for the Small-Box Store
+      </div>
+    </v-app-bar>
+  </v-container>
 </template>
 
 <script>
@@ -116,28 +101,3 @@ export default {
   },
 }
 </script>
-
-<style>
-  .top{
-    z-index: 100;
-  }
-  .tabs{
-    width: calc(100% - 50px);
-  }
-  .logout
-  {
-    position: absolute;
-    top: 0px;
-    width: 50px;
-    height: 100%;
-    right: -22px;
-  }
-  .iconText{
-    font-size: 18px;
-    font-weight: bolder;
-  }
-  .icon{
-    position: relative;
-    top: 2px
-  }
-</style>

@@ -1,7 +1,7 @@
 <template>
-  <div id="store">
-    <Carts v-bind:carts="carts" v-on:verify="markPaid" />
-  </div>
+  <v-container>
+    <Carts height='max' v-bind:carts="carts" v-on:verify="markPaid" />
+  </v-container>
 </template>
 
 <script>

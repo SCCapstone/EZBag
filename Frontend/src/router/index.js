@@ -6,15 +6,31 @@ const { $dbg_console_log } = methods
 import store from '../store/index.js'
 Vue.use(VueRouter)
 
-
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/SplashNavigation.vue'),
+    component: () => import('@/components/EmptyRouterView.vue'),
     children: [
-      {path: '', component: () => import('@/views/Splash.vue')},
-      {path: 'about', component: () => import('@/views/OurTeam.vue')},
-      {path: 'login', component: () => import('@/views/merchant/BusinessLogin.vue'),
+      {
+        path: '',
+        components: {
+          navigation: () => import('@/components/SplashNavigation.vue'),
+          default: () => import('@/views/Splash.vue')
+        },
+      },
+      {
+        path: 'about',
+        components: {
+          navigation: () => import('@/components/SplashNavigation.vue'),
+          default: () => import('@/views/OurTeam.vue')
+        },
+      },
+      {
+        path: 'login',
+        components: {
+          navigation: () => import('@/components/SplashNavigation.vue'),
+          default: () => import('@/views/merchant/BusinessLogin.vue')
+        },
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
           store.dispatch("verifyToken").then( (result) => {
@@ -36,7 +52,11 @@ const routes = [
         }
       },
       {
-        path: 'register', component: () => import('@/views/merchant/BusinessRegister.vue'),
+        path: 'register',
+        components: {
+          navigation: () => import('@/components/SplashNavigation.vue'),
+          default: () => import('@/views/merchant/BusinessRegister.vue')
+        },
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
           store.dispatch("verifyToken").then( (result) => {
@@ -61,29 +81,52 @@ const routes = [
   },
   {
     path: '/customer/:id/',
-    component: () => import('@/views/customer/Customer.vue'),
+    component: () => import('@/components/EmptyRouterView.vue'),
     children: [
-      {path: 'scan', component: () => import('@/views/customer/Scan.vue')},
-      {path: 'cart', component: () => import('@/views/customer/Cart.vue')},
-      {path: 'receipt', component: () => import('@/views/customer/ReceiptPage.vue')}
+      {
+        path: 'scan',
+        components: {
+          navigation: () => import('@/components/CustomerNavigation.vue'),
+          default: () => import('@/views/customer/Scan.vue')
+        },
+      },
+      {
+        path: 'cart',
+        components: {
+          navigation: () => import('@/components/CustomerNavigation.vue'),
+          default: () => import('@/views/customer/Cart.vue')
+        },
+      },
+      {
+        path: 'receipt',
+        component: () => import('@/views/customer/ReceiptPage.vue')
+      }
     ]
   },
   {
     path: '/merchant/:id/',
-    component: () => import('@/views/merchant/Merchant.vue'),
+    component: () => import('@/components/EmptyRouterView.vue'),
     children: [
       {
-        path: 'statistics', 
-        component: () => import('@/views/merchant/SalesDashboard.vue'),
+        path: 'statistics',
+        components: {
+          navigation: () => import('@/components/MerchantNavigation.vue'),
+          default: () => import('@/views/merchant/SalesDashboard.vue')
+        },
       },
       {
-        path: 'store', 
-        name: 'store',
-        component: () => import('@/views/merchant/Store.vue'),
+        path: 'store',
+        components: {
+          navigation: () => import('@/components/MerchantNavigation.vue'),
+          default: () => import('@/views/merchant/Store.vue')
+        },
       },
       {
-        path: 'products', 
-        component: () => import('@/views/merchant/Products.vue'),
+        path: 'products',
+        components: {
+          navigation: () => import('@/components/MerchantNavigation.vue'),
+          default: () => import('@/views/merchant/Scanner.vue')
+        },
       }
     ],
     beforeEnter: (to, from, next) => {

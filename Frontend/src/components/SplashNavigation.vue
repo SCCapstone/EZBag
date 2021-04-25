@@ -1,38 +1,11 @@
 <template>
-  <div>
-    <v-app-bar height="60" color="primary" dark>
-      <v-app-bar-nav-icon
-        @click="drawer = true">
-      </v-app-bar-nav-icon>
-      <v-toolbar-title
-        class="text-no-wrap"
-        style='text-overflow:visible; overflow:visible;'>
-      </v-toolbar-title>
-      <div
-        class="app2 text-subtitle-2">
-      </div>
-      <v-col class="text-right">
-      <div class="icon" id="app"
-        >
-        <img id="app" width="38" height="40" :src="require('@/assets/EZ_Drop.svg')"/>
-
-      </div>
-      <v-divider>
-      </v-divider>
-      </v-col>
-      <div class="iconText">
-      EZBag
-      </div>
-
-    </v-app-bar>
-    <v-app-bar height="45" color="gray" dark>
-    <div class="center">
-    Enterprise Solutions for the Small-Box Store
-    </div>
-    </v-app-bar>
+  <v-container class="mx-auto overflow-hidden">
     <v-navigation-drawer
+      app
       v-model="drawer"
-      absolute
+      bottom
+      right
+      hide-overlay
       temporary>
       <v-list
         nav
@@ -76,8 +49,22 @@
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
-    <router-view/>
-  </div>
+    <v-app-bar color="primary" dark>
+      <v-app-bar-nav-icon
+        @click="drawer = true">
+      </v-app-bar-nav-icon>
+      <v-toolbar-title
+        class="text-no-wrap"
+        style='text-overflow:visible; overflow:visible;'>
+        <v-img width="35" height="35" src="@/assets/EZ_Drop.svg"> </v-img>
+      </v-toolbar-title>
+      <v-divider class='mx-4' vertical inset></v-divider>
+      <div
+        class="text-subtitle-2">
+        Enterprise Solutions for the Small-Box Store
+      </div>
+    </v-app-bar>
+  </v-container>
 </template>
 
 <script>
