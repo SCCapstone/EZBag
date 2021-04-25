@@ -2,13 +2,17 @@
 package org.tests;
 
 import io.jsonwebtoken.Claims;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.core.Application;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.bson.Document;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
+import org.routes.BizSalesByBarcode;
+import org.routes.BizSalesRoute;
 import org.services.StartupService;
 
 
@@ -24,7 +28,7 @@ public class UtilsTests extends JerseyTest {
     @Override
     protected Application configure() {
         StartupService.startup();
-        return new ResourceConfig(Utils.class);
+        return new ResourceConfig(Utils.class, BizSalesRoute.class, BizSalesByBarcode.class);
     }
 
     @Test
@@ -37,6 +41,7 @@ public class UtilsTests extends JerseyTest {
         System.out.println(DigestUtils.sha256Hex("ryoogfj4lpSi1lhaknOA"+"password"));
 
     }
+
 
 
 }

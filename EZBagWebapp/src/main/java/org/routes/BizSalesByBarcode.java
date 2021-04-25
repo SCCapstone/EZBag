@@ -18,7 +18,6 @@ public class BizSalesByBarcode {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public String doPost(String payload, @HeaderParam("Authorization") String authToken) {
-        System.out.println("Hello world");
         JsonObject payloadObject = new JsonParser().parse(payload).getAsJsonObject();
         if (payloadObject.has("token") && payloadObject.has("businessID")
                 && payloadObject.has("barcode") && payloadObject.has("days")){
@@ -28,10 +27,11 @@ public class BizSalesByBarcode {
                 int days = Integer.parseInt(payloadObject.get("days").getAsString());
                 String resp = DatabaseService.getSalesByBarcode(businessID, barcode, days);
                 return resp;
+            } else {
+                return Utils.generateResponse(false, "Not authorized");
             }
+        } else {
+            return Utils.generateResponse(false, "Past sales by barcode lookup requires: businessID, barcode");
         }
-        System.out.println("Malformed request");
-        System.out.println(payload);
-        return "nay";
     }
 }

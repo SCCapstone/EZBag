@@ -148,16 +148,18 @@ public class MongoDB {
     public String getSalesByBarcode(String businessID, String barcode, int days)
     {
         long longDays = days;
+        ArrayList<String> bcs = new ArrayList<>();
+        bcs.add(barcode);
         long dayMillis = System.currentTimeMillis() - 86400000*longDays;
         FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
                 .find(new Document().append("businessID", businessID)
-                        .append("barcode", barcode)
-                        .append("time", new Document().append("$gt" , dayMillis)));
+                        .append("time", new Document().append("$gt" , dayMillis))
+                        .append("barcodes", new Document().append("$in", bcs))
+                );
         JsonArray jsArray = new JsonArray();
         HashMap<String, String> productCache = new HashMap<>();
         for (Document doc : result) {
             doc.remove("_id");
-            // TODO: get product names
             ArrayList<String> barcodes = (ArrayList<String>) doc.get("barcodes");
             ArrayList<String> productNames = new ArrayList<>(barcodes.size());
             for (int i = 0; i < barcodes.size(); i++) {
@@ -170,7 +172,6 @@ public class MongoDB {
                         productNames.add(i, resp.getString("name"));
                         productCache.put(barcodes.get(i), resp.getString("name"));
                     } else {
-                        // TODO: product doesnt exists do something else to handle this
                         productNames.add(i, "UNKNOWN PRODUCT ERROR");
                         productCache.put(barcodes.get(i), "UNKNOWN PRODUCT ERROR");
                     }
@@ -187,7 +188,7 @@ public class MongoDB {
     }
 
     public String getLastDaysCartsByBusinessID(String businessID, int days) {
-        long longDays = days;
+        long longDays = (long)days;
         long dayMillis = System.currentTimeMillis() - 86400000*longDays;
         FindIterable<Document> result = collectionsMap.get(checkoutCartCollectionName)
                 .find(new Document().append("businessID", businessID)

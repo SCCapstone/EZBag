@@ -28,7 +28,7 @@ public class BizSalesRoute {
                 // TODO: change returned carts to include item names array
                 return DatabaseService.getLastDaysCartsByBusinessID(businessID, days);
             } else {
-                return Utils.generateResponse(false, "Barcode product lookup requires: businessID");
+                return Utils.generateResponse(false, "Past sales lookup requires: businessID, days");
             }
         } else {
             return Utils.generateResponse(false, "Not authorized");
