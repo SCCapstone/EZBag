@@ -119,7 +119,6 @@ export default {
     },
     // set options for barcode picker and save picker                     
     initPicker(barcodePicker) {
-      barcodePicker.setGuiStyle('none'); // remove blue bar that covers nav bar in mobile view
       barcodePicker.setMirrorImageEnabled(false);
       barcodePicker.setVideoFit('cover');
       this.barcodePicker = barcodePicker
