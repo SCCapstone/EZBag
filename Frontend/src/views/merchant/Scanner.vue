@@ -1,12 +1,12 @@
 <template>
   <v-container class="pa-0"> 
-    <ScanSearchBar v-on:showproduct="showItem" v-on:isSearching="toggleScanner($event)"/>
     <v-scandit class="v-scandit"
       license-key="AZ8/Ug5hLjqmMAbzNgY90r9Cv7cjK9PQGVY+fCFQxRXOZLZ0AXBNwblHWITRd1iYdDQmhn1T/lBlYLkcNxURdVluSkcCPPA8qnHIkvJ/vHGcI8kIc1peT7hhv+wUYuDZAFSVGKNAW3YNeLmJLRgtdcgl2BEvIa/D5gQAFmYHWnTeObel0pyvJMwYV3YDv8DL35lmqB3ieAu4Db+OMGJD777/pGzvL7pEX0XucfhLiwuyvH2Gp7s0qQ3p/tEf6YFaIHhj+1MjAsKs+3UvWUqg9oUx0Amh+MLWwxqPSve7SjggQPMOKvdgvU8helgUrCk0ASff/p3lfzeJaVnel3TfJEf2FIzwn69JjsG//TmOgTwtYjVlsXzy5b7UoexWkwZbLanFR42yw2zgTKFiyKEXetFAd+FxMsAOAV84sW9gC05OmZI2NbEt0Y/XOiDcpDIHlvBRUJdliCkXlM2rDCInmU/FL8RZichbH7KrG8RN6Uy462MYVp5wx+vYcwQIwbClHfOFJFBuC47f9idh0xSYS/kPq9mkysjetBZWMGKxZxUiEmxRwQbukwUUz8XfSlgodYUvuyaoqKN46jaIeJlKLil9EFftjnzJBpjKHUFXLfvHqJ90NvI5YTsbOgwBL7sqmkqS6t7Ww+xankZsYkuAwjN/TlA0Tb+3dM8QOhRq1n35jLp01aBR9j6p4bQShY0mwtMAWetzy3uMKOJlGRw6l9ozzRQ62anydApDnQmd4WzhigIJJCKtCP6e1fRN1ZEDDHOkldgoN0nmxJ6R7T5gbm7TXopiYyVSSXEJUfoJ988jwNGTqnjJt144en6O7eBxeK5DEsEy//rPnA==" 
       :configuration-options="{ engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/' }"
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { findAndLoadProduct(barcode.barcodes[0].data) }" />
+    <ScanSearchBar style="z-index:0;" v-on:showproduct="showItem" v-on:isSearching="toggleScanner($event)"/>
     <!--
       Pop up
     !-->
@@ -47,39 +47,61 @@
     >
       <v-sheet>
         <v-card>
-
-          <v-card>
+          <v-form 
+            v-model="isProductFormValid"
+            @submit.prevent="addScannedProduct">
             <v-card-title>
-              <input v-model="name" placeholder="Product name here...">
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="Name"
+                id="name"
+                validate-on-blur>
+              </v-text-field>
             </v-card-title>
-              <v-card-text>
-                <div class="my-4 subtitle-1">
-                  Product Description:<br>
-                  <textarea v-model="description" placeholder="Description here..."></textarea>
-                </div>
-                <div class="my-4 subtitle-1">
-                  Product Price: 
-                  $ <input v-model="price">
-                </div>
-                <div class="my-4 subtitle-1">
-                  Sales Tax Rate: 
-                  <input v-model="tax">%
-                </div>    
-              </v-card-text>
-          </v-card>
-
-          <v-card-actions class="justify-center">
-            <v-btn 
-              v-show="show_delete" 
-              @click="deleteScannedProduct">Delete
-              <v-icon right>mdi-delete</v-icon>
-            </v-btn>
-            <v-btn @click="cancelScannedProduct">Cancel
-              <v-icon right>mdi-close</v-icon>
-            </v-btn>
-            <v-btn @click="addScannedProduct">Add to store
-            </v-btn>
-          </v-card-actions>
+            <v-card-text>
+              <v-text-field
+                v-model="description"
+                :rules="descriptionRules"
+                label="Description"
+                id="description">
+              </v-text-field>
+              <v-text-field
+                v-model="price"
+                :rules="priceRules"
+                label="Price (USD)"
+                type='number'
+                id="price"
+                validate-on-blur>
+              </v-text-field>
+              <v-text-field
+                v-model="tax"
+                :rules="taxRules"
+                type='number'
+                label="Percentage Tax"
+                id="tax"
+                validate-on-blur>
+              </v-text-field>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn 
+                v-show="show_delete" 
+                @click="deleteScannedProduct">
+                Delete
+                <v-icon right>mdi-delete</v-icon>
+              </v-btn>
+              <v-btn
+                @click="cancelScannedProduct">
+                Cancel
+                <v-icon right>mdi-close</v-icon>
+              </v-btn>
+              <v-btn
+                :disabled="!isProductFormValid"
+                type="addScannedProduct">
+                Add to Store
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-sheet>
     </v-bottom-sheet>
@@ -96,16 +118,35 @@ export default {
   },
   data() {
     return {
+      name: "",
+      nameRules:[
+        v => !!v || 'Product name is required',
+        v => v.length <= 60 || 'Product name is too long'
+      ],
+      description: "",
+      descriptionRules:[
+        v => v.length <= 200 || 'Description is too long'
+      ],
+      price: "",
+      priceRules:[
+        v => !!v || 'Price is required',
+        v => v >= 0 || 'Price must be non-negative',
+        v => v.toString().length <= 60 || 'Price input is too large',
+      ],
+      tax: "",
+      taxRules:[
+        v => !!v || 'Tax is required (could be zero, check your local laws)',
+        v => v >= 0 || 'Tax must be non-negative',
+        v => v.toString().length <= 60 || 'Tax input is too large',
+      ],
+      isProductFormValid: false,
+
       clear_product_card_fields: false,
       show_scanned_product: false, // for displaying scanned product card
       show_popup: false,
       show_delete: false,
       scanned_product_barcode: 0,
       barcodePicker: null,
-      name: "test",
-      description: "test",
-      price: 0,
-      tax: 0,
     };
   },
   computed: {
@@ -147,7 +188,7 @@ export default {
                 this.price = 0
                 this.tax = 0
               } else {
-                console.log("product exists: "+result.product.name)
+                console.log("product exists: "+result.product)
                 this.show_delete = true
                 this.name = result.product.name
                 this.description = result.product.description

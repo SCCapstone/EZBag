@@ -1,10 +1,9 @@
 <template>
-  <v-container class="mx-auto overflow-hidden" style="z-index:100">
+  <v-container class="pt-0 px-0 overflow-hidden" style="z-index:100">
     <v-navigation-drawer
       app
       v-model="drawer"
-      bottom
-      right
+      temporary
       hide-overlay>
       <v-list
         nav
@@ -52,16 +51,9 @@
       <v-app-bar-nav-icon
         @click="drawer = true">
       </v-app-bar-nav-icon>
-      <v-toolbar-title
-        class="text-no-wrap"
-        style='text-overflow:visible; overflow:visible;'>
-        <v-img width="35" height="35" src="@/assets/EZ_Drop.svg"> </v-img>
-      </v-toolbar-title>
-      <v-divider class='mx-4' vertical inset></v-divider>
-      <div
-        class="text-subtitle-2">
-        Enterprise Solutions for the Small-Box Store
-      </div>
+      <v-spacer></v-spacer>
+      <img width="35px" height="35" src="@/assets/EZ_Drop.svg">
+      <div class="text-h6 font-weight-bold mt-2 ml-2">EZBag</div>
     </v-app-bar>
   </v-container>
 </template>
