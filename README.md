@@ -1,29 +1,10 @@
 # EZBag
-
+## Project Description
 Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
 However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
 Therefore, EZBag is a free web app that aims to allow any brick-and-mortar store to implement scan-and-go. 
 A patron at a participating store can use the EZBag web app on their phone to scan and pay for items without going through the typical checkout process.
-[EZBag web app view mockups can be found here.](https://github.com/SCCapstone/EZBag/wiki/Requirements)
-
-
-## [EZBag Proof of Concept Presentation & Demo](https://youtu.be/l9hTREqO-ws)
-Click this link to view our proof of concept presentation video on YouTube
-
-## [Proof of Concept Web App](https://blakeedwards.me/EZBagWebapp/webapi/redirect/179aa3e0fb88f6e4ec0ef0d0f5588d43f93713e7b7e4a5ddd8a3fdd1c39701fa)
-Click this link to view our proof of concept application. NOTE: Our website uses a self-signed SSL certificate and the best platform to use the EZBag app on is iPhone with the Safari browser. When opening the web application link if you you are presented with a "Your connection is not private" message (or something similar), override and continue to the site anyways. To do this, we recommend using Safari (as Google Chrome does not allow you to override and continue to the page). Also note that this application is built for a mobile web browser and therefore will not display correctly on a desktop view. If you would like to view the app on your desktop computer, we recommend opening this link in Safari and changing to Responsive Design Mode ("Develop" menu item > "Enter Responsive Design Mode").
-
-## Instructions to use the demo
-1. [Open the web app](https://www.blakeedwards.me/EZBagWebapp/#/)
-2. Allow camera access to the web app
-3. Scan the barcode below (Note: unknown products can be scanned, and they will appear in the cart with an example name, but they won't be included in the digital reciept).
-
-  ![](https://github.com/SCCapstone/EZBag/blob/master/readme/barcode_example.jpg)
-
-4. Navigate to the "Cart" tab
-5. Press the "$" button to pay
-6. Press the "Checkout" button to mock pay
-7. Put in a standard 10 digit phone number to receive your digital receipt (email sending works locally but not yet on server deployment at this time)
+[Click here for an online demo](https://www.blakeedwards.me/EZBagWebapp/#/)
 
 ## Initial Setup with Docker:
 1. Install docker (if you are on Windows 10, use WSL2 for docker).
