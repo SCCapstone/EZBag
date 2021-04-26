@@ -47,39 +47,61 @@
     >
       <v-sheet>
         <v-card>
-
-          <v-card>
+          <v-form 
+            v-model="isProductFormValid"
+            @submit.prevent="addScannedProduct">
             <v-card-title>
-              <input v-model="name" placeholder="Product name here...">
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                label="Name"
+                id="name"
+                validate-on-blur>
+              </v-text-field>
             </v-card-title>
-              <v-card-text>
-                <div class="my-4 subtitle-1">
-                  Product Description:<br>
-                  <textarea v-model="description" placeholder="Description here..."></textarea>
-                </div>
-                <div class="my-4 subtitle-1">
-                  Product Price: 
-                  $ <input v-model="price">
-                </div>
-                <div class="my-4 subtitle-1">
-                  Sales Tax Rate: 
-                  <input v-model="tax">%
-                </div>    
-              </v-card-text>
-          </v-card>
-
-          <v-card-actions class="justify-center">
-            <v-btn 
-              v-show="show_delete" 
-              @click="deleteScannedProduct">Delete
-              <v-icon right>mdi-delete</v-icon>
-            </v-btn>
-            <v-btn @click="cancelScannedProduct">Cancel
-              <v-icon right>mdi-close</v-icon>
-            </v-btn>
-            <v-btn @click="addScannedProduct">Add to store
-            </v-btn>
-          </v-card-actions>
+            <v-card-text>
+              <v-text-field
+                v-model="description"
+                :rules="descriptionRules"
+                label="Description"
+                id="description">
+              </v-text-field>
+              <v-text-field
+                v-model="price"
+                :rules="priceRules"
+                label="Price (USD)"
+                type='number'
+                id="price"
+                validate-on-blur>
+              </v-text-field>
+              <v-text-field
+                v-model="tax"
+                :rules="taxRules"
+                type='number'
+                label="Percentage Tax"
+                id="tax"
+                validate-on-blur>
+              </v-text-field>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn 
+                v-show="show_delete" 
+                @click="deleteScannedProduct">
+                Delete
+                <v-icon right>mdi-delete</v-icon>
+              </v-btn>
+              <v-btn
+                @click="cancelScannedProduct">
+                Cancel
+                <v-icon right>mdi-close</v-icon>
+              </v-btn>
+              <v-btn
+                :disabled="!isProductFormValid"
+                type="addScannedProduct">
+                Add to Store
+              </v-btn>
+            </v-card-actions>
+          </v-form>
         </v-card>
       </v-sheet>
     </v-bottom-sheet>
@@ -96,16 +118,35 @@ export default {
   },
   data() {
     return {
+      name: "",
+      nameRules:[
+        v => !!v || 'Product name is required',
+        v => v.length <= 60 || 'Product name is too long'
+      ],
+      description: "",
+      descriptionRules:[
+        v => v.length <= 200 || 'Description is too long'
+      ],
+      price: "",
+      priceRules:[
+        v => !!v || 'Price is required',
+        v => v >= 0 || 'Price must be non-negative',
+        v => v.toString().length <= 60 || 'Price input is too large',
+      ],
+      tax: "",
+      taxRules:[
+        v => !!v || 'Tax is required (could be zero, check your local laws)',
+        v => v >= 0 || 'Tax must be non-negative',
+        v => v.toString().length <= 60 || 'Tax input is too large',
+      ],
+      isProductFormValid: false,
+
       clear_product_card_fields: false,
       show_scanned_product: false, // for displaying scanned product card
       show_popup: false,
       show_delete: false,
       scanned_product_barcode: 0,
       barcodePicker: null,
-      name: "test",
-      description: "test",
-      price: 0,
-      tax: 0,
     };
   },
   computed: {
@@ -147,7 +188,7 @@ export default {
                 this.price = 0
                 this.tax = 0
               } else {
-                console.log("product exists: "+result.product.name)
+                console.log("product exists: "+result.product)
                 this.show_delete = true
                 this.name = result.product.name
                 this.description = result.product.description
