@@ -132,6 +132,6 @@ export default {
 
 <style scoped>
   .searchbar {
-    z-index: 10;
+    z-index: 1;
   }
 </style>
