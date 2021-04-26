@@ -48,6 +48,11 @@ export default {
   data() {
     return {
       showingProductSales: false,
+      HOD: ["11 PM","12 AM","1 AM","2 AM","3 AM","4 AM","5 AM","6 AM","7 AM","8 AM","9 AM","10 AM","11 AM",
+            "12 PM","1 PM","2 PM","3 PM","4 PM","5 PM","6 PM","7 PM","8 PM","9 PM","10 PM",
+      ],
+      DOW: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      DOM: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       xAxisLabels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
       dataset: [
         {
@@ -75,183 +80,148 @@ export default {
             ]
           },
       },
-      selected: "Last 24 hours",
+      selected: "Last 24 Hours",
       interval: [
-        "Last 24 hours",
-        "Last 7 days",
-        "Last 30 days",
-        "Last 365 days",
+        "Last 24 Hours",
+        "Last 7 Days",
+        "Last 365 Days",
       ],
       selected2: "Net Profit",
-      interval2: ["Net Profit", "Transactions"],
-      allSalesDatasets: [
-        [
-          [
-            {
-              label: "Transactions last 24 hours",
-              data: [1, 2, 3, 4, 5],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 24 hours",
-              data: [1, 2, 3, 4, 5],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 7 days",
-              data: [5, 4, 3, 2, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 7 days",
-              data: [5, 4, 3, 2, 1],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 30 days",
-              data: [1, 2, 3, 2, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 30 days",
-              data: [1, 2, 3, 2, 1],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 365 days",
-              data: [3, 2, 1, 2, 3],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 365 days",
-              data: [3, 2, 1, 2, 3],
-            },
-          ],
-        ],
-      ],
-      productSalesDatasets: [
-        [
-          [
-            {
-              label: "Transactions last 24 hours",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 24 hours",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 7 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 7 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 30 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 30 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-        ],
-        [
-          [
-            {
-              label: "Transactions last 365 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-          [
-            {
-              label: "Net Profit last 365 days",
-              data: [1, 1, 1, 1, 1],
-            },
-          ],
-        ],
-      ],
+      interval2: ["Net Profit", "Volume"],
+      currentBarcode: "",
       productName: "",
       currentProduct: null,
     };
   },
+  created() {
+    this.fetchNewCarts(1)
+  },
   methods: {
     ...mapActions(["fetchCartsInterval"]),
+    fetchNewCarts(days){
+      this.fetchCartsInterval({businessID:this.$route.params.id, days:days, barcode:this.currentBarcode})
+      .then((result) => { // no backend errors thrown
+      this.$dbg_console_log(result)
+      if(result.success==1) {
+        var carts = this.cleanData(result.carts, this.selected2=="Volume")
+        if(this.selected=="Last 24 Hours"){
+          this.setDataDay(carts, this.selected2 + " " + this.selected)
+        }else if(this.selected=="Last 7 Days"){
+          this.setDataWeek(carts, this.selected2 + " " + this.selected)
+        }else{
+          this.setDataMonth(carts, this.selected2 + " " + this.selected)
+        }
+      } else {
+          this.$dbg_console_log("Failed to fetch carts")
+      }
+      }).catch(error => {
+          this.$dbg_console_log(error)
+      })
+    },
+    cleanData(data, isVolume){
+      var retData = []
+      console.log("HHHHH", data.length)
+      for(var i=0; i<data.length; i++)
+      {
+        var time = new Date(parseInt(data[i].time.$numberLong));
+        var volume = data[i].barcodes.length
+        if(isVolume){
+          retData[i] = {"time":time, "data":volume}
+        }else{
+          retData[i] = {"time":time, "data":volume*parseFloat(data[i].total)}
+        }
+      }
+      console.log(retData)
+      console.log("HAGA?GA??")
+      return retData
+    },
+    setDataDay(data, title){
+      var xAxis = []
+      var yAxis = []
+      var currentDate = new Date(Date.now())
+      for(var i=0; i<24; i++){
+        xAxis[i] = this.HOD[currentDate.getHours()]
+        yAxis[i] = 0
+        currentDate.setHours(currentDate.getHours() - 1);
+      }
+      xAxis = xAxis.reverse()
+      for(i=0;i<data.length; i++){
+        var time = data[i].time
+        time.setHours(time.getHours() - 1)
+        var day = this.HOD[time.getHours()]
+        var key = xAxis.indexOf(day)
+        yAxis[key] = yAxis[key] + data[i].data
+      }
+      this.xAxisLabels = xAxis
+      this.dataset = [
+            {
+              label: "this doesnt matter",
+              data: yAxis,
+            },
+          ]
+      this.option.title.text = title
+
+    },
+    setDataWeek(data, title){
+      var xAxis = []
+      var yAxis = []
+      var currentDate = new Date(Date.now())
+      for(var i=0; i<7; i++){
+        xAxis[i] = this.DOW[currentDate.getDay()]
+        yAxis[i] = 0
+        currentDate.setDate(currentDate.getDate() - 1);
+      }
+      xAxis = xAxis.reverse()
+      for(i=0;i<data.length; i++){
+        var day = this.DOW[data[i].time.getDay()]
+        var key = xAxis.indexOf(day)
+        yAxis[key] = yAxis[key] + data[i].data
+      }
+      this.xAxisLabels = xAxis
+      this.dataset = [
+            {
+              label: "this doesnt matter",
+              data: yAxis,
+            },
+          ]
+      this.option.title.text = title
+
+    },
+    setDataMonth(data, title){
+      var xAxis = []
+      var yAxis = []
+      var currentDate = new Date(Date.now())
+      for(var i=0; i<12; i++){
+        xAxis[i] = this.DOM[currentDate.getMonth()]
+        yAxis[i] = 0
+        currentDate.setMonth(currentDate.getMonth() - 1);
+      }
+      xAxis = xAxis.reverse()
+      for(i=0;i<data.length; i++){//asf
+        var month = this.DOM[data[i].time.getMonth()]
+        var key = xAxis.indexOf(month)
+        yAxis[key] = yAxis[key] + data[i].data
+      }
+      console.log(yAxis)
+      this.xAxisLabels = xAxis
+      this.dataset = [
+            {
+              label: "this doesnt matter",
+              data: yAxis,
+            },
+          ]
+      this.option.title.text = title
+
+    },
     returnToAllSales() {
       this.showingProductSales = false;
+      this.currentBarcode = ""
       this.getCarts();
     },
     getProductSalesInfo(barcode) {
-      // TODO: get product sales info for given barcode and display it on chart
-      var loadProductSalesInfo = {
-        businessID: this.$route.params.id,
-        barcode: barcode,
-      };
-
-      console.log("Loading sales information for: ");
-      console.log(loadProductSalesInfo);
-
-      // TODO: compute productSalesDatasets
-      // TODO: set productName
       this.showingProductSales = true;
-      this.currentProduct = null;
-
-      console.log("display new product: " + barcode);
-
-      // get product name
-      this.$store
-        .dispatch("lookupProduct", {
-          businessID: this.$route.params.id,
-          barcode: barcode,
-        })
-        .then((result) => {
-          console.log(result.product);
-          this.currentProduct = result.product;
-          if (this.currentProduct === null) {
-            console.log("ERROR, PRODUCT LOOKUP FAILED");
-            // TODO: handle this case and display error popup
-          } else {
-            this.productName = this.currentProduct.name;
-            console.log("Getting carts for "+this.productName+"...");
-            this.getCarts();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          // TODO: handle this case and display error popup
-        });
-
-        
-
+      this.currentBarcode = barcode
+      this.getCarts()
     },
     //   this.fetchCartsInterval({businessID:this.$route.params.id, interval:value})
     //   .then((result) => { // no backend errors thrown
@@ -352,115 +322,15 @@ export default {
     //   })
     //   console.log(value)
     // },
-    getDaysFromSelected() {
-      switch (this.selected) {
-        case "Last 24 hours":
-          return 1;
-        case "Last 7 days":
-          return 7;
-        case "Last 30 days":
-          return 30;
-        case "Last 365 days":
-          return 365;
-        default:
-          console.log("ERROR: COULD NOT FIND DAYS FOR SELECTED TIME");
-          return 1;
-      }
-    },
-    setChartTitleFromSelected() {
-      var prefix = ""
-      if (this.showingProductSales) {
-        prefix += this.productName + " "
-      }
-      if (this.selected2 === "Transactions") {
-        this.option.title.text = prefix + "Transactions Over Time"
-      } else {
-        this.option.title.text = prefix + "Sales Over Time"
-      }
-    },
-    getAxisLabelFromSelected() {
-      switch (this.selected) {
-        case "Last 24 hours":
-          return ["12 am", "3 am", "6 am", "9 am", "12 pm", "3 pm", "6 pm", "9 pm"]
-        case "Last 7 days":
-          return ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"]
-        case "Last 30 days":
-          return ["0", "3", "6", "9", "12", "15", "18", "21", "24", "27", "30"]
-        case "Last 365 days":
-          return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        default:
-          console.log("ERROR: COULD NOT FIND DAYS FOR SELECTED TIME");
-          return ["12 am", "3 am", "6 am", "9 am", "12 pm", "3 pm", "6 pm", "9 pm"]
-      }
-    },
-    setChartXAxisFromSelected() {
-      // set chart axis  
-      var xAxisLabel = this.getAxisLabelFromSelected()
-      // TODO: rotate xAxisLabel list to match current time / date
-      this.xAxisLabels = xAxisLabel
-    },
     getCarts() {
-      var days = this.getDaysFromSelected();
-      if (this.showingProductSales) {
-        console.log(
-          "Getting " + this.productName + " carts for " + days + " days"
-        );
-        this.parseCarts(null); // TODO: 
-      } else {
-        console.log("Getting all sales carts for " + days + " days");
-        this.$store
-          .dispatch("getAllSalesData", {
-            businessID: this.$route.params.id,
-            days: days,
-          })
-          .then((result) => {
-            // parse carts and generate plotable data
-            this.parseCarts(result.carts);
-          })
-          .catch((error) => {
-            console.log(error);
-            this.parseCarts(null);
-          });
+      if(this.selected=="Last 24 Hours"){
+        this.fetchNewCarts(1)
+      }else if(this.selected=="Last 7 Days"){
+        this.fetchNewCarts(7)
+      }else{
+        this.fetchNewCarts(365)
       }
     },
-    parseCarts(carts) {
-      console.log(carts);
-      // set chart title
-      this.setChartTitleFromSelected();
-      this.setChartXAxisFromSelected();
-      // set chart data
-      if (this.showingProductSales) {
-        // parse carts w.r.t. product barcode
-        console.log("TODO: parse carts for product data to plot");
-        
-      } else {
-        console.log("Parsing all store sales carts");
-
-        if (carts === null) {
-          console.log("TODO: carts is null");
-        } else if (carts.length === 0) {
-          console.log("TODO: carts is length 0");
-          var data = [0,1,0,1,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-          this.dataset = [
-            {
-              label: "this doesnt matter",
-              data: data,
-            },
-          ]
-        } else {
-          console.log("TODO: parsing carts...");
-          for (var i = 0; i < carts.length; i++) {
-            console.log(i);
-            // TODO: 
-          }
-        }
-      }
-    },
-  },
-  mounted() {
-    // TODO: get all store sales and store in this.datasets
-    console.log("Getting carts...");
-    this.getCarts();
   },
 };
 </script>

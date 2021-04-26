@@ -295,7 +295,7 @@ const actions = {
       }}
     */
     return new Promise((resolve, reject) => {
-      axios.post("EZBagWebapp/webapi/merchant/sales", data)
+      axios.post("EZBagWebapp/webapi/merchant/querySales", data)
         .then(function (result) {
           if (result.data.status != "failure") {
             resolve({
