@@ -109,7 +109,7 @@
           avatar: 'https://avatars.githubusercontent.com/u/49415344?v=4',
           name: 'Blake Edwards',
           title: '',
-          excerpt: 'Blake is senior undergraduate student studying computer science and mathematics at the University of South Carolina Honors College. He is also a the founder of Resonant Capital LLC,  a software company.',
+          excerpt: 'Blake is senior undergraduate student studying computer science and mathematics at the University of South Carolina Honors College. He is also the founder of Resonant Capital LLC, a software company.',
           icon: 'mdi-account-multiple',
           alt: 'LinkedIn',
           link: 'https://www.linkedin.com/in/blakete/'
