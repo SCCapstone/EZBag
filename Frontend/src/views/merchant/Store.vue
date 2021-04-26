@@ -1,7 +1,5 @@
 <template>
-  <v-container>
-    <Carts v-bind:carts="carts" v-on:verify="markPaid" />
-  </v-container>
+  <Carts v-bind:carts="carts" v-on:verify="markPaid" />
 </template>
 
 <script>
