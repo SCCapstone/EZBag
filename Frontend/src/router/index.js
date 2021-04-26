@@ -34,10 +34,10 @@ const routes = [
         },
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
-          store.dispatch("verifyToken").then( (result) => {
+          store.dispatch("verifyToken").then((result) => {
             $dbg_console_log("verifyToken result: ")
             $dbg_console_log(result)
-            if (result.status=="success") {
+            if (result.status == "success") {
               $dbg_console_log("verified token!");
               next({ name: 'store' });
             } else {
@@ -46,9 +46,9 @@ const routes = [
               next();
             }
           }).catch(error => {
-              $dbg_console_log(error)
-              window.$cookies.remove("token")
-              next();       
+            $dbg_console_log(error)
+            window.$cookies.remove("token")
+            next();
           })
         }
       },
@@ -60,10 +60,10 @@ const routes = [
         },
         beforeEnter: (to, from, next) => {
           console.log("Checking if merchant already logged in...")
-          store.dispatch("verifyToken").then( (result) => {
+          store.dispatch("verifyToken").then((result) => {
             $dbg_console_log("verifyToken result: ")
             $dbg_console_log(result)
-            if (result.status=="success") {
+            if (result.status == "success") {
               $dbg_console_log("verified token!");
               next({ name: 'store' });
             } else {
@@ -72,12 +72,12 @@ const routes = [
               next();
             }
           }).catch(error => {
-              $dbg_console_log(error)
-              window.$cookies.remove("token")
-              next();       
+            $dbg_console_log(error)
+            window.$cookies.remove("token")
+            next();
           })
         }
-      },
+      }
     ]
   },
   {
@@ -102,12 +102,12 @@ const routes = [
       {
         path: 'receipt',
         component: () => import('@/views/customer/ReceiptPage.vue'),
-        beforeEnter: (to, from, next) => { 
+        beforeEnter: (to, from, next) => {
           // check if customer just logged out via carthash present
           if (store.getters["getCartHash"] !== null) {
             next();
           } else {
-            next( { path: '/' } );
+            next({ path: '/' });
           }
 
         }
@@ -146,10 +146,10 @@ const routes = [
       $dbg_console_log(`Cookie set to: ${window.$cookies.get("token")}`);
       // TODO: authentication user
       if (window.$cookies.get("token") !== null) {
-        store.dispatch("verifyToken").then( (result) => {
+        store.dispatch("verifyToken").then((result) => {
           $dbg_console_log("verifyToken result: ")
           $dbg_console_log(result)
-          if (result.status=="success") {
+          if (result.status == "success") {
             $dbg_console_log("verified token!")
             next();
           } else {
@@ -158,11 +158,11 @@ const routes = [
             next({ name: 'login' });
             window.$cookies.remove("token")
           }
-        }).catch(error => {    
-            $dbg_console_log(error)
-            // this.$router.push("/login")
-            next({ name: 'login' });
-            window.$cookies.remove("token")
+        }).catch(error => {
+          $dbg_console_log(error)
+          // this.$router.push("/login")
+          next({ name: 'login' });
+          window.$cookies.remove("token")
         })
       } else {
         $dbg_console_log("Cookie token is null, redirecting to login")
@@ -182,14 +182,13 @@ const routes = [
     component: () => import('@/views/merchant/VerifiedSuccess.vue')
   },
   {
-    path: '/404',
-    name: '404',
-    component: () => import('@/views/customer/404.vue')
-  },
-  {
     path: '/NotAuthorized',
     name: 'NotAuthorized',
     component: () => import('@/views/customer/NotAuth.vue')
+  },
+  { // handle all non paths
+    path: '/:pathMatch(.*)*', 
+    component: () => import('@/views/NotFound.vue')
   },
 ]
 
