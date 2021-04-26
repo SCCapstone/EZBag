@@ -115,6 +115,19 @@ import Cookie from 'js-cookie'
 export default {
   name:"Receipt",
   computed: mapGetters(['getCartHash']),
+  mounted() {
+    this.$store
+      .dispatch("checkIfBusinessIDExists", this.$route.params.id)
+      .then((response) => {
+        var exists = response.exists;
+        if (!exists) {
+          this.$router.push("/notfound")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   data() {
     return {
       popupHeader: "Internal Error",

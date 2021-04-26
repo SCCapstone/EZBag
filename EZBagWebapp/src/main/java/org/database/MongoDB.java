@@ -376,6 +376,12 @@ public class MongoDB {
         return documentExistsInCollection(userCollectionName, matchMap);
     }
 
+    public Boolean businessIDExists(String businessID) {
+        HashMap<String, String> matchMap = new HashMap<>();
+        matchMap.put("businessID", businessID);
+        return documentExistsInCollection(userCollectionName, matchMap);
+    }
+
     public Boolean cartExists(String cartHash, String businessID) {
         HashMap<String, String> matchMap = new HashMap<>();
         matchMap.put("cartHash", cartHash);

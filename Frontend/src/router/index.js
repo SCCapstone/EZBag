@@ -190,6 +190,10 @@ const routes = [
     path: '/:pathMatch(.*)*', 
     component: () => import('@/views/NotFound.vue')
   },
+  { // handle all non paths
+    path: '/notfound', 
+    component: () => import('@/views/NotFound.vue')
+  },
 ]
 
 const router = new VueRouter({

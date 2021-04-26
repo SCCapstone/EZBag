@@ -106,6 +106,10 @@ public class DatabaseService {
         return database.userWithIDExists(userID);
     }
 
+    public static Boolean businessIDExists(String businessID) {
+        return database.businessIDExists(businessID);
+    }
+
     public static Boolean userIsVerified(String userEmail) {
         return database.userIsVerified(userEmail);
     }

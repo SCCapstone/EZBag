@@ -68,6 +68,19 @@ export default {
     CartList,
     Checkout,
   },
+  mounted() {
+    this.$store
+      .dispatch("checkIfBusinessIDExists", this.$route.params.id)
+      .then((response) => {
+        var exists = response.exists;
+        if (!exists) {
+          this.$router.push("/notfound")
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
   data: () => ({
     show_checkout: false,
     show_popup: false,
