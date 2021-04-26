@@ -25,7 +25,12 @@ public class BizSalesByBarcode {
                 String businessID = payloadObject.get("businessID").getAsString();
                 String barcode = payloadObject.get("barcode").getAsString();
                 int days = Integer.parseInt(payloadObject.get("days").getAsString());
-                String resp = DatabaseService.getSalesByBarcode(businessID, barcode, days);
+                String resp = "";
+                if(barcode.equals("")){
+                    resp = DatabaseService.getLastDaysCartsByBusinessID(businessID, days);
+                }else {
+                    resp = DatabaseService.getSalesByBarcode(businessID, barcode, days);
+                }
                 return resp;
             } else {
                 return Utils.generateResponse(false, "Not authorized");
