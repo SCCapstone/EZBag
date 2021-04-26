@@ -29,6 +29,22 @@ public class UserRouteTests extends JerseyTest {
     }
 
     @Test
+    public void testLogin() {
+        // TODO: finish writing test
+        Document exampleUser = new Document();
+        exampleUser.append("email", "owner@store.com")
+                .append("password", "password");
+
+        final String response1 = target("login").request().post(Entity.text(exampleUser.toJson()), String.class);
+        JsonObject payloadObject = new JsonParser().parse(response1).getAsJsonObject();
+        System.out.println(payloadObject.toString());
+        // TODO message is simply inserted object in text form
+        assertEquals("success",payloadObject.get("status").getAsString());
+
+        // TODO write test to query user as admin and ensure all info inserted correctly
+    }
+
+    @Test
     public void testRegister() {
         // TODO: finish writing test
         Document exampleUser = new Document();
@@ -46,7 +62,7 @@ public class UserRouteTests extends JerseyTest {
         JsonObject payloadObject = new JsonParser().parse(response1).getAsJsonObject();
         System.out.println(payloadObject.toString());
         // TODO message is simply inserted object in text form
-        assertEquals(payloadObject.get("status").getAsString(), "success");
+        assertEquals("success",payloadObject.get("status").getAsString());
 
         // TODO write test to query user as admin and ensure all info inserted correctly
     }
