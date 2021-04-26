@@ -13,7 +13,7 @@ import static junit.framework.TestCase.assertEquals;
 public class SMTPTest {
     public static String mediaProperties = "/usr/local/opt/EZBag/emailAndSMS.properties";
     @Test
-    public void testSMTP()
+    public void testEmailWithContent()
     {
         Properties mediaProp = Utils.getPropertiesFile(mediaProperties);
         EmailService.init(mediaProp);
@@ -23,8 +23,17 @@ public class SMTPTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        int responseCode = EmailService.sendEmailWithContent("brendanreidy16@gmail.com", "Testing", "Hello world!", qrCode);
-        //int responseCode = EmailService.sendEmail("bcreidy@email.sc.edu", "Testing", mailContext);
-        //assertEquals(responseCode, 1);
+        int responseCode = EmailService.sendEmailWithContent("emailservicetest1234123@gmail.com", "Testing", "Hello world!", qrCode);
+        assertEquals(responseCode, 1);
+    }
+
+    @Test
+    public void testEmailService()
+    {
+        Properties mediaProp = Utils.getPropertiesFile(mediaProperties);
+        EmailService.init(mediaProp);
+        BufferedImage qrCode = null;
+        int responseCode = EmailService.sendEmail("bcreidy@email.sc.edu", "Testing", "Hello world!");
+        assertEquals(responseCode, 1);
     }
 }

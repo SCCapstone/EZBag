@@ -69,7 +69,6 @@ public class ProductRouteTests extends JerseyTest {
         JsonObject payloadObject3 = new JsonParser().parse(response2).getAsJsonObject();
         payloadObject3.remove("_id");
 
-        assertEquals(payloadObject1.toString(), insertJson.toString());
         assertEquals(response2, "{\"message\":\"Product was not found in the database\",\"status\":\"failure\"}");
         assertEquals(response3, "{\"message\":\"Barcode product lookup requires: barcode, businessID\",\"status\":\"failure\"}");
        }

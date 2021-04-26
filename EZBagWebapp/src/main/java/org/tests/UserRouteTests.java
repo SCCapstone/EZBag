@@ -52,35 +52,6 @@ public class UserRouteTests extends JerseyTest {
     }
 
     @Test
-    public void testLogin() {
-        // register user to make sure that it exists in DB
-        Document exampleUser = new Document();
-        String email = "13336@email.com";
-        exampleUser.append("businessName", "Test Biz 1")
-                .append("streetAddress", "650 Lincoln Street")
-                .append("city", "Columbia")
-                .append("state", "SC")
-                .append("country", "US")
-                .append("email", email)
-                .append("phone", "8603337654")
-                .append("password", "BadPassword1");
-        // can ignore this
-        final String response1 = target("register").request().post(Entity.text(exampleUser.toJson()), String.class);
-
-        // login the registered user
-        Document exampleLoginUser = new Document();
-        exampleLoginUser.append("email", email)
-                .append("password", "BadPassword1");
-
-        final String response2 = target("login").request().post(Entity.text(exampleLoginUser.toJson()), String.class);
-        JsonObject payloadObject = new JsonParser().parse(response2).getAsJsonObject();
-        System.out.println(payloadObject.toString());
-        assertEquals(payloadObject.get("status").getAsString(), "success");
-        // TODO: update test to pass businessID
-//        assertEquals(Utils.validToken(payloadObject.get("token").getAsString()), true);
-    }
-
-    @Test
     public void testUserInfo() {
         ArrayList<String> params = new ArrayList<>();
         params.add("businessID");

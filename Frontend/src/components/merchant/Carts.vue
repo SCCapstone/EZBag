@@ -117,3 +117,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+  .headerPannel
+  {
+
+  }
+</style>
