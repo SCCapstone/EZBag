@@ -13,9 +13,7 @@ services:
       - ./docker_persist/maven:/root/.m2
     depends_on:
       - database
-    links:
-      - database
-  
+
   database:
     container_name: mongodb
     image: mongo
@@ -46,10 +44,9 @@ services:
     working_dir: /e2e
     depends_on: 
       - frontend
-    links:
-      - frontend
     environment: 
-      - CYPRESS_baseUrl=http://frontend:9000/#/
+      - CYPRESS_baseUrl=http://localhost:8080/
     entrypoint: ''
     command: >
-      bash -c 'npx wait-on http://frontend:9000 && cypress run'
+      bash -c 'npx wait-on http://localhost:9000 && cypress run'
+    network_mode: "host"

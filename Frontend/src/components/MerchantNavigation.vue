@@ -49,6 +49,7 @@
     </v-navigation-drawer>
     <v-app-bar color="primary" dark>
       <v-app-bar-nav-icon
+        id='hamburger'
         @click="drawer = true">
       </v-app-bar-nav-icon>
       <v-spacer></v-spacer>
