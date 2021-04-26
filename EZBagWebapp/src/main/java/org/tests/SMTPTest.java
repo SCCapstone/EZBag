@@ -33,7 +33,7 @@ public class SMTPTest {
         Properties mediaProp = Utils.getPropertiesFile(mediaProperties);
         EmailService.init(mediaProp);
         BufferedImage qrCode = null;
-        int responseCode = EmailService.sendEmail("bcreidy@email.sc.edu", "Testing", "Hello world!");
+        int responseCode = EmailService.sendEmail("emailservicetest1234123@gmail.com", "Testing", "Hello world!");
         assertEquals(responseCode, 1);
     }
 }
