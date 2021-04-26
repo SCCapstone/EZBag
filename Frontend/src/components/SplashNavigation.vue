@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mx-auto overflow-hidden">
+  <v-container class="pa-0 overflow-hidden">
     <v-navigation-drawer
       app
       v-model="drawer"
@@ -56,10 +56,10 @@
       <div class="text-h6 font-weight-bold mt-2 ml-2">EZBag</div>
     </v-app-bar>
     <v-card 
-      class="text-center rounded-0"
+      class="text-center rounded-0 py-1"
       height
       color="secondary" dark>
-      <div class="font-weight-medium">
+      <div class="font-weight-light">
         Enterprise Solutions for the Small-Box Store
       </div>
     </v-card>

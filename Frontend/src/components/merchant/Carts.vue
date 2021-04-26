@@ -1,8 +1,8 @@
 <template>
-  <v-container class="pt-0 mt-n3">
+  <v-container class="pt-0 px-0 mt-n3">
     <v-card
       color="primary"
-      class="rounded-t-0 elevation-0">
+      class="rounded-0 elevation-0">
       <v-btn-toggle
         v-model="toggle_exclusive"
         mandatory
@@ -24,7 +24,8 @@
         </v-btn>
       </v-btn-toggle>
     </v-card>
-    <v-expansion-panels>
+    <v-expansion-panels
+      class="px-3">
       <v-expansion-panel
         v-bind:key="cart.cartHash"
         v-for="cart in carts.slice().reverse()"

@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mx-auto overflow-hidden" style="z-index:100">
+  <v-container class="pt-0 px-0 overflow-hidden" style="z-index:100">
     <v-navigation-drawer
       app
       v-model="drawer"

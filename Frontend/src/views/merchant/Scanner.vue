@@ -1,12 +1,12 @@
 <template>
   <v-container class="pa-0"> 
-    <ScanSearchBar v-on:showproduct="showItem" v-on:isSearching="toggleScanner($event)"/>
     <v-scandit class="v-scandit"
       license-key="AZ8/Ug5hLjqmMAbzNgY90r9Cv7cjK9PQGVY+fCFQxRXOZLZ0AXBNwblHWITRd1iYdDQmhn1T/lBlYLkcNxURdVluSkcCPPA8qnHIkvJ/vHGcI8kIc1peT7hhv+wUYuDZAFSVGKNAW3YNeLmJLRgtdcgl2BEvIa/D5gQAFmYHWnTeObel0pyvJMwYV3YDv8DL35lmqB3ieAu4Db+OMGJD777/pGzvL7pEX0XucfhLiwuyvH2Gp7s0qQ3p/tEf6YFaIHhj+1MjAsKs+3UvWUqg9oUx0Amh+MLWwxqPSve7SjggQPMOKvdgvU8helgUrCk0ASff/p3lfzeJaVnel3TfJEf2FIzwn69JjsG//TmOgTwtYjVlsXzy5b7UoexWkwZbLanFR42yw2zgTKFiyKEXetFAd+FxMsAOAV84sW9gC05OmZI2NbEt0Y/XOiDcpDIHlvBRUJdliCkXlM2rDCInmU/FL8RZichbH7KrG8RN6Uy462MYVp5wx+vYcwQIwbClHfOFJFBuC47f9idh0xSYS/kPq9mkysjetBZWMGKxZxUiEmxRwQbukwUUz8XfSlgodYUvuyaoqKN46jaIeJlKLil9EFftjnzJBpjKHUFXLfvHqJ90NvI5YTsbOgwBL7sqmkqS6t7Ww+xankZsYkuAwjN/TlA0Tb+3dM8QOhRq1n35jLp01aBR9j6p4bQShY0mwtMAWetzy3uMKOJlGRw6l9ozzRQ62anydApDnQmd4WzhigIJJCKtCP6e1fRN1ZEDDHOkldgoN0nmxJ6R7T5gbm7TXopiYyVSSXEJUfoJ988jwNGTqnjJt144en6O7eBxeK5DEsEy//rPnA==" 
       :configuration-options="{ engineLocation: 'https://cdn.jsdelivr.net/npm/scandit-sdk@5.x/build/' }"
       :scan-settings="{ enabledSymbologies: ['ean8', 'ean13', 'upca', 'upce']}"
       v-on:barcodePicker="(barcodePicker) => initPicker(barcodePicker)"
       v-on:scan="(barcode) => { findAndLoadProduct(barcode.barcodes[0].data) }" />
+    <ScanSearchBar style="z-index:0;" v-on:showproduct="showItem" v-on:isSearching="toggleScanner($event)"/>
     <!--
       Pop up
     !-->
