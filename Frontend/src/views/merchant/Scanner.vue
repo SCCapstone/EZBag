@@ -60,28 +60,37 @@
               </v-text-field>
             </v-card-title>
             <v-card-text>
-              <v-text-field
+              <v-textarea
                 v-model="description"
-                :rules="descriptionRules"
-                label="Description"
-                id="description">
-              </v-text-field>
-              <v-text-field
-                v-model="price"
-                :rules="priceRules"
-                label="Price (USD)"
-                type='number'
-                id="price"
-                validate-on-blur>
-              </v-text-field>
-              <v-text-field
-                v-model="tax"
-                :rules="taxRules"
-                type='number'
-                label="Percentage Tax"
-                id="tax"
-                validate-on-blur>
-              </v-text-field>
+                label="Description (optional)"
+                id="description"
+                counter
+                maxlength=200>
+              </v-textarea>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    v-model="price"
+                    :rules="priceRules"
+                    label="Price (USD)"
+                    prefix='$'
+                    type='tel'
+                    id="price"
+                    validate-on-blur>
+                  </v-text-field>
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    v-model="tax"
+                    :rules="taxRules"
+                    type='tel'
+                    label="Tax"
+                    suffix='%'
+                    id="tax"
+                    validate-on-blur>
+                  </v-text-field>
+                </v-col>
+              </v-row>
             </v-card-text>
             <v-card-actions class="justify-center">
               <v-btn 
@@ -124,9 +133,6 @@ export default {
         v => v.length <= 60 || 'Product name is too long'
       ],
       description: "",
-      descriptionRules:[
-        v => v.length <= 200 || 'Description is too long'
-      ],
       price: "",
       priceRules:[
         v => !!v || 'Price is required',
