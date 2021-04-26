@@ -67,8 +67,12 @@ export default {
           fontSize: 20,
         },
         legend: {
-          position: "bottom",
           display: false,
+        },
+        tooltips: {
+          legend: {
+            display: false,
+          },
         },
         scales: {
             yAxes: [
@@ -221,105 +225,6 @@ export default {
       this.currentBarcode = barcode
       this.getCarts()
     },
-    //   this.fetchCartsInterval({businessID:this.$route.params.id, interval:value})
-    //   .then((result) => { // no backend errors thrown
-    //   this.$dbg_console_log(result)
-    //   var plotData = {}
-    //   if(result.success==1) {
-    //       for(var i=0; i<result.carts.length; i++)
-    //       {
-    //         var date = new Date(parseInt(result.carts[i].time.$numberLong));
-    //         var timeKey
-    //         if(value=="Daily"){
-    //           date = this.roundHours(date)
-    //           var hours = date.getHours()
-    //           var time = "am"
-    //           hours = Math.floor(hours/3)*3
-    //           if(date.getHours()>12){
-    //             time = "pm"
-    //             hours = hours - 12
-    //             if(hours==0)
-    //               hours=12
-    //           }
-    //           timeKey = hours + time
-    //           if(timeKey in plotData){
-    //             plotData[timeKey] = plotData[timeKey] + 1
-    //           }else{
-    //             plotData[timeKey] = 1
-    //           }
-    //         }else if(value=="Weekly"){
-    //           timeKey = this.weekAxis[date.getDay()]
-    //           if(timeKey in plotData){
-    //             plotData[timeKey] = plotData[timeKey] + 1
-    //           }else{
-    //             plotData[timeKey] = 1
-    //           }
-    //         }else if(value=="Monthly"){
-    //           timeKey = this.monthAxis[date.getMonth()]
-    //           if(timeKey in plotData){
-    //             plotData[timeKey] = plotData[timeKey] + 1
-    //           }else{
-    //             plotData[timeKey] = 1
-    //           }
-    //         }
-    //       }
-    //       var val
-    //       if(value=="Daily"){
-    //         var dayData = []
-    //         for(i=0; i<this.dayAxis.length; i++)
-    //         {
-    //           dayData.push(0)
-    //         }
-    //         for(i=0; i<this.dayAxis.length; i++)
-    //         {
-    //           val = this.dayAxis[i]
-    //           if(val in plotData)
-    //           {
-    //             dayData[i] = plotData[val]
-    //           }
-    //         }
-    //         console.log(plotData)
-    //         console.log(dayData)
-    //         this.updateChart(dayData, this.dayAxis)
-    //       }else if(value=="Weekly"){
-    //         var weekData = []
-    //         for(i=0; i<this.weekAxis.length; i++)
-    //         {
-    //           weekData.push(0)
-    //         }
-    //         for(i=0; i<this.weekAxis.length; i++)
-    //         {
-    //           val = this.weekAxis[i]
-    //           if(val in plotData)
-    //           {
-    //             weekData[i] = plotData[val]
-    //           }
-    //         }
-    //         this.updateChart(weekData, this.weekAxis)
-    //       }else if(value=="Monthly"){
-    //         var monthData = []
-    //         for(i=0; i<this.monthAxis.length; i++)
-    //         {
-    //           monthData.push(0)
-    //         }
-    //         for(i=0; i<this.monthAxis.length; i++)
-    //         {
-    //           val = this.monthAxis[i]
-    //           if(val in plotData)
-    //           {
-    //             monthData[i] = plotData[val]
-    //           }
-    //         }
-    //         this.updateChart(monthData, this.monthAxis)
-    //       }
-    //   } else {
-    //       this.$dbg_console_log("Failed to fetch carts")
-    //   }
-    //   }).catch(error => {
-    //       this.$dbg_console_log(error)
-    //   })
-    //   console.log(value)
-    // },
     getCarts() {
       if(this.selected=="Last 24 Hours"){
         this.fetchNewCarts(1)
