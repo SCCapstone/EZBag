@@ -6,7 +6,7 @@
       <v-btn-toggle
         v-model="toggle_exclusive"
         mandatory
-        class="ml-2 mb-2"
+        class="ml-4 mb-2"
         light>
         <v-btn
           ripple 
