@@ -120,7 +120,6 @@ export default {
     },
     cleanData(data, isVolume){
       var retData = []
-      console.log("HHHHH", data.length)
       for(var i=0; i<data.length; i++)
       {
         var time = new Date(parseInt(data[i].time.$numberLong));
@@ -132,7 +131,6 @@ export default {
         }
       }
       console.log(retData)
-      console.log("HAGA?GA??")
       return retData
     },
     setDataDay(data, title){
@@ -155,7 +153,7 @@ export default {
       this.xAxisLabels = xAxis
       this.dataset = [
             {
-              label: "this doesnt matter",
+              label: "",
               data: yAxis,
             },
           ]
@@ -180,7 +178,7 @@ export default {
       this.xAxisLabels = xAxis
       this.dataset = [
             {
-              label: "this doesnt matter",
+              label: "",
               data: yAxis,
             },
           ]
@@ -206,7 +204,7 @@ export default {
       this.xAxisLabels = xAxis
       this.dataset = [
             {
-              label: "this doesnt matter",
+              label: "",
               data: yAxis,
             },
           ]
