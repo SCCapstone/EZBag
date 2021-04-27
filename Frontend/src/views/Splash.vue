@@ -88,9 +88,8 @@ export default {
     overlay: false,
     youtube_video: [
       {
-        src:'https://www.youtube.com/embed/KkPlkvzmflU',
+        src:'https://www.youtube.com/watch?v=MeghahEn6Ho',
         thumbnailWidth: '300px',
-        controls: false,
       }
     ],
     customer_gallery: [
