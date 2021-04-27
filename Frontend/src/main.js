@@ -19,7 +19,7 @@ Vue.mixin(debug)
 Vue.use(VScandit);
 
 
-new Vue({
+window.app = new Vue({
   store,
   vuetify,
   router,

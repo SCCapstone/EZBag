@@ -9,35 +9,35 @@
         nav
         dense>
         <v-list-item-group>
-          <v-list-item to="store">
+          <v-list-item id="cart-verification-link" to="store">
             <v-list-item-icon>
               <v-icon>mdi-cart</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Cart Verification</v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="statistics">
+          <v-list-item id="sales-dashboard-link" to="statistics">
             <v-list-item-icon>
               <v-icon>mdi-finance</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Analytics</v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="products">
+          <v-list-item id="merchant-scanner-link" to="products">
             <v-list-item-icon>
               <v-icon>mdi-scan-helper</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Scanner</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-on:click="customer">
+          <v-list-item id="customer-scanner-link" v-on:click="customer">
             <v-list-item-icon>
               <v-icon>mdi-store</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Customer View</v-list-item-title>
           </v-list-item>
 
-          <v-list-item v-on:click="logout">
+          <v-list-item id="logout-link" v-on:click="logout">
             <v-list-item-icon>
               <v-icon>mdi-logout</v-icon>
             </v-list-item-icon>

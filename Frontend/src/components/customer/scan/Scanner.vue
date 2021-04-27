@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id='customer-scanner'>
 
     <v-scandit
       class="v-scandit"
@@ -58,10 +58,10 @@
           v-on:removed-product="hideScannedProductCard"
           />
           <v-card-actions class="justify-center">
-            <v-btn @click="cancelScannedProduct">Cancel
+            <v-btn id="cancel-product" @click="cancelScannedProduct">Cancel
               <v-icon right>mdi-close</v-icon>
             </v-btn>
-            <v-btn @click="hideScannedProductCard">Add to
+            <v-btn id="add-product" @click="hideScannedProductCard">Add to
               <v-icon right>mdi-cart</v-icon>
             </v-btn>
           </v-card-actions>
