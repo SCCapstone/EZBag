@@ -2,7 +2,11 @@
 
 # EZBag
 
-## [Demo of Customer Checkout](https://youtu.be/MeghahEn6Ho?si=3H-ht-jx-xrI3D9s&t=305)
+## Demo of Customer Checkout
+
+Click the thumbnail below to watch the demo of customer checkout on YouTube.
+
+[![EZBag Customer Checkout](readme/EZBag_Customer_Checkout_Flow_Thumbnail.png)](https://youtu.be/MeghahEn6Ho?si=3H-ht-jx-xrI3D9s&t=305)
 
 ## Final Presentation
 
