@@ -6,7 +6,9 @@
 
 Click the thumbnail below to watch the demo of customer checkout on YouTube.
 
-[![EZBag Customer Checkout](readme/EZBag_Customer_Checkout_Flow_Thumbnail.png)](https://youtu.be/MeghahEn6Ho?si=3H-ht-jx-xrI3D9s&t=305)
+<a href="https://youtu.be/MeghahEn6Ho?si=3H-ht-jx-xrI3D9s&t=305">
+  <img src="readme/EZBag_Customer_Checkout_Flow_Thumbnail.png" alt="EZBag Customer Checkout" width="480" height="360">
+</a>
 
 ## Final Presentation
 
