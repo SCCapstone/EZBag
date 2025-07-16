@@ -2,7 +2,7 @@
 
 # EZBag
 
-## Demo of Customer Checkout
+## Demo of Customer Checkout Experience
 
 Click the thumbnail below to watch the demo of customer checkout on YouTube.
 
@@ -10,7 +10,7 @@ Click the thumbnail below to watch the demo of customer checkout on YouTube.
   <img src="readme/EZBag_Customer_Checkout_Flow_Thumbnail.png" alt="EZBag Customer Checkout" width="480" height="360">
 </a>
 
-## Demo of Merchant Side
+## Demo of Merchant Side Experience
 
 Click the thumbnail below to watch the demo of the merchant side of the EZBag web app on YouTube.
 
