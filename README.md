@@ -1,4 +1,7 @@
+[![Stable](https://img.shields.io/badge/status-stable-green.svg)](https://github.com/blakete/perdisco) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 # EZBag
+
 ## Project Description
 Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
 However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
