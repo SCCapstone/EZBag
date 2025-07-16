@@ -2,7 +2,18 @@
 
 # EZBag
 
+## [Demo of Customer Checkout](https://youtu.be/MeghahEn6Ho?si=3H-ht-jx-xrI3D9s&t=305)
+
+## Final Presentation
+
+Click the thumbnail below to watch the final presentation video on YouTube.
+
+[![EZBag Final Presentation](https://img.youtube.com/vi/MeghahEn6Ho/hqdefault.jpg)](https://youtu.be/MeghahEn6Ho)
+
+---
+
 ## Project Description
+
 Scan-and-go is a form of self-checkout which has recently been growing in popularity with big-box stores. 
 However, custom software is expensive and smaller retailers do not have the budget to develop their own custom scan-and-go solution.
 Therefore, EZBag is a free web app that aims to allow any brick-and-mortar store to implement scan-and-go. 
